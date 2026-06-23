@@ -1,0 +1,4 @@
+interface:
+  display_name: 'PMR React SPA'
+  short_description: 'Build PMR React SPA features'
+  default_prompt: 'Use this skill when building React SPA components, screens, forms, tables, routing, mock data, or frontend flows for the People Management & Resourcing MVP.'
