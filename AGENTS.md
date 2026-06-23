@@ -21,27 +21,55 @@ There is no backend requirement. Use mock data, MSW handlers, Faker-generated fi
 
 ## Folder Structure Rules
 
-Prefer feature-oriented organization. Keep shared primitives small and obvious.
+Follow the component and page structure rules from the start of every frontend change. For concrete examples, read:
+
+- `docs/architecture/component-structure.md`
+- `docs/architecture/page-structure.md`
 
 ```text
 src/
   app/              # app bootstrap, providers, router
-  components/       # shared reusable components
+  shared/
+    ui/             # reusable UI components
   features/         # domain features: people, projects, allocations, skills
   lib/              # utilities, query client, helpers
   mocks/            # MSW handlers, mock data factories
-  routes/           # route-level screens if not colocated in features
+  pages/            # route-level pages and page-only components
   store/            # Zustand stores
   types/            # shared TypeScript types
 ```
 
 Rules:
 
-- Put domain-specific UI, hooks, schemas, and tables inside `features/<feature>/`.
-- Put reusable design primitives in `components/`.
+- Put reusable UI components in `src/shared/ui/{component-name}`.
+- Put business components in `src/features/{domain}/components/{component-name}`.
+- Put page-only components in `src/pages/{page-name}/components/{component-name}`.
+- Each component folder should use `ComponentName.tsx`, `ComponentName.types.ts`, and `index.ts`.
+- Add `ComponentName.constants.ts` or `ComponentName.utils.ts` only when the component actually needs them.
+- Use named exports from components and indexes.
+- Define React components as arrow functions where possible: `export const ComponentName: FC<ComponentNameProps> = (...) => ...`.
+- Use explicit `Props` types and never use `any`.
+- Use Tailwind CSS and `cn()` for class composition.
+- Use shadcn/ui primitives where possible.
+- Handle loading, empty, and error states for async data.
+- Keep accessibility basics: semantic elements, labels, focus states, and keyboard-friendly controls.
+- Put domain-specific hooks, schemas, tables, and helpers inside `features/<feature>/`.
 - Put generated or static mock data in `mocks/`, not inside UI components.
 - Keep route components thin; push behavior into feature modules.
 - Avoid large barrel files unless they clearly improve imports.
+
+## Routing and Page Rules
+
+- Keep all route path helpers in `src/app/routes.ts`.
+- Name path helpers as `get<PageName>PagePath`, for example `getHomePagePath`.
+- Do not hard-code app paths in `Link`, `NavLink`, `Navigate`, redirects, or route registration.
+- Register routes only in `src/app/router.tsx`.
+- Create route pages under `src/pages/{page-name}`.
+- Each page folder must use `PageName.tsx`, `PageName.types.ts`, and `index.ts`.
+- Export pages with named exports and type them with `FC<PageNameProps>`.
+- Add a new page by creating the page folder, adding a path helper, registering the route, and updating navigation only when the page is a primary destination.
+- Remove a page by removing its route registration, path helper, navigation item, page folder, and imports.
+- Keep pages thin: layout, route params/search params, page-level state, and composition only.
 
 ## Implementation Rules
 
@@ -120,9 +148,9 @@ npm run test
 Before considering work complete, run at least:
 
 ```bash
+npm run build
 npm run lint
 npm run format:check
-npm run build
 ```
 
 If the relevant scripts do not exist yet, add them as part of the setup or clearly note what is missing.
