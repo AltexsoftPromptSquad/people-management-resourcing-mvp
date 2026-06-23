@@ -1,0 +1,143 @@
+# AGENTS.md
+
+## Project Overview
+
+People Management & Resourcing MVP is a frontend-only React SPA for managing people, skills, teams, projects, allocations, and resourcing views for an engineering organization.
+
+There is no backend requirement. Use mock data, MSW handlers, Faker-generated fixtures, and local client state where needed. Keep implementation realistic enough to support future API integration, but avoid building server-side abstractions that are not needed for the MVP.
+
+## Tech Stack
+
+- React + TypeScript + Vite
+- Tailwind CSS
+- shadcn/ui for base UI components
+- React Router for routing
+- TanStack Query for async/mock server state
+- TanStack Table for data grids
+- Zustand for local app state
+- React Hook Form + Zod for forms and validation
+- MSW for mocked API boundaries
+- Faker for mock data generation
+
+## Folder Structure Rules
+
+Prefer feature-oriented organization. Keep shared primitives small and obvious.
+
+```text
+src/
+  app/              # app bootstrap, providers, router
+  components/       # shared reusable components
+  features/         # domain features: people, projects, allocations, skills
+  lib/              # utilities, query client, helpers
+  mocks/            # MSW handlers, mock data factories
+  routes/           # route-level screens if not colocated in features
+  store/            # Zustand stores
+  types/            # shared TypeScript types
+```
+
+Rules:
+
+- Put domain-specific UI, hooks, schemas, and tables inside `features/<feature>/`.
+- Put reusable design primitives in `components/`.
+- Put generated or static mock data in `mocks/`, not inside UI components.
+- Keep route components thin; push behavior into feature modules.
+- Avoid large barrel files unless they clearly improve imports.
+
+## Implementation Rules
+
+- Use TypeScript for all app code.
+- Build real SPA screens, not placeholder landing pages.
+- Prefer shadcn/ui components before creating custom UI primitives.
+- Use Tailwind utilities for styling; keep custom CSS minimal.
+- Use React Router for navigation and route state.
+- Use TanStack Query for data that behaves like remote data, even when backed by MSW.
+- Use Zustand only for local UI/application state that is not server-like data.
+- Use React Hook Form with Zod schemas for non-trivial forms.
+- Use TanStack Table for sortable/filterable/resource-style tables.
+- Keep mock APIs realistic: IDs, loading states, empty states, and error states should exist where useful.
+- Do not add a backend, database, or server-only framework.
+- Do not hard-code large datasets directly inside components.
+- Keep components focused and readable; extract only when it reduces real complexity.
+
+## Code Quality Rules
+
+- ESLint is the source of truth for code correctness checks.
+- Prettier is the source of truth for formatting.
+- Do not format manually against Prettier preferences; run the formatter.
+- Keep ESLint and Prettier responsibilities separate. Avoid adding ESLint rules that only duplicate formatting concerns.
+- Husky must install repository Git hooks through the `prepare` script.
+- The pre-commit hook must run `lint-staged`.
+- `lint-staged` should only operate on staged files and should run ESLint fixes before Prettier on TypeScript/React files.
+- Never bypass hooks with `--no-verify` unless explicitly agreed for an emergency.
+
+## Project Codex Skills
+
+Project-specific Codex skills live in `.codex/skills`.
+
+- Use `.codex/skills/pmr-react-spa/SKILL.md` for substantial React SPA component, screen, form, table, routing, state, and mock-data work.
+- Keep `AGENTS.md` concise. Put detailed reusable agent guidance into project skills or their `references/` files.
+
+## Review Guidelines
+
+When reviewing changes, prioritize:
+
+- Correctness of business flows and data state.
+- Type safety and clear domain models.
+- Accessible controls, labels, keyboard behavior, and focus states.
+- Responsive layout for dashboard/table-heavy screens.
+- Loading, empty, and error states.
+- Consistent use of shadcn/ui and Tailwind patterns.
+- Avoiding duplicated mock data or inconsistent fixtures.
+- Avoiding unnecessary global state.
+- Passing ESLint, Prettier, and build checks.
+- Keeping Husky/lint-staged configuration intact when changing package scripts.
+
+Call out missing validation, fragile table logic, unclear routing, and UI that would not scale to realistic people/project counts.
+
+## Testing and Build Commands
+
+Use the project package manager scripts when available.
+
+Expected commands:
+
+```bash
+npm install
+npm run dev
+npm run lint
+npm run lint:fix
+npm run format
+npm run format:check
+npm run build
+npm run preview
+```
+
+If tests are added:
+
+```bash
+npm run test
+```
+
+Before considering work complete, run at least:
+
+```bash
+npm run lint
+npm run format:check
+npm run build
+```
+
+If the relevant scripts do not exist yet, add them as part of the setup or clearly note what is missing.
+
+## Definition of Done
+
+A change is done when:
+
+- The requested feature or fix is implemented end to end.
+- TypeScript, lint, and build checks pass.
+- Formatting checks pass.
+- Pre-commit hooks run lint-staged successfully.
+- UI handles loading, empty, and error states where applicable.
+- Forms validate with Zod and show useful user feedback.
+- Mock data and MSW handlers are updated when data behavior changes.
+- The implementation follows the feature folder structure.
+- No unrelated refactors or generated clutter are included.
+- The result is usable in the browser with realistic MVP data.
