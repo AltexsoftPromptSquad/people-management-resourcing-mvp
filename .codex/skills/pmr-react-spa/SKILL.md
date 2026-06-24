@@ -10,16 +10,19 @@ Use this skill for substantial frontend work in the People Management & Resourci
 ## Default Workflow
 
 1. Read `AGENTS.md` first for repository-wide rules.
-2. Identify the feature area: people, projects, allocations, skills, teams, or shared UI.
-3. Place domain code under `src/features/<feature>/`.
-4. Use shared primitives from `src/components/` before adding new ones.
-5. Keep route components thin and move behavior into feature modules.
-6. Add or update mock data/MSW handlers when the UI depends on server-like data.
-7. Run `npm run lint`, `npm run format:check`, and `npm run build` before finishing.
+2. Read `docs/architecture/component-structure.md` before creating or moving components.
+3. Read `docs/architecture/page-structure.md` before creating or changing pages or routes.
+4. Identify the feature area: people, projects, allocations, skills, teams, or shared UI.
+5. Place domain code under `src/features/<feature>/`.
+6. Use shared primitives from `src/shared/ui/` before adding new ones.
+7. Keep route components thin and move behavior into feature modules.
+8. Add or update mock data/MSW handlers when the UI depends on server-like data.
+9. Run `npm run lint`, `npm run format:check`, and `npm run build` before finishing.
 
 ## Core Rules
 
 - Use TypeScript for app code.
+- Define React components as arrow functions where possible and type props through `FC<Props>`.
 - Prefer shadcn/ui primitives and Tailwind utilities.
 - Use React Router for navigation.
 - Use TanStack Query for async or mock-server state.
