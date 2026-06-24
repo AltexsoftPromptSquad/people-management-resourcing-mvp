@@ -1,0 +1,65 @@
+# Current State
+
+**Last updated:** 2026-06-24
+
+## Completed
+
+- [x] BRD uploaded and committed (`docs/requirements/# Business Requirements Document.md`)
+- [x] GSD-lite planning structure created (`.planning/`)
+- [x] App scaffold — Vite + React + TypeScript + Tailwind
+- [x] Tooling — ESLint, Prettier, Husky, lint-staged
+- [x] Architecture docs — `docs/architecture/page-structure.md`, `component-structure.md`
+- [x] Routing foundation — `src/app/router.tsx`, `AppLayout`, home route at `/`
+- [x] Early UI — Button, Badge, shadcn-badge; `components.json`
+
+## In Progress
+
+- [ ] Phase 1 foundation (see `phases/phase-1-foundation/PLAN.md`)
+
+## Not Started
+
+- Role switcher and persona seed data
+- MSW mock API layer
+- Domain types and feature modules
+- All BRD feature screens (dashboard, subordinates, profiles, resourcing, custom lists)
+
+## Next Owner Actions
+
+### Carlos (Product / BRD)
+
+1. Confirm BRD v1.0 scope sign-off or list change requests before Phase 2+ work.
+2. Approve seeded persona names for UM, DM, and Employee (BRD requires named demo users).
+3. Validate Phase 1 exit criteria align with demo stakeholder expectations.
+4. Resolve or accept open questions in BRD §15 (defaults are documented; confirm no overrides needed).
+
+### Ivan (Development)
+
+1. Execute Phase 1 plan — role switcher, role-aware routes, MSW + seed data foundation.
+2. Align folder structure with `docs/architecture/` and AGENTS.md (`features/`, `mocks/`, `types/`).
+3. Wire TanStack Query provider and Zustand store for active role/persona.
+4. Keep routes thin; push domain logic into `src/features/`.
+
+### Volodymyr (QA)
+
+1. Map BRD acceptance criteria (AC-*) to Phase 1 validation checks in `VALIDATION.md`.
+2. Prepare test case skeletons per requirement group for Phases 2–4.
+3. Run Phase 1 validation checklist after Ivan's handoff.
+4. Flag BRD traceability gaps (e.g., employee assignment history excluded per AS-011).
+
+## Blockers / Open Decisions
+
+| Item | Status | Default / Notes |
+|------|--------|-----------------|
+| Seeded persona names | Open | BRD requires 1 UM, 1 DM, 1 Employee — names not specified in BRD |
+| BRD file has trailing non-markdown content after line 970 | Open | Ignore lines after `*End of Document*` when parsing |
+| Git auth for push/pull in some environments | Environment | Use local terminal or SSH |
+| One approval per request | Decided | AS-009 / BRD §15 |
+| Employee sees assignment history | Decided — No | AS-011 |
+| Shared profile expiry | Decided — No | AS-006 |
+
+## Chosen Approach
+
+- **GSD-lite planning** in `.planning/` — PROJECT, REQUIREMENTS, ROADMAP, STATE, per-phase PLAN + VALIDATION
+- **No BMAD, no OpenSpec, no heavy planning framework** at this stage
+- **BRD as business source of truth**; AGENTS.md + architecture docs for engineering conventions
+- **Frontend-only, MSW + Faker** for all server-like data
