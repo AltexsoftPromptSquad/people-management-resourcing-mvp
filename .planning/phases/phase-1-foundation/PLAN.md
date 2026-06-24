@@ -38,18 +38,18 @@ Establish the application shell, role switcher, routing skeleton, and mock data 
 
 | # | Task | Owner | Depends on |
 |---|------|-------|------------|
-| 1 | Define `src/types/` for Person, Unit, Role, Persona | Dev | — |
-| 2 | Create Zustand store: `activeRole`, `activePersonaId`, switch actions | Dev | 1 |
-| 3 | Build role switcher component in app header | Dev | 2 |
-| 4 | Add MSW `browser.ts`, `handlers.ts`, persona/unit/person factories | Dev | 1 |
-| 5 | Wire MSW in `main.tsx` (dev only) | Dev | 4 |
-| 6 | Add QueryClientProvider in app providers | Dev | — |
-| 7 | Extend router: `/dashboard`, `/resourcing/requests`, `/my-profile` | Dev | 2 |
-| 8 | Role guard / redirect: wrong role route → correct landing | Dev | 2, 7 |
-| 9 | Update `AppLayout` nav items per active role | Dev | 2, 3 |
-| 10 | Placeholder page components per landing route | Dev | 7 |
-| 11 | Hook personas endpoint via TanStack Query | Dev | 4, 6 |
-| 12 | Document persona names once Carlos confirms | Product | — |
+| 1 | Define `src/types/` for Person, Unit, Role, Persona | Volodymyr | — |
+| 2 | Create Zustand store: `activeRole`, `activePersonaId`, switch actions | Volodymyr | 1 |
+| 3 | Build role switcher component in app header | Volodymyr | 2 |
+| 4 | Add MSW `browser.ts`, `handlers.ts`, persona/unit/person factories | Volodymyr | 1 |
+| 5 | Wire MSW in `main.tsx` (dev only) | Volodymyr | 4 |
+| 6 | Add QueryClientProvider in app providers | Volodymyr | — |
+| 7 | Extend router: `/dashboard`, `/resourcing/requests`, `/my-profile` | Volodymyr | 2 |
+| 8 | Role guard / redirect: wrong role route → correct landing | Volodymyr | 2, 7 |
+| 9 | Update `AppLayout` nav items per active role | Volodymyr | 2, 3 |
+| 10 | Placeholder page components per landing route | Volodymyr | 7 |
+| 11 | Hook personas endpoint via TanStack Query | Volodymyr | 4, 6 |
+| 12 | Document persona names once Carlos confirms | Carlos | — |
 
 ## Expected Outputs
 
@@ -63,14 +63,14 @@ Establish the application shell, role switcher, routing skeleton, and mock data 
 | Extended router | `src/app/router.tsx`, `src/app/routes.ts` |
 | Placeholder pages | `src/pages/` |
 
-## Handoff to QA
+## Handoff to QA (Ivan)
 
-When Phase 1 tasks are complete, notify Volodymyr with:
+When Phase 1 implementation tasks are complete, Volodymyr notifies Ivan with:
 
 1. Branch name and commit SHA
 2. Dev server URL (`http://localhost:5173`)
-3. Confirmed persona names and which persona maps to each role
+3. Confirmed persona names and which persona maps to each role (from Carlos)
 4. List of routes and expected behavior per role
 5. Note any deferred items (e.g., partial seed count)
 
-QA runs checks in `VALIDATION.md` before Phase 2 starts.
+Ivan runs checks in `VALIDATION.md` before Phase 2 starts.

@@ -1,5 +1,7 @@
 # Phase 1 — Validation
 
+**Owner:** Ivan (QA / validation / test cases)
+
 QA checklist for foundation phase. Reference BRD acceptance criteria where applicable.
 
 ## Build / Lint / Format
@@ -68,7 +70,8 @@ Phase 1 is **done** when:
 - [ ] No application regressions to existing home/layout styling
 - [ ] Handoff notes documented in STATE.md (persona names, routes)
 - [ ] Carlos confirms persona names or accepts placeholders
-- [ ] Ivan and Volodymyr sign off → Phase 2 may begin
+- [ ] Volodymyr completes implementation handoff to Ivan
+- [ ] Ivan signs off validation → Phase 2 may begin
 
 ## Out of Scope for Phase 1 QA
 

@@ -25,25 +25,26 @@
 
 ## Next Owner Actions
 
-### Carlos (Product / BRD)
+### Carlos (Product / BA / BRD)
 
 1. Confirm BRD v1.0 scope sign-off or list change requests before Phase 2+ work.
 2. Approve seeded persona names for UM, DM, and Employee (BRD requires named demo users).
 3. Validate Phase 1 exit criteria align with demo stakeholder expectations.
 4. Resolve or accept open questions in BRD §15 (defaults are documented; confirm no overrides needed).
 
-### Ivan (Development)
+### Volodymyr (Development / JS implementation)
 
 1. Execute Phase 1 plan — role switcher, role-aware routes, MSW + seed data foundation.
 2. Align folder structure with `docs/architecture/` and AGENTS.md (`features/`, `mocks/`, `types/`).
 3. Wire TanStack Query provider and Zustand store for active role/persona.
 4. Keep routes thin; push domain logic into `src/features/`.
+5. Hand off to Ivan when Phase 1 implementation is ready for validation.
 
-### Volodymyr (QA)
+### Ivan (QA / validation / test cases)
 
 1. Map BRD acceptance criteria (AC-*) to Phase 1 validation checks in `VALIDATION.md`.
 2. Prepare test case skeletons per requirement group for Phases 2–4.
-3. Run Phase 1 validation checklist after Ivan's handoff.
+3. Run Phase 1 validation checklist after Volodymyr's handoff.
 4. Flag BRD traceability gaps (e.g., employee assignment history excluded per AS-011).
 
 ## Blockers / Open Decisions
