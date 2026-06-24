@@ -1,0 +1,10 @@
+interface:
+  display_name: 'PMR Desktop UI Audit'
+  short_description: 'Desktop Chrome MCP audit for PMR pages'
+  default_prompt: 'Use $pmr-desktop-ui-audit with the Chrome DevTools MCP to audit the created PMR pages in desktop view.'
+
+dependencies:
+  tools:
+    - type: 'mcp'
+      value: 'chrome-devtools'
+      description: 'Chrome DevTools MCP server for desktop viewport UI inspection, screenshots, console messages, and network checks.'

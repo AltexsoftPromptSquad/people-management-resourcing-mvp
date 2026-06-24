@@ -103,6 +103,7 @@ Rules:
 Project-specific Codex skills live in `.codex/skills`.
 
 - Use `.codex/skills/pmr-react-spa/SKILL.md` for substantial React SPA component, screen, form, table, routing, state, and mock-data work.
+- Use `.codex/skills/pmr-desktop-ui-audit/SKILL.md` after creating or changing visible pages/screens. Audit only desktop view with Chrome DevTools MCP, usually at `1440x900`, and fix blocking layout, console, network, accessibility, and usability issues found during the audit.
 - Keep `AGENTS.md` concise. Put detailed reusable agent guidance into project skills or their `references/` files.
 
 ## Review Guidelines
@@ -167,5 +168,6 @@ A change is done when:
 - Forms validate with Zod and show useful user feedback.
 - Mock data and MSW handlers are updated when data behavior changes.
 - The implementation follows the feature folder structure.
+- Created or changed pages pass the desktop Chrome DevTools MCP UI audit when the change affects visible UI.
 - No unrelated refactors or generated clutter are included.
 - The result is usable in the browser with realistic MVP data.
