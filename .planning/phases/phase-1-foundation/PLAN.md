@@ -14,12 +14,20 @@ Establish the application shell, role switcher, routing skeleton, and mock data 
    - UM → `/dashboard` (placeholder)
    - DM → `/resourcing/requests` (placeholder)
    - Employee → `/my-profile` (placeholder)
+   - `/` redirects to the current role landing route.
+   - Wrong-role direct URLs redirect to the current role landing route:
+     - Employee opens `/dashboard` → `/my-profile`
+     - DM opens `/dashboard` → `/resourcing/requests`
+     - UM opens `/my-profile` → `/dashboard`
 4. **App layout update** — Role-specific navigation items; retain existing header pattern
-5. **Domain types** — Core entities: Person, Unit, Skill, ResourcingRequest (minimal fields for Phase 1)
+5. **Domain types** — Core entities: Person, Unit, Skill, ResourcingRequest, Role, Persona (minimal fields for Phase 1). Add minimal Project and Allocation types if needed to keep availability assumptions compatible with later phases.
 6. **Mock data foundation** — MSW handlers + Faker factories:
-   - 3 named personas (UM, DM, Employee) — names TBD by Carlos
+   - 3 named personas (UM, DM, Employee). Use stable placeholders if Carlos has not confirmed names yet:
+     - UM: Olena Kovalenko
+     - DM: Dmytro Shevchenko
+     - Employee: Anna Melnyk
    - 3 units with manager assignments
-   - ~50–100 sample employees (full 500+ deferred to Phase 2)
+   - ~50–100 sample employees. This is an intentional Phase 1 seed-size deviation from the BRD MVP target; full 500+ seed remains required before MVP acceptance and is deferred to Phase 2.
 7. **Path aliases** — Ensure `@/` imports consistent across `app`, `pages`, `features`, `mocks`
 8. **Placeholder pages** — One per role landing route with role-appropriate title and empty state
 
@@ -45,11 +53,11 @@ Establish the application shell, role switcher, routing skeleton, and mock data 
 | 5 | Wire MSW in `main.tsx` (dev only) | Volodymyr | 4 |
 | 6 | Add QueryClientProvider in app providers | Volodymyr | — |
 | 7 | Extend router: `/dashboard`, `/resourcing/requests`, `/my-profile` | Volodymyr | 2 |
-| 8 | Role guard / redirect: wrong role route → correct landing | Volodymyr | 2, 7 |
+| 8 | Role guard / redirect: `/` and wrong-role routes → current role landing | Volodymyr | 2, 7 |
 | 9 | Update `AppLayout` nav items per active role | Volodymyr | 2, 3 |
 | 10 | Placeholder page components per landing route | Volodymyr | 7 |
 | 11 | Hook personas endpoint via TanStack Query | Volodymyr | 4, 6 |
-| 12 | Document persona names once Carlos confirms | Carlos | — |
+| 12 | Confirm persona names or explicitly accept placeholders | Carlos | — |
 
 ## Expected Outputs
 
@@ -69,8 +77,8 @@ When Phase 1 implementation tasks are complete, Volodymyr notifies Ivan with:
 
 1. Branch name and commit SHA
 2. Dev server URL (`http://localhost:5173`)
-3. Confirmed persona names and which persona maps to each role (from Carlos)
-4. List of routes and expected behavior per role
-5. Note any deferred items (e.g., partial seed count)
+3. Confirmed persona names and which persona maps to each role, or note that placeholders are accepted
+4. List of routes and expected behavior per role, including `/` and wrong-role redirects
+5. Note deferred items, especially partial Phase 1 seed count versus the BRD 500+ MVP target
 
 Ivan runs checks in `VALIDATION.md` before Phase 2 starts.
