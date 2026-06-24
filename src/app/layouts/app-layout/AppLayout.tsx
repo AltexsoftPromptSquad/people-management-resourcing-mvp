@@ -1,11 +1,14 @@
 import type { FC } from 'react'
 import { NavLink, Outlet } from 'react-router'
-import { getHomePagePath } from '@/app/routes'
+import { RoleSwitcher } from '@/features/roles/components/role-switcher'
+import { getNavigationItemsForRole } from '@/features/roles/utils/get-navigation-items-for-role'
 import { cn } from '@/lib/utils'
-
-const navigationItems = [{ label: 'Home', to: getHomePagePath() }] as const
+import { useRoleStore } from '@/store/role-store'
 
 export const AppLayout: FC = () => {
+  const activeRole = useRoleStore((state) => state.activeRole)
+  const navigationItems = getNavigationItemsForRole(activeRole)
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950">
       <header className="border-b bg-white">
@@ -30,6 +33,7 @@ export const AppLayout: FC = () => {
               </NavLink>
             ))}
           </nav>
+          <RoleSwitcher />
         </div>
       </header>
       <Outlet />
