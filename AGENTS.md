@@ -19,10 +19,25 @@ There is no backend requirement. Use mock data, MSW handlers, Faker-generated fi
 - MSW for mocked API boundaries
 - Faker for mock data generation
 
+## Requirements Source
+
+Business requirements live in `docs/requirements/# Business Requirements Document.md`.
+
+Before implementing or reviewing product behavior, read the relevant BRD section and align with:
+
+- user roles and permissions
+- functional requirements `FR-*`
+- business rules `BR-*`
+- assumptions `AS-*`
+- acceptance criteria `AC-*`
+
+Use `.planning/` for phase scope, sequencing, ownership, and validation checklists. Use the BRD as the source of truth for product behavior.
+
 ## Folder Structure Rules
 
-Follow the component and page structure rules from the start of every frontend change. For concrete examples, read:
+Follow the project, component, and page structure rules from the start of every frontend change. For concrete examples, read:
 
+- `docs/architecture/project-structure.md`
 - `docs/architecture/component-structure.md`
 - `docs/architecture/page-structure.md`
 
@@ -36,6 +51,7 @@ src/
   mocks/            # MSW handlers, mock data factories
   pages/            # route-level pages and page-only components
   store/            # Zustand stores
+  styles/           # app-level CSS and theme entry points
   types/            # shared TypeScript types
 ```
 
@@ -57,6 +73,20 @@ Rules:
 - Put generated or static mock data in `mocks/`, not inside UI components.
 - Keep route components thin; push behavior into feature modules.
 - Avoid large barrel files unless they clearly improve imports.
+- Do not add root `api/` or `db/` folders. This is a frontend-only MVP: use feature `api/` modules for typed client calls, `src/lib/api/` for shared request helpers, and `src/mocks/db/` for in-memory mock data only.
+- Put shared hooks only in `src/shared/hooks` when they are app-agnostic. Put domain hooks in `src/features/<feature>/hooks`.
+- Put global app providers in `src/app/providers`; use feature-local context only for deeply nested feature UI state.
+
+## Architecture Docs
+
+Use these docs as the first stop for implementation decisions:
+
+- `docs/architecture/project-structure.md` — future folder layout, ownership rules, API/mock boundaries, hooks, contexts, providers, stores, types, and import direction.
+- `docs/architecture/component-structure.md` — reusable UI, business components, page-only components, async state rules.
+- `docs/architecture/page-structure.md` — route page placement, page responsibilities, route registration.
+- `docs/architecture/visual-theme.md` — brand direction, Tailwind color palette, semantic colors, role colors, status mapping, accessibility color rules.
+
+When docs overlap, prefer the more specific document: component rules for component placement, page rules for route screens, visual theme for color/status decisions, and project structure for cross-folder ownership.
 
 ## Routing and Page Rules
 
@@ -77,6 +107,7 @@ Rules:
 - Build real SPA screens, not placeholder landing pages.
 - Prefer shadcn/ui components before creating custom UI primitives.
 - Use Tailwind utilities for styling; keep custom CSS minimal.
+- Follow `docs/architecture/visual-theme.md` for brand, palette, role colors, status tones, and semantic color usage.
 - Use React Router for navigation and route state.
 - Use TanStack Query for data that behaves like remote data, even when backed by MSW.
 - Use Zustand only for local UI/application state that is not server-like data.
