@@ -2,6 +2,18 @@
 
 Use this structure from the start of every React UI change. Choose the component location by ownership, not by convenience.
 
+## Before You Build
+
+Before writing JSX for form fields, dropdowns, tabs, checkboxes, dialogs, or other interactive controls:
+
+1. Read `docs/architecture/shared-ui.md`.
+2. Name the **primitive** (Select, Tabs, Button), not only the feature widget (role switcher, profile sections).
+3. Search `src/shared/ui/` and reuse an existing primitive when available.
+4. If the primitive is app-agnostic and missing, add it to `src/shared/ui/` once — style it per `visual-theme.md` — then compose it from feature components.
+5. Do not duplicate control styling (`border`, `rounded-md`, focus rings, chevrons, tab active states) inside `features/`, `pages/`, or `app/`.
+
+Feature components wire domain data and handlers. Shared UI owns generic control appearance and behavior.
+
 ## Placement Rules
 
 Reusable UI components:
@@ -289,7 +301,9 @@ export const PeopleTableSection: FC = () => {
 - Define React components as arrow functions where possible and type props through `FC<Props>`.
 - Do not use `any`.
 - Use Tailwind CSS and `cn()` for conditional classes.
-- Prefer shadcn/ui primitives before custom primitives.
+- Prefer shared UI from `src/shared/ui/` before adding new primitives; see `shared-ui.md`.
+- Prefer shadcn/ui as the base for new shared primitives, themed once in `src/shared/ui/`.
+- Do not implement styled generic controls inline in features when they belong in shared UI.
 - Keep constants and utilities colocated only when they are component-specific.
 - Keep accessibility basics: semantic tags, form labels, button elements for actions, visible focus states, and keyboard-friendly controls.
 - After changes, run `npm run build`, `npm run lint`, and `npm run format:check`.
