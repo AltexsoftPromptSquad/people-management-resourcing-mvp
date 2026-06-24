@@ -19,7 +19,7 @@
 ## Not Started
 
 - Role switcher and persona seed data
-- MSW mock API layer
+- Mock data layer (MSW optional per AGENTS.md)
 - Domain types and feature modules
 - All BRD feature screens (dashboard, subordinates, profiles, resourcing, custom lists)
 
@@ -34,7 +34,7 @@
 
 ### Volodymyr (Development / JS implementation)
 
-1. Execute Phase 1 plan — role switcher, role-aware routes, MSW + seed data foundation.
+1. Execute Phase 1 plan — role switcher, role-aware routes, mock data + seed data foundation.
 2. Align folder structure with `docs/architecture/` and AGENTS.md (`features/`, `mocks/`, `types/`).
 3. Wire TanStack Query provider and Zustand store for active role/persona.
 4. Keep routes thin; push domain logic into `src/features/`.
@@ -57,10 +57,12 @@
 | One approval per request | Decided | AS-009 / BRD §15 |
 | Employee sees assignment history | Decided — No | AS-011 |
 | Shared profile expiry | Decided — No | AS-006 |
+| Desktop-only validation | Decided | BRD AS-016; mobile/tablet/narrow viewport out of scope |
 
 ## Chosen Approach
 
 - **GSD-lite planning** in `.planning/` — PROJECT, REQUIREMENTS, ROADMAP, STATE, per-phase PLAN + VALIDATION
 - **No BMAD, no OpenSpec, no heavy planning framework** at this stage
 - **BRD as business source of truth**; AGENTS.md + architecture docs for engineering conventions
-- **Frontend-only, MSW + Faker** for all server-like data
+- **Frontend-only web application** with mock data layer (MSW optional per AGENTS.md) + Faker for all server-like data
+- **Desktop browser validation only** — 1280px+ viewport; responsive breakpoint validation out of scope

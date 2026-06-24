@@ -77,6 +77,9 @@ The following principles govern all design, implementation, and testing decision
 | Simple fixed roles | Three roles with fixed permissions. No admin configuration UI. |
 | No unnecessary configuration | The product works immediately without setup steps per user. |
 | Seed and mock data only | All data is pre-loaded. No real data entry is required to reach demo state. |
+| Frontend-only web MVP | Delivered as a browser-based web application with no server-side application layer. |
+| No real infrastructure | No back-end, database, production authentication, file storage, or external integrations. |
+| Desktop browser target | Optimized and validated for desktop browser usage only (suggested minimum viewport: 1280px width). |
 | Easy to test | Every requirement has a testable acceptance criterion. |
 | Easy to implement | No feature complexity beyond what the assignment explicitly requires. |
 | Easy to demo | One complete E2E resourcing flow works from any seeded starting state. |
@@ -181,6 +184,11 @@ The following principles govern all design, implementation, and testing decision
 
 ### 7.1 In Scope
 
+**Delivery model**
+- Frontend-only web application — browser-based, not a native desktop application.
+- All data is mocked, seeded, or held in local client-side state.
+- All demo scenarios must work without back-end services.
+
 **Manager Dashboard**
 - Personal landing page for the Unit Manager.
 - Summary widgets: subordinate headcount, active risks, open action items, active resourcing requests.
@@ -276,11 +284,15 @@ The following principles govern all design, implementation, and testing decision
 
 ### 7.2 Out of Scope
 
-- Real authentication and session management.
+- Back-end implementation.
+- Database or server-side persistence.
+- Real authentication and session management (production authentication or authorization service).
 - Real backend API or server.
 - Real database.
-- Real file upload and storage.
+- Real file upload and storage (production file storage).
 - External system integrations (Jira, Confluence, ATS, HRIS).
+- Mobile and tablet responsive implementation.
+- Narrow viewport support and breakpoint-by-breakpoint responsive validation.
 - Payroll and compensation history.
 - Full HRIS feature parity.
 - eSignature workflows.
@@ -816,6 +828,9 @@ The following items are reasonable next steps after the MVP is delivered but are
 | AS-011 | The employee cannot see their own assignment history in the MVP. |
 | AS-012 | Rejection feedback is visible to the Unit Manager and Sales / DM only. It is not shown to the employee. |
 | AS-013 | Risk records and manager notes are not included in shared profiles unless explicitly selected. |
+| AS-014 | The MVP runs as a frontend-only web application in a desktop browser. |
+| AS-015 | Mock data is acceptable for all demo flows; local client-side state may supplement seeded data. |
+| AS-016 | Desktop Chrome or another modern desktop browser is the target validation environment; suggested minimum viewport width is 1280px. |
 
 ---
 
@@ -913,6 +928,10 @@ The following items are reasonable next steps after the MVP is delivered but are
 | AC-AH-002 | The assignment history record shows the correct request title, status, and feedback. |
 | AC-AH-003 | The assignment history section and project history section are separate. |
 | AC-AH-004 | Assignment history records are read-only. No edit action is available. |
+
+### QA Validation Scope
+
+QA must not block MVP acceptance on back-end persistence, real integrations, production authentication, production file storage, or mobile/tablet/narrow-viewport responsive behavior. Validate the MVP for **desktop browser usage only** at or above 1280px viewport width unless a specific check states otherwise.
 
 ---
 

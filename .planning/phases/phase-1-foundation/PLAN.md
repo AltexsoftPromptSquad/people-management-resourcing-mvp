@@ -8,7 +8,7 @@ Establish the application shell, role switcher, routing skeleton, and mock data 
 
 ### In scope
 
-1. **App providers** — TanStack Query client, MSW browser worker (dev), Zustand store for active role + persona
+1. **App providers** — TanStack Query client, mock data layer (MSW optional), Zustand store for active role + persona
 2. **Role switcher** — UM, DM, Employee; immediate nav/data change (FR-RS-001–002)
 3. **Role-aware routing** — Landing routes per role:
    - UM → `/dashboard` (placeholder)
@@ -16,7 +16,7 @@ Establish the application shell, role switcher, routing skeleton, and mock data 
    - Employee → `/my-profile` (placeholder)
 4. **App layout update** — Role-specific navigation items; retain existing header pattern
 5. **Domain types** — Core entities: Person, Unit, Skill, ResourcingRequest (minimal fields for Phase 1)
-6. **Mock data foundation** — MSW handlers + Faker factories:
+6. **Mock data foundation** — handlers + Faker factories (MSW optional per AGENTS.md):
    - 3 named personas (UM, DM, Employee) — names TBD by Carlos
    - 3 units with manager assignments
    - ~50–100 sample employees (full 500+ deferred to Phase 2)
@@ -31,6 +31,7 @@ Establish the application shell, role switcher, routing skeleton, and mock data 
 - Resourcing workflows (Phase 4)
 - Custom lists, profile sharing UI (Phase 5)
 - Real authentication
+- Mobile, tablet, narrow viewport, and responsive breakpoint validation
 - Full 500+ employee seed (Phase 2)
 - New npm dependencies beyond what `package.json` already declares
 
@@ -41,8 +42,8 @@ Establish the application shell, role switcher, routing skeleton, and mock data 
 | 1 | Define `src/types/` for Person, Unit, Role, Persona | Volodymyr | — |
 | 2 | Create Zustand store: `activeRole`, `activePersonaId`, switch actions | Volodymyr | 1 |
 | 3 | Build role switcher component in app header | Volodymyr | 2 |
-| 4 | Add MSW `browser.ts`, `handlers.ts`, persona/unit/person factories | Volodymyr | 1 |
-| 5 | Wire MSW in `main.tsx` (dev only) | Volodymyr | 4 |
+| 4 | Add mock data layer (`browser.ts`, `handlers.ts`, persona/unit/person factories) | Volodymyr | 1 |
+| 5 | Wire mock data layer in `main.tsx` (dev only) | Volodymyr | 4 |
 | 6 | Add QueryClientProvider in app providers | Volodymyr | — |
 | 7 | Extend router: `/dashboard`, `/resourcing/requests`, `/my-profile` | Volodymyr | 2 |
 | 8 | Role guard / redirect: wrong role route → correct landing | Volodymyr | 2, 7 |
@@ -58,7 +59,7 @@ Establish the application shell, role switcher, routing skeleton, and mock data 
 | Domain types | `src/types/` |
 | Role store | `src/store/role-store.ts` (or `src/features/auth/`) |
 | Role switcher UI | `src/app/` or `src/shared/ui/` |
-| MSW setup | `src/mocks/` |
+| Mock data setup | `src/mocks/` |
 | App providers | `src/app/providers.tsx` |
 | Extended router | `src/app/router.tsx`, `src/app/routes.ts` |
 | Placeholder pages | `src/pages/` |

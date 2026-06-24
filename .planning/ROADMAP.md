@@ -13,11 +13,11 @@ Phased delivery aligned with BRD scope and E2E resourcing demo. Each phase shoul
 | App layout with role-aware navigation | FR-RS-001–002 |
 | Role switcher with 3 seeded personas | FR-RS-003–005 |
 | Route structure for UM, DM, Employee landing pages | AC-RS-001–003 |
-| Domain types + MSW handlers + Faker factories | AS-001, mock data §7.1 |
+| Domain types + mock data layer (MSW optional) + Faker factories | AS-001, AS-014–016, mock data §7.1 |
 | TanStack Query wiring | AGENTS.md stack |
 | Seed data baseline (personas, units, sample employees) | BRD §7.1 mock data (partial — full 500+ by Phase 2) |
 
-**Exit:** Switch roles → see correct nav and placeholder landing routes; mock API responds; build/lint pass.
+**Exit:** Switch roles → see correct nav and placeholder landing routes; mock data layer responds; build/lint pass. Validated at 1280px+ desktop browser viewport.
 
 ---
 
@@ -77,7 +77,7 @@ Phased delivery aligned with BRD scope and E2E resourcing demo. Each phase shoul
 | Bench, Booked, Needs Conversation seeded lists | FR-CL-012 |
 | Profile sharing UX polish | FR-PS-* |
 | Full seed data (20 risks, 30 action items) | BRD §7.1 |
-| Loading/empty/error states; responsive tables | AGENTS.md |
+| Loading/empty/error states; desktop table layouts | AGENTS.md, BRD §7.2 |
 | QA regression pass against all AC-* groups | BRD §13 |
 
 **Exit:** All 7 demo scenarios pass; acceptance criteria checklist complete.

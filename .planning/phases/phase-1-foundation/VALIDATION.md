@@ -2,6 +2,8 @@
 
 **Owner:** Ivan (QA / validation / test cases)
 
+**Validation environment:** Desktop browser only (Chrome or modern equivalent), viewport ≥ 1280px. Do not block on mobile/tablet/narrow-viewport responsive behavior, back-end persistence, production auth, file storage, or external integrations (BRD §13 QA Validation Scope).
+
 QA checklist for foundation phase. Reference BRD acceptance criteria where applicable.
 
 ## Build / Lint / Format
@@ -32,11 +34,11 @@ QA checklist for foundation phase. Reference BRD acceptance criteria where appli
 | 9 | Direct URL to wrong-role route | Redirects to current role's landing or shows access message |
 | 10 | Browser back/forward | Works without broken state |
 
-## Mock Data / MSW
+## Mock Data Layer
 
 | # | Check | Expected result |
 |---|-------|-----------------|
-| 11 | MSW active in dev | Network tab shows intercepted `/api/*` (or equivalent) requests |
+| 11 | Mock data layer active in dev | Seeded/mock requests resolve (MSW or equivalent if used) |
 | 12 | Personas endpoint returns 3 records | UM, DM, Employee personas with distinct IDs |
 | 13 | Brief loading state | Placeholder pages show loading before data (if query-driven) |
 | 14 | No hard-coded large datasets in components | Data comes from mocks/factories |
@@ -47,7 +49,7 @@ QA checklist for foundation phase. Reference BRD acceptance criteria where appli
 |---|----------|-------|----------|
 | 15 | Fresh load as UM | Open app → default UM | Dashboard placeholder, UM nav |
 | 16 | Switch UM → DM → Employee → UM | Use role switcher | Each switch updates nav and main content |
-| 17 | Responsive header | Narrow viewport | Header and switcher remain usable |
+| 17 | Desktop header usability | 1280px+ viewport | Header and role switcher usable without layout breakage |
 | 18 | Keyboard focus | Tab to role switcher | Focus ring visible; operable |
 
 ## Accessibility (smoke)
@@ -75,4 +77,4 @@ Phase 1 is **done** when:
 
 ## Out of Scope for Phase 1 QA
 
-Do **not** block Phase 1 on: dashboard widgets, subordinates table, profiles, resourcing forms, custom lists, full 500+ seed, assignment history.
+Do **not** block Phase 1 on: dashboard widgets, subordinates table, profiles, resourcing forms, custom lists, full 500+ seed, assignment history, mobile/tablet/narrow-viewport behavior, or responsive breakpoint validation.
