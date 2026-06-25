@@ -37,32 +37,32 @@ Establish the application shell, role switcher, routing skeleton, and mock data 
 
 ## Tasks
 
-| # | Task | Owner | Depends on |
-|---|------|-------|------------|
-| 1 | Define `src/types/` for Person, Unit, Role, Persona | Volodymyr | — |
-| 2 | Create Zustand store: `activeRole`, `activePersonaId`, switch actions | Volodymyr | 1 |
-| 3 | Build role switcher component in app header | Volodymyr | 2 |
-| 4 | Add mock data layer (`browser.ts`, `handlers.ts`, persona/unit/person factories) | Volodymyr | 1 |
-| 5 | Wire mock data layer in `main.tsx` (dev only) | Volodymyr | 4 |
-| 6 | Add QueryClientProvider in app providers | Volodymyr | — |
-| 7 | Extend router: `/dashboard`, `/resourcing/requests`, `/my-profile` | Volodymyr | 2 |
-| 8 | Role guard / redirect: wrong role route → correct landing | Volodymyr | 2, 7 |
-| 9 | Update `AppLayout` nav items per active role | Volodymyr | 2, 3 |
-| 10 | Placeholder page components per landing route | Volodymyr | 7 |
-| 11 | Hook personas endpoint via TanStack Query | Volodymyr | 4, 6 |
-| 12 | Document persona names once Carlos confirms | Carlos | — |
+| #   | Task                                                                             | Owner     | Depends on |
+| --- | -------------------------------------------------------------------------------- | --------- | ---------- |
+| 1   | Define `src/types/` for Person, Unit, Role, Persona                              | Volodymyr | —          |
+| 2   | Create Zustand store: `activeRole`, `activePersonaId`, switch actions            | Volodymyr | 1          |
+| 3   | Build role switcher component in app header                                      | Volodymyr | 2          |
+| 4   | Add mock data layer (`browser.ts`, `handlers.ts`, persona/unit/person factories) | Volodymyr | 1          |
+| 5   | Wire mock data layer in `main.tsx` (dev only)                                    | Volodymyr | 4          |
+| 6   | Add QueryClientProvider in app providers                                         | Volodymyr | —          |
+| 7   | Extend router: `/dashboard`, `/resourcing/requests`, `/my-profile`               | Volodymyr | 2          |
+| 8   | Role guard / redirect: wrong role route → correct landing                        | Volodymyr | 2, 7       |
+| 9   | Update `AppLayout` nav items per active role                                     | Volodymyr | 2, 3       |
+| 10  | Placeholder page components per landing route                                    | Volodymyr | 7          |
+| 11  | Hook personas endpoint via TanStack Query                                        | Volodymyr | 4, 6       |
+| 12  | Document persona names once Carlos confirms                                      | Carlos    | —          |
 
 ## Expected Outputs
 
-| Output | Location (target) |
-|--------|-------------------|
-| Domain types | `src/types/` |
-| Role store | `src/store/role-store.ts` (or `src/features/auth/`) |
-| Role switcher UI | `src/app/` or `src/shared/ui/` |
-| Mock data setup | `src/mocks/` |
-| App providers | `src/app/providers.tsx` |
-| Extended router | `src/app/router.tsx`, `src/app/routes.ts` |
-| Placeholder pages | `src/pages/` |
+| Output            | Location (target)                                   |
+| ----------------- | --------------------------------------------------- |
+| Domain types      | `src/types/`                                        |
+| Role store        | `src/store/role-store.ts` (or `src/features/auth/`) |
+| Role switcher UI  | `src/app/` or `src/shared/ui/`                      |
+| Mock data setup   | `src/mocks/`                                        |
+| App providers     | `src/app/providers.tsx`                             |
+| Extended router   | `src/app/router.tsx`, `src/app/routes.ts`           |
+| Placeholder pages | `src/pages/`                                        |
 
 ## Handoff to QA (Ivan)
 

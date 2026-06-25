@@ -72,10 +72,12 @@ Use `src/app` for application wiring, not domain behavior.
 src/app/
   layouts/
     app-layout/
+  navigation.ts
   providers/
     AppProviders.tsx
     query-provider/
     role-provider/
+  router-provider.tsx
   router.tsx
   routes.ts
 ```
@@ -84,6 +86,7 @@ Responsibilities:
 
 - Register routes in `router.tsx`.
 - Define route path helpers in `routes.ts`.
+- Keep app-shell navigation items and role-to-route mappings in `navigation.ts`.
 - Compose global providers: React Router, TanStack Query, and app-level context providers.
 - Own application layouts and role-aware navigation shell.
 - Own route guards and redirects, such as current-role landing redirects.
@@ -274,7 +277,7 @@ Examples:
 Rules:
 
 - Before building a control, check the shared UI inventory in `shared-ui.md`. Reuse existing primitives.
-- If a generic primitive is missing, add it to `src/shared/ui/{component-name}/` first — prefer shadcn/ui themed for PMR — then compose it from features.
+- If a generic primitive is missing, add it to `src/shared/ui/{component-name}/` first. Prefer shadcn/ui themed for PMR, then compose it from features.
 - Do not style native `<select>`, `<input>`, tab strips, or similar controls inline in `features/`, `pages/`, or `app/` when a shared primitive is needed or likely to be reused.
 - Shared UI should accept generic props and not import feature types.
 

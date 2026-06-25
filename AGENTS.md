@@ -45,6 +45,7 @@ Follow the project, component, and page structure rules from the start of every 
 ```text
 src/
   app/              # app bootstrap, providers, router
+  config.ts         # typed app configuration and Vite env access
   shared/
     ui/             # reusable UI components
   features/         # domain features: people, projects, allocations, skills
@@ -59,7 +60,7 @@ src/
 Rules:
 
 - Put reusable UI components in `src/shared/ui/{component-name}`.
-- Before styling any generic control (select, tabs, checkbox, input, dialog, etc.), read `docs/architecture/shared-ui.md`, check the shared UI inventory, and reuse or add the primitive in shared — do not style it inline in features or pages.
+- Before styling any generic control (select, tabs, checkbox, input, dialog, etc.), read `docs/architecture/shared-ui.md`, check the shared UI inventory, and reuse or add the primitive in shared. Do not style it inline in features or pages.
 - Put business components in `src/features/{domain}/components/{component-name}`.
 - Put page-only components in `src/pages/{page-name}/components/{component-name}`.
 - Each component folder should use `ComponentName.tsx`, `ComponentName.types.ts`, and `index.ts`.
@@ -78,16 +79,19 @@ Rules:
 - Do not add root `api/` or `db/` folders. This is a frontend-only MVP: use feature `api/` modules for typed client calls, `src/lib/api/` for shared request helpers, and `src/mocks/db/` for in-memory mock data only.
 - Put shared hooks only in `src/shared/hooks` when they are app-agnostic. Put domain hooks in `src/features/<feature>/hooks`.
 - Put global app providers in `src/app/providers`; use feature-local context only for deeply nested feature UI state.
+- Read `import.meta.env` only in `src/config.ts`; import named typed config constants everywhere else.
+- Put shared TanStack Query keys in `src/lib/query/query-keys.ts` once a key is reused or likely to grow.
+- Put app-level CSS entry points in `src/styles/`, not as root files under `src/`.
 
 ## Architecture Docs
 
 Use these docs as the first stop for implementation decisions:
 
-- `docs/architecture/project-structure.md` — future folder layout, ownership rules, API/mock boundaries, hooks, contexts, providers, stores, types, and import direction.
-- `docs/architecture/component-structure.md` — reusable UI, business components, page-only components, async state rules.
-- `docs/architecture/shared-ui.md` — shared UI workflow, shadcn policy, primitive inventory, reuse rules, and anti-patterns for form controls.
-- `docs/architecture/page-structure.md` — route page placement, page responsibilities, route registration.
-- `docs/architecture/visual-theme.md` — brand direction, Tailwind color palette, semantic colors, role colors, status mapping, accessibility color rules.
+- `docs/architecture/project-structure.md` - future folder layout, ownership rules, API/mock boundaries, hooks, contexts, providers, stores, types, and import direction.
+- `docs/architecture/component-structure.md` - reusable UI, business components, page-only components, async state rules.
+- `docs/architecture/shared-ui.md` - shared UI workflow, shadcn policy, primitive inventory, reuse rules, and anti-patterns for form controls.
+- `docs/architecture/page-structure.md` - route page placement, page responsibilities, route registration.
+- `docs/architecture/visual-theme.md` - brand direction, Tailwind color palette, semantic colors, role colors, status mapping, accessibility color rules.
 
 When docs overlap, prefer the more specific document: shared UI rules for generic controls and reuse, component rules for component placement, page rules for route screens, visual theme for color/status decisions, and project structure for cross-folder ownership.
 
