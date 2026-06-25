@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/((?!api/.*|assets/.*|mockServiceWorker\\.js|.*\\..*).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
