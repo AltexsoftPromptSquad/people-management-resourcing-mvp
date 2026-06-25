@@ -137,7 +137,7 @@ When docs overlap, prefer the more specific document: shared UI rules for generi
 Project-specific Codex skills live in `.codex/skills`.
 
 - Use `.codex/skills/pmr-react-spa/SKILL.md` for substantial React SPA component, screen, form, table, routing, state, and mock-data work.
-- Use `.codex/skills/pmr-desktop-ui-audit/SKILL.md` after creating or changing visible pages/screens. Audit only desktop view with Chrome DevTools MCP, usually at `1440x900`, and fix blocking layout, console, network, accessibility, and usability issues found during the audit.
+- Do not automatically run `.codex/skills/pmr-desktop-ui-audit/SKILL.md` after creating or changing visible pages/screens. Use it only when the user explicitly asks for a desktop UI audit. If you believe the audit is important, ask the user for permission before starting it.
 - Keep `AGENTS.md` concise. Put detailed reusable agent guidance into project skills or their `references/` files.
 
 ## Review Guidelines
@@ -202,6 +202,6 @@ A change is done when:
 - Forms validate with Zod and show useful user feedback.
 - Mock data and MSW handlers are updated when data behavior changes.
 - The implementation follows the feature folder structure and shared UI reuse rules in `docs/architecture/shared-ui.md`.
-- Created or changed pages pass the desktop Chrome DevTools MCP UI audit when the change affects visible UI.
+- Desktop UI audit is not automatic. Run it only when explicitly requested by the user, or after asking for and receiving permission.
 - No unrelated refactors or generated clutter are included.
 - The result is usable in the browser with realistic MVP data.

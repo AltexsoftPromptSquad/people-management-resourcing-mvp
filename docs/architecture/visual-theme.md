@@ -20,7 +20,9 @@ Avoid marketing-style pages, bright promotional gradients, decorative illustrati
 
 The brand should communicate that managers can see people, risks, requests, and staffing decisions clearly without losing context.
 
-Use restrained neutrals for most surfaces, a stable blue primary color for navigation and main actions, and semantic colors for status-heavy workflows. The UI should not be dominated by one saturated hue.
+Use restrained neutrals for most surfaces, a muted slate primary color for navigation and main actions, and semantic colors for status-heavy workflows. Blue should appear as a soft supporting accent, not as the dominant brand color.
+
+The active application chrome must stay muted and operational. Do not use bright blue, indigo, or promotional-looking saturated colors as the primary identity for headers, primary buttons, active navigation, segmented controls, or broad layout accents unless this document is deliberately updated first.
 
 ## Core Palette
 
@@ -37,10 +39,14 @@ Use Tailwind color families where possible so the theme stays easy to implement.
 | Text body      |    `slate-700` | `#334155` | Body copy, table text                                |
 | Text muted     |    `slate-500` | `#64748b` | Secondary metadata, helper text                      |
 | Text disabled  |    `slate-400` | `#94a3b8` | Disabled controls and unavailable metadata           |
-| Primary        |     `blue-700` | `#1d4ed8` | Primary actions, active nav, selected state          |
-| Primary hover  |     `blue-800` | `#1e40af` | Primary action hover                                 |
-| Primary soft   |      `blue-50` | `#eff6ff` | Selected rows, role context panels                   |
-| Primary border |     `blue-200` | `#bfdbfe` | Selected item borders, soft callouts                 |
+| Primary        |    `slate-800` | `#1e293b` | Primary actions, active nav, selected state          |
+| Primary hover  |    `slate-900` | `#0f172a` | Primary action hover                                 |
+| Primary soft   |     `slate-50` | `#f8fafc` | Selected rows, role context panels                   |
+| Primary border |    `slate-300` | `#cbd5e1` | Selected item borders, soft callouts                 |
+| Brand accent   |      `sky-700` | `#0369a1` | Small labels, keylines, and low-volume brand hints   |
+| Brand soft     |       `sky-50` | `#f0f9ff` | Icon wells, quiet callouts, and supporting accents   |
+
+Avoid `blue-700`, `blue-800`, and `indigo-700` for primary actions, active navigation, role switcher selected states, page headers, or large persistent accents. If blue is needed, prefer the `sky-*` accent tokens above and keep usage low-volume.
 
 ## Semantic Colors
 
@@ -61,11 +67,11 @@ Do not use semantic colors as decoration. They should always carry business mean
 
 Role colors are secondary accents. Use them for role switcher affordances, role labels, and small contextual indicators. Do not recolor whole pages per role.
 
-| Role                     | Token        | Usage                                                     |
-| ------------------------ | ------------ | --------------------------------------------------------- |
-| Unit Manager             | `blue-700`   | Default management context, dashboards, incoming requests |
-| Sales / Delivery Manager | `teal-700`   | Request creation, candidate review context                |
-| Employee                 | `indigo-700` | Personal profile/self-service context                     |
+| Role                     | Token       | Usage                                                     |
+| ------------------------ | ----------- | --------------------------------------------------------- |
+| Unit Manager             | `sky-700`   | Default management context, dashboards, incoming requests |
+| Sales / Delivery Manager | `teal-700`  | Request creation, candidate review context                |
+| Employee                 | `slate-700` | Personal profile/self-service context                     |
 
 Use role accents sparingly. Navigation structure and permissions should communicate role changes more than color alone.
 
@@ -97,14 +103,17 @@ Use this mapping for request, candidate, employee, risk, and action-item states.
 ## UI Application Rules
 
 - Use `slate-50` page backgrounds with white surfaces for content-heavy pages.
-- Use `blue-700` for the primary action on a screen. Keep one obvious primary action where practical.
+- Use `slate-800` for primary actions and active navigation. Keep one obvious primary action where practical.
+- Use `slate-900` only for hover/pressed states or very small high-emphasis surfaces; do not let dark chrome dominate the page.
+- Use `sky-700`, `sky-50`, and `sky-200` as supporting brand accents for labels, icon wells, focus-adjacent details, and quiet highlights.
 - Use semantic badges for workflow state and risk, not arbitrary colored labels.
 - Keep table rows mostly neutral. Use subtle semantic backgrounds only for selected rows, warnings, or high-risk signals.
 - Use borders and spacing before shadows. Operational screens should feel structured, not floating.
 - Use `rounded-md` or `rounded-lg` consistently. Avoid pill-shaped cards and overly soft controls.
 - Keep cards at `8px` radius or less unless the shared UI primitive already defines otherwise.
-- Maintain visible focus rings with a blue focus color and enough contrast against white and slate surfaces.
+- Maintain visible focus rings with a muted slate or sky focus color and enough contrast against white and slate surfaces.
 - Use color plus text or icons for risk and status. Never rely on color alone.
+- When role-aware controls are styled as segmented buttons, the selected state should use the shared primary slate treatment; role colors may appear as icons, labels, or small accents only.
 
 ## Typography And Density
 
@@ -125,6 +134,8 @@ Use this mapping for request, candidate, employee, risk, and action-item states.
 
 - Prefer Tailwind utility classes and shadcn/ui primitives.
 - Keep shared tone mappings in constants when reused by badges, status pills, tables, or filters.
+- When the palette changes, update shared primitives in the same change. At minimum check `Button`, `Badge`, shadcn-style badge wrappers, navigation, and role switcher controls for stale bright-blue or inconsistent focus classes.
+- Do not fix theme drift only in feature components. If a color, focus ring, hover state, cursor, disabled state, radius, or variant belongs to a generic control, update the shared UI primitive.
 - Reuse the existing neutral/status tone direction already present in component examples:
   - neutral: slate
   - success: emerald

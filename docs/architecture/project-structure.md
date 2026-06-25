@@ -41,6 +41,7 @@ The app is a frontend-only React SPA. Do not add a backend app, database server,
 ```text
 src/
   app/        # bootstrap, providers, router, layouts, route guards
+  config.ts   # typed app configuration and Vite env access
   features/   # domain modules: people, profiles, resourcing, dashboard, custom lists
   lib/        # cross-cutting technical utilities
   mocks/      # MSW handlers, mock API data, Faker factories
@@ -50,6 +51,18 @@ src/
   styles/     # app-level CSS and theme entry points
   types/      # shared domain types used across features
 ```
+
+## `src/config.ts`
+
+Use `src/config.ts` as the single app configuration boundary for Vite environment variables.
+
+Rules:
+
+- Read `import.meta.env` only in `src/config.ts`.
+- Export named, typed constants such as `isViteDev`, `isViteEnableMocks`, and `shouldEnableMocking`.
+- Other modules must import configuration values from `@/config` or `./config`, not read `import.meta.env` directly.
+- Convert string environment flags to booleans in `src/config.ts`; do not compare `VITE_*` strings throughout the app.
+- Add new Vite env typings in `src/vite-env.d.ts` when adding a new `VITE_*` variable.
 
 ## `src/app`
 
@@ -75,7 +88,9 @@ Responsibilities:
 - Own application layouts and role-aware navigation shell.
 - Own route guards and redirects, such as current-role landing redirects.
 
-Do not put feature business logic, schemas, large mock datasets, or page-specific UI in `src/app`.
+Application layouts must follow `visual-theme.md` for persistent chrome, header accents, active navigation, focus rings, and role-aware navigation treatments. Layouts should compose shared UI primitives where possible; if a generic button, segmented control, hover state, cursor, disabled state, or focus behavior is wrong, fix the shared primitive instead of patching only the app layout.
+
+Do not put feature business logic, schemas, large mock datasets, page-specific UI, or shared primitive variant definitions in `src/app`.
 
 ## `src/pages`
 
@@ -381,6 +396,8 @@ src/mocks/
   db/
     mock-db.ts
 ```
+
+MSW startup must be explicit and environment-aware. Enable it automatically in local development, and enable it for hosted demo builds only when `VITE_ENABLE_MOCKS=true` is configured. Do not rely on unconditional production MSW startup. Read the resolved mock flag from `src/config.ts`; do not read `import.meta.env` directly from `src/mocks`.
 
 ### Mock `db/`
 

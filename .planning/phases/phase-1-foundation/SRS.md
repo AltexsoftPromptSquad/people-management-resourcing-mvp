@@ -229,15 +229,15 @@ Persona IDs must be stable string IDs, not random values generated at runtime.
 
 ### 7.9 Mock API / Client Boundary
 
-| ID         | Requirement                                                                                       | Source                |
-| ---------- | ------------------------------------------------------------------------------------------------- | --------------------- |
-| SRS-F1-080 | Phase 1 shall expose a way to fetch personas as async/mock server-like data.                      | Validation #12        |
-| SRS-F1-081 | The personas response shall include exactly three default persona records.                        | FR-RS-003 through 005 |
-| SRS-F1-082 | If MSW is used, handlers shall live in `src/mocks/handlers.ts` or split files under `src/mocks/`. | Architecture          |
-| SRS-F1-083 | If MSW is used, `src/mocks/browser.ts` shall initialize the worker in development only.           | Phase plan task 5     |
-| SRS-F1-084 | Feature or role query hooks shall call typed client functions, not MSW handlers directly.         | Architecture          |
-| SRS-F1-085 | API client helpers, if needed, shall live under `src/lib/api/`.                                   | Architecture          |
-| SRS-F1-086 | Mock request failures may be added later, but Phase 1 default seeded endpoints shall succeed.     | QA validation         |
+| ID         | Requirement                                                                                                                    | Source                |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------- |
+| SRS-F1-080 | Phase 1 shall expose a way to fetch personas as async/mock server-like data.                                                   | Validation #12        |
+| SRS-F1-081 | The personas response shall include exactly three default persona records.                                                     | FR-RS-003 through 005 |
+| SRS-F1-082 | If MSW is used, handlers shall live in `src/mocks/handlers.ts` or split files under `src/mocks/`.                              | Architecture          |
+| SRS-F1-083 | If MSW is used, the worker shall initialize in local development and in hosted demo builds only when `VITE_ENABLE_MOCKS=true`. | Demo deployment       |
+| SRS-F1-084 | Feature or role query hooks shall call typed client functions, not MSW handlers directly.                                      | Architecture          |
+| SRS-F1-085 | API client helpers, if needed, shall live under `src/lib/api/`.                                                                | Architecture          |
+| SRS-F1-086 | Mock request failures may be added later, but Phase 1 default seeded endpoints shall succeed.                                  | QA validation         |
 
 Recommended Phase 1 mock endpoints if MSW is used:
 
@@ -405,7 +405,7 @@ The implementation may use a reusable route guard component in `src/app/` to enf
 | SRS-NF1-006 | Implementation shall use TypeScript strictness and avoid `any`.                            | Code quality   |
 | SRS-NF1-007 | Implementation shall not add dependencies beyond those already declared in `package.json`. | Phase scope    |
 | SRS-NF1-008 | The app shall not perform real network calls for MVP data in development.                  | AS-001         |
-| SRS-NF1-009 | Browser console shall have no blocking runtime errors during role switching.               | UI audit / QA  |
+| SRS-NF1-009 | Browser console shall have no blocking runtime errors during role switching.               | QA validation  |
 | SRS-NF1-010 | The foundation shall preserve import direction from architecture docs.                     | Architecture   |
 
 ## 13. Accessibility Requirements

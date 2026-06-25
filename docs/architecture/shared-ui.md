@@ -87,6 +87,7 @@ Shared UI must:
 - Accept generic props (`value`, `onValueChange`, `options`, `variant`, `size`, `disabled`, `className`).
 - Not import from `src/features/`, `src/pages/`, or domain-specific `src/types/` except truly generic utilities.
 - Apply PMR theme tokens from `visual-theme.md` through variants/constants in the shared folder.
+- Own the generic interaction affordances for each primitive: hover, active, focus-visible, disabled, loading, cursor, and keyboard states.
 
 ## What Does Not Belong In `src/shared/ui`
 
@@ -121,6 +122,9 @@ src/shared/ui/select/
 - Use semantic props (`tone="success"`, `variant="destructive"`) instead of ad-hoc Tailwind color classes in features.
 - Follow `visual-theme.md` for primary, semantic, and focus colors.
 - Use `cn()` for class composition; keep variant maps in `{ComponentName}.constants.ts` when non-trivial.
+- Enabled clickable controls must communicate interactivity with `cursor-pointer`; disabled controls must use `disabled:cursor-not-allowed` or the equivalent primitive state class.
+- Primary and selected control states must use the muted slate treatment from `visual-theme.md`, not bright blue or indigo one-offs.
+- If a visual-theme update changes the palette or tone mapping, update shared variants in the same change before styling feature components.
 
 ## Anti-Patterns
 
@@ -163,6 +167,13 @@ export const RoleSwitcher: FC<RoleSwitcherProps> = ({ value, options, onChange }
 )
 ```
 
+Do not patch generic primitive behavior only at the feature level:
+
+```tsx
+// Fix shared Button cursor behavior instead of adding this to one role switcher button.
+<Button className="cursor-pointer">Unit Manager</Button>
+```
+
 ## Component Inventory
 
 Update this table when adding or removing shared primitives.
@@ -182,9 +193,9 @@ Update this table when adding or removing shared primitives.
 | Dialog        | `src/shared/ui/dialog`        | Planned   | Confirmations, modals         |
 | Dropdown menu | `src/shared/ui/dropdown-menu` | Planned   | Action menus                  |
 | Table         | `src/shared/ui/table`         | Planned   | TanStack Table layouts        |
-| Empty state   | `src/shared/ui/empty-state`   | Planned   | List/table empty views        |
-| Error state   | `src/shared/ui/error-state`   | Planned   | Query error fallback          |
-| Loading state | `src/shared/ui/loading-state` | Planned   | Skeletons/spinners            |
+| Empty state   | `src/shared/ui/empty-state`   | Available | List/table empty views        |
+| Error state   | `src/shared/ui/error-state`   | Available | Query error fallback          |
+| Loading state | `src/shared/ui/loading-state` | Available | Skeletons/spinners            |
 
 When you implement a planned primitive, change its status to **Available** and remove duplicate inline styling from features that should use it.
 
@@ -209,6 +220,9 @@ Before finishing UI work, verify:
 - [ ] Generic controls live in `src/shared/ui/`, not inline in features.
 - [ ] No duplicate Tailwind control styling for the same primitive in multiple files.
 - [ ] Theme matches `visual-theme.md` through shared variants, not one-off classes.
+- [ ] Enabled buttons and clickable controls show a pointer cursor; disabled controls clearly show the disabled cursor and visual state.
+- [ ] Hover, active, selected, and focus-visible states are defined on the shared primitive where the behavior is generic.
+- [ ] Shared primitives were checked for stale bright-blue/indigo classes after any palette change.
 - [ ] Feature components only compose shared primitives and pass domain data.
 - [ ] Inventory table updated if a new shared primitive was added.
 - [ ] `npm run build`, `npm run lint`, and `npm run format:check` pass.
