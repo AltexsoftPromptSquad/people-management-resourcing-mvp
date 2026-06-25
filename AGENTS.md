@@ -39,6 +39,7 @@ Follow the project, component, and page structure rules from the start of every 
 
 - `docs/architecture/project-structure.md`
 - `docs/architecture/component-structure.md`
+- `docs/architecture/shared-ui.md`
 - `docs/architecture/page-structure.md`
 
 ```text
@@ -58,6 +59,7 @@ src/
 Rules:
 
 - Put reusable UI components in `src/shared/ui/{component-name}`.
+- Before styling any generic control (select, tabs, checkbox, input, dialog, etc.), read `docs/architecture/shared-ui.md`, check the shared UI inventory, and reuse or add the primitive in shared — do not style it inline in features or pages.
 - Put business components in `src/features/{domain}/components/{component-name}`.
 - Put page-only components in `src/pages/{page-name}/components/{component-name}`.
 - Each component folder should use `ComponentName.tsx`, `ComponentName.types.ts`, and `index.ts`.
@@ -83,10 +85,11 @@ Use these docs as the first stop for implementation decisions:
 
 - `docs/architecture/project-structure.md` — future folder layout, ownership rules, API/mock boundaries, hooks, contexts, providers, stores, types, and import direction.
 - `docs/architecture/component-structure.md` — reusable UI, business components, page-only components, async state rules.
+- `docs/architecture/shared-ui.md` — shared UI workflow, shadcn policy, primitive inventory, reuse rules, and anti-patterns for form controls.
 - `docs/architecture/page-structure.md` — route page placement, page responsibilities, route registration.
 - `docs/architecture/visual-theme.md` — brand direction, Tailwind color palette, semantic colors, role colors, status mapping, accessibility color rules.
 
-When docs overlap, prefer the more specific document: component rules for component placement, page rules for route screens, visual theme for color/status decisions, and project structure for cross-folder ownership.
+When docs overlap, prefer the more specific document: shared UI rules for generic controls and reuse, component rules for component placement, page rules for route screens, visual theme for color/status decisions, and project structure for cross-folder ownership.
 
 ## Routing and Page Rules
 
@@ -105,7 +108,7 @@ When docs overlap, prefer the more specific document: component rules for compon
 
 - Use TypeScript for all app code.
 - Build real SPA screens, not placeholder landing pages.
-- Prefer shadcn/ui components before creating custom UI primitives.
+- Prefer shared UI from `src/shared/ui/` and shadcn/ui components before creating custom inline controls; read `shared-ui.md` first.
 - Use Tailwind utilities for styling; keep custom CSS minimal.
 - Follow `docs/architecture/visual-theme.md` for brand, palette, role colors, status tones, and semantic color usage.
 - Use React Router for navigation and route state.
@@ -146,7 +149,7 @@ When reviewing changes, prioritize:
 - Accessible controls, labels, keyboard behavior, and focus states.
 - Responsive layout for dashboard/table-heavy screens.
 - Loading, empty, and error states.
-- Consistent use of shadcn/ui and Tailwind patterns.
+- Consistent use of shared UI primitives and shadcn/Tailwind patterns; no duplicate inline styling of generic controls in features.
 - Avoiding duplicated mock data or inconsistent fixtures.
 - Avoiding unnecessary global state.
 - Passing ESLint, Prettier, and build checks.
@@ -198,7 +201,7 @@ A change is done when:
 - UI handles loading, empty, and error states where applicable.
 - Forms validate with Zod and show useful user feedback.
 - Mock data and MSW handlers are updated when data behavior changes.
-- The implementation follows the feature folder structure.
+- The implementation follows the feature folder structure and shared UI reuse rules in `docs/architecture/shared-ui.md`.
 - Created or changed pages pass the desktop Chrome DevTools MCP UI audit when the change affects visible UI.
 - No unrelated refactors or generated clutter are included.
 - The result is usable in the browser with realistic MVP data.

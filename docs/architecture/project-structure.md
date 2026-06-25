@@ -233,12 +233,20 @@ src/shared/
 
 ### `src/shared/ui`
 
-Reusable UI primitives and composed app-agnostic components.
+Reusable UI primitives and composed app-agnostic components. This is the design-system layer: generic controls are styled once here and reused across features and pages.
+
+Read `docs/architecture/shared-ui.md` before adding or styling any interactive control (select, tabs, checkbox, dialog, input, etc.).
 
 Examples:
 
 - `button`
 - `badge`
+- `select`
+- `input`
+- `checkbox`
+- `tabs`
+- `dialog`
+- `dropdown-menu`
 - `status-pill`
 - `data-table`
 - `empty-state`
@@ -248,7 +256,12 @@ Examples:
 - `section-header`
 - `confirm-dialog`
 
-Shared UI should accept generic props and not import feature types.
+Rules:
+
+- Before building a control, check the shared UI inventory in `shared-ui.md`. Reuse existing primitives.
+- If a generic primitive is missing, add it to `src/shared/ui/{component-name}/` first — prefer shadcn/ui themed for PMR — then compose it from features.
+- Do not style native `<select>`, `<input>`, tab strips, or similar controls inline in `features/`, `pages/`, or `app/` when a shared primitive is needed or likely to be reused.
+- Shared UI should accept generic props and not import feature types.
 
 ### `src/shared/hooks`
 
