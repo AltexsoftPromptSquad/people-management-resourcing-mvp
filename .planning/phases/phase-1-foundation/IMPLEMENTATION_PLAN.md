@@ -315,7 +315,7 @@ Do not implement:
 
 ### 9. Update Handoff Notes
 
-After implementation, update `.planning/STATE.md`.
+After implementation, update `.planning/STATE.md` and `.planning/phases/phase-1-foundation/STATUS.md`.
 
 Include:
 
@@ -324,6 +324,7 @@ Include:
 - Seed count: 75 people across 3 units.
 - Note that persona names are placeholders until Carlos confirms.
 - Note that full 500+ seed data is deferred to Phase 2.
+- Current Phase 1 status: done items, verification results, blockers, remaining validation, and sign-off owner.
 
 ## Data, Model, And API Contracts
 
