@@ -1,20 +1,22 @@
 # Business Requirements Document
+
 # People Management & Resourcing MVP
 
 ---
 
 ## 1. Document Control
 
-| Field | Value |
-|---|---|
-| Document Name | Business Requirements Document — People Management & Resourcing MVP |
-| Version | 1.0 |
-| Status | Draft — Ready for Review |
-| Author | Business Analyst |
-| Date | 2026-05-18 |
+| Field             | Value                                                                    |
+| ----------------- | ------------------------------------------------------------------------ |
+| Document Name     | Business Requirements Document — People Management & Resourcing MVP      |
+| Version           | 1.0                                                                      |
+| Status            | Draft — Ready for Review                                                 |
+| Author            | Business Analyst                                                         |
+| Date              | 2026-05-18                                                               |
 | Intended Audience | QA Engineers, Developers, AI Agents, Product Managers, Demo Stakeholders |
 
 **Source Materials:**
+
 - Test Assignment: People Management & Resourcing MVP
 - AI-First Delivery Experiment Guidelines
 - PMR_MVP_Domain_Research_Notes_Iteration_2.md (Iteration 2)
@@ -49,12 +51,14 @@ The MVP must demonstrate one complete, end-to-end resourcing flow: from request 
 **Target Organization:** An engineering company with 500 or more employees distributed across units and projects.
 
 **Problem Being Solved:**
+
 - Unit Managers have no centralized tool to track their people, risks, and resourcing requests.
 - Sales and Delivery Managers have no structured way to submit staffing needs and review proposed candidates.
 - Employees have no self-service view of their own profile or assigned tasks.
 - Assignment decisions and their outcomes are not recorded in a consistent, accessible history.
 
 **Why Each Role Needs the System:**
+
 - Unit Managers need to see all subordinates, their risks, action items, and incoming staffing requests in one place.
 - Sales and Delivery Managers need to submit clear requests and review proposed candidates with enough profile information to make a decision.
 - Employees need to view and maintain their own contact details, IDP status, and documents without going through a manager for every change.
@@ -68,21 +72,21 @@ This is an MVP for an experiment in AI-first delivery. The goal is to demonstrat
 
 The following principles govern all design, implementation, and testing decisions for this MVP.
 
-| Principle | Description |
-|---|---|
-| Minimal user journey | Each user completes their core task in as few steps as possible. |
-| One primary action per screen | Every screen has one obvious next action. No competing priorities. |
-| Fewest practical clicks | The main resourcing flow completes in the fewest steps that remain clear and safe. |
-| Clear business language | Labels, buttons, and messages use plain business words. No technical jargon. |
-| Simple fixed roles | Three roles with fixed permissions. No admin configuration UI. |
-| No unnecessary configuration | The product works immediately without setup steps per user. |
-| Seed and mock data only | All data is pre-loaded. No real data entry is required to reach demo state. |
-| Frontend-only web MVP | Delivered as a browser-based web application with no server-side application layer. |
-| No real infrastructure | No back-end, database, production authentication, file storage, or external integrations. |
-| Desktop browser target | Optimized and validated for desktop browser usage only (suggested minimum viewport: 1280px width). |
-| Easy to test | Every requirement has a testable acceptance criterion. |
-| Easy to implement | No feature complexity beyond what the assignment explicitly requires. |
-| Easy to demo | One complete E2E resourcing flow works from any seeded starting state. |
+| Principle                     | Description                                                                                        |
+| ----------------------------- | -------------------------------------------------------------------------------------------------- |
+| Minimal user journey          | Each user completes their core task in as few steps as possible.                                   |
+| One primary action per screen | Every screen has one obvious next action. No competing priorities.                                 |
+| Fewest practical clicks       | The main resourcing flow completes in the fewest steps that remain clear and safe.                 |
+| Clear business language       | Labels, buttons, and messages use plain business words. No technical jargon.                       |
+| Simple fixed roles            | Three roles with fixed permissions. No admin configuration UI.                                     |
+| No unnecessary configuration  | The product works immediately without setup steps per user.                                        |
+| Seed and mock data only       | All data is pre-loaded. No real data entry is required to reach demo state.                        |
+| Frontend-only web MVP         | Delivered as a browser-based web application with no server-side application layer.                |
+| No real infrastructure        | No back-end, database, production authentication, file storage, or external integrations.          |
+| Desktop browser target        | Optimized and validated for desktop browser usage only (suggested minimum viewport: 1280px width). |
+| Easy to test                  | Every requirement has a testable acceptance criterion.                                             |
+| Easy to implement             | No feature complexity beyond what the assignment explicitly requires.                              |
+| Easy to demo                  | One complete E2E resourcing flow works from any seeded starting state.                             |
 
 ---
 
@@ -93,6 +97,7 @@ The following principles govern all design, implementation, and testing decision
 **Goal:** Manage a group of engineers and fulfill incoming resourcing requests.
 
 **Main Responsibilities:**
+
 - Review own dashboard for people status, risks, and open items.
 - Browse and filter subordinates.
 - View and edit allowed employee profile sections.
@@ -103,6 +108,7 @@ The following principles govern all design, implementation, and testing decision
 - Generate safe shared profile views for proposed internal candidates.
 
 **Can Do:**
+
 - View own dashboard with subordinates, risks, action items, and active requests.
 - Open any subordinate's full profile.
 - Edit allowed fields on subordinate profiles (contact details, notes, English level, skills, IDP, documents).
@@ -117,6 +123,7 @@ The following principles govern all design, implementation, and testing decision
 - Switch to personal Employee view.
 
 **Cannot Do:**
+
 - Create or approve resourcing requests (no dual role in MVP).
 - View employees outside their unit unless a shared profile is provided.
 - Approve their own candidate proposals.
@@ -129,12 +136,14 @@ The following principles govern all design, implementation, and testing decision
 **Goal:** Request engineers for projects and decide on proposed candidates.
 
 **Main Responsibilities:**
+
 - Create resourcing requests with role, skills, grade, timeline, and workload details.
 - Review proposed candidates for own requests.
 - Open shared profiles of internal candidates.
 - Approve or reject each candidate with required feedback on rejection.
 
 **Can Do:**
+
 - Create new resourcing requests.
 - View all requests they created.
 - Open a request and see proposed candidates.
@@ -145,6 +154,7 @@ The following principles govern all design, implementation, and testing decision
 - View the final status and history of their requests.
 
 **Cannot Do:**
+
 - Browse all employee profiles directly.
 - Edit any employee record.
 - View sensitive profile sections unless the Unit Manager explicitly shared them.
@@ -157,6 +167,7 @@ The following principles govern all design, implementation, and testing decision
 **Goal:** View and maintain their own profile and assigned tasks.
 
 **Main Responsibilities:**
+
 - Review own profile information.
 - Update allowed contact fields.
 - View and act on action items assigned by their manager.
@@ -164,6 +175,7 @@ The following principles govern all design, implementation, and testing decision
 - Add certificate document records.
 
 **Can Do:**
+
 - View own profile in read mode.
 - Edit own allowed contact information (personal phone, personal email, address).
 - View action items assigned to them.
@@ -173,6 +185,7 @@ The following principles govern all design, implementation, and testing decision
 - View own documents marked as employee-visible.
 
 **Cannot Do:**
+
 - View other employees' profiles.
 - Edit own job data, grade, manager assignment, risk records, manager notes, or assignment history.
 - Approve or reject resourcing decisions.
@@ -185,34 +198,40 @@ The following principles govern all design, implementation, and testing decision
 ### 7.1 In Scope
 
 **Delivery model**
+
 - Frontend-only web application — browser-based, not a native desktop application.
 - All data is mocked, seeded, or held in local client-side state.
 - All demo scenarios must work without back-end services.
 
 **Manager Dashboard**
+
 - Personal landing page for the Unit Manager.
 - Summary widgets: subordinate headcount, active risks, open action items, active resourcing requests.
 - List of manager's own action items sorted by due date with overdue highlighting.
 - Quick navigation to subordinates list, custom lists, resourcing, and risks.
 
 **Subordinates List**
+
 - Tabular list of all employees subordinate to the current Unit Manager.
 - Columns: name, position, grade, project or status, risk level.
 - Basic sorting and filtering.
 - Row click opens the Employee Profile.
 
 **Employee Profile — Managerial View**
+
 - Full detail page for each subordinate.
 - Sections: basic info, contact info, employment type, English level, IDP reference, risks, notes, feedbacks, scheduled leaves, documents, assignment history, project history, action items, and custom fields.
 - Assignment history and project history are always separate sections.
 
 **Employee Profile — Personal View**
+
 - Simplified view for the employee themselves.
 - Editable: personal contact fields.
 - Viewable: action items, IDP status, own documents.
 - Employee can add certificate metadata.
 
 **Custom Lists — Simplified**
+
 - Unit Manager can create custom fields (text, number, date, single select, boolean).
 - Unit Manager can build and save named lists with selected employee filters and column selections.
 - Saved lists are displayed as tabs on the Custom Lists page.
@@ -222,6 +241,7 @@ The following principles govern all design, implementation, and testing decision
 - Three seeded demo lists are pre-loaded: Bench, Booked, and Needs Conversation.
 
 **Profile Sharing — Simplified**
+
 - Unit Manager can generate a shareable view of a subordinate's profile.
 - Manager selects which sections to include (per-section control).
 - Sensitive sections (contact info, risks, notes, documents) are excluded by default.
@@ -229,11 +249,13 @@ The following principles govern all design, implementation, and testing decision
 - Shared view shows only the selected sections.
 
 **Resourcing Request Workflow**
+
 - Sales / Delivery Manager creates a request with: title, project name, required role, required skills, grade level, English level, expected compensation level, workload percentage, start date, duration, assigned Unit Manager, priority, and business reason.
 - Request statuses: Draft, Submitted, In Review, Candidates Proposed, Approved, Rejected, Closed, Cancelled.
 - Submitted requests appear in the Unit Manager's incoming request queue.
 
 **Candidate Proposal Workflow**
+
 - Unit Manager views incoming requests assigned to them.
 - Unit Manager selects one or more internal candidates from their unit.
 - Unit Manager can add one external candidate URL per request.
@@ -242,12 +264,14 @@ The following principles govern all design, implementation, and testing decision
 - Candidate statuses: Proposed, Approved, Rejected, Withdrawn.
 
 **Candidate Approval and Rejection**
+
 - Sales / Delivery Manager opens request detail and reviews each proposed candidate.
 - For each candidate, DM can either approve or reject.
 - Rejection requires a written reason.
 - Approval optionally allows a note.
 
 **Assignment History**
+
 - Each candidate proposal attempt is recorded with outcome and feedback.
 - Assignment history is visible in the Unit Manager's Resourcing section.
 - Assignment history is visible on the employee profile (separate section from project history).
@@ -255,6 +279,7 @@ The following principles govern all design, implementation, and testing decision
 - Rejected assignments record: all of the above plus rejection reason.
 
 **Documents and IDP Metadata**
+
 - Document records contain: name, type, uploaded by, upload date, visibility setting, and mock file name.
 - Document types: Contract, CV, Certificate, IDP Document, Joining Interview Feedback, Performance Document, Other.
 - Visibility settings: Manager Only, Employee Visible, Shareable, Sensitive.
@@ -263,6 +288,7 @@ The following principles govern all design, implementation, and testing decision
 - IDP reference field on profile links to an IDP document.
 
 **Risks and Action Items**
+
 - Risks: level, category, description, owner, due date, status, history.
 - Risk levels: None, Low, Medium, High, Critical.
 - Action items: title, description, assignee, owner, due date, priority, status.
@@ -270,6 +296,7 @@ The following principles govern all design, implementation, and testing decision
 - Employees can view their own action items.
 
 **Mock Data**
+
 - Minimum 500 seeded employees across 3 units.
 - 10 seeded resourcing requests.
 - 3 seeded custom lists with custom fields pre-configured.
@@ -332,6 +359,7 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** The central data record for each employee. All other entities reference this record.
 
 **Key Fields:**
+
 - id, firstName, lastName, workEmail, personalEmail, workPhone, personalPhone
 - emergencyContactName, emergencyContactPhone
 - addressLine, city, country, dateOfBirth
@@ -346,6 +374,7 @@ The following items are reasonable next steps after the MVP is delivered but are
 - customFieldValues (map of custom field id to value)
 
 **Key Relationships:**
+
 - Belongs to one Unit.
 - Managed by one Unit Manager.
 - Has zero or more Skills, Risks, Action Items, Documents, Assignment History Items, Project History Items.
@@ -358,9 +387,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** Organizational group of employees managed by one Unit Manager.
 
 **Key Fields:**
+
 - id, name, managerId
 
 **Key Relationships:**
+
 - Has one Unit Manager (Person with manager role).
 - Contains one or more Persons.
 
@@ -371,9 +402,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** Records a specific technical or professional capability of an employee.
 
 **Key Fields:**
+
 - id, personId, name, category, level (Beginner, Intermediate, Advanced, Expert), yearsExperience, lastUsedDate
 
 **Key Relationships:**
+
 - Belongs to one Person.
 
 ---
@@ -383,9 +416,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** Records a project that an employee worked or is working on.
 
 **Key Fields:**
+
 - id, name, clientName, role, startDate, endDate, allocationPercent, status
 
 **Key Relationships:**
+
 - Referenced by one or more Persons via Project History Items.
 
 ---
@@ -395,9 +430,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** Records the percentage of an employee's time assigned to a project at a given period.
 
 **Key Fields:**
+
 - id, personId, projectId, allocationPercent, startDate, endDate, role
 
 **Key Relationships:**
+
 - Belongs to one Person and one Project.
 - Used to derive availability percentage.
 
@@ -408,9 +445,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** Records a retention or performance risk identified for an employee.
 
 **Key Fields:**
+
 - id, personId, level, category, description, ownerId, dueDate, status, createdAt, updatedAt
 
 **Key Relationships:**
+
 - Belongs to one Person.
 - Owner is a Unit Manager (Person).
 
@@ -421,9 +460,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** A task assigned by a manager to or about an employee.
 
 **Key Fields:**
+
 - id, personId, title, description, assigneeId, ownerId, dueDate, priority, status
 
 **Key Relationships:**
+
 - Belongs to one Person.
 - Assignee and owner are Persons.
 
@@ -434,9 +475,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** A manager-defined data field that extends the employee profile for tracking purposes.
 
 **Key Fields:**
+
 - id, name, description, type (Text, Number, Date, Single Select, Boolean), options (for Single Select), createdByManagerId, isSensitive, isActive
 
 **Key Relationships:**
+
 - Created by one Unit Manager.
 - Values stored per Person via Custom Field Values.
 
@@ -447,9 +490,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** A manager-defined filtered view of employees with selected columns for operational tracking.
 
 **Key Fields:**
+
 - id, name, description, ownerManagerId, sharedWithManagerIds, employeeFilter, visibleColumns, filterableFields, defaultSort
 
 **Key Relationships:**
+
 - Owned by one Unit Manager.
 - Shared with zero or more other Unit Managers (view-only).
 - References Custom Fields as columns and filters.
@@ -461,9 +506,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** A formal request from a Sales or Delivery Manager for an engineer with specific qualifications.
 
 **Key Fields:**
+
 - id, title, requestCode, createdById, assignedUnitManagerId, projectName, clientName, requiredRole, requiredSkills, gradeLevel, englishLevel, expectedCompensationLevel, workloadPercent, startDate, endDate, durationText, priority (Low, Medium, High, Urgent), status, businessReason, createdAt, updatedAt
 
 **Key Relationships:**
+
 - Created by one Sales / Delivery Manager.
 - Assigned to one Unit Manager.
 - Contains zero or more Candidate Proposals.
@@ -475,9 +522,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** Records the Unit Manager's proposal of a specific candidate (internal or external) for a resourcing request.
 
 **Key Fields:**
+
 - id, requestId, candidateType (Internal, External), employeeId (if internal), externalProfileUrl (if external), proposedById, proposedAt, status (Proposed, Approved, Rejected, Withdrawn), fitSummary, availabilityPercent, warnings, sharedProfileId (if internal), reviewedById, reviewedAt, rejectionReason, feedback
 
 **Key Relationships:**
+
 - Belongs to one Resourcing Request.
 - References one Person (if internal) or one external URL.
 - References one Shared Profile (if internal).
@@ -489,9 +538,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** A permanent record of each candidate proposal attempt and its outcome.
 
 **Key Fields:**
+
 - id, employeeId, requestId, proposalId, status, proposedAt, decisionAt, decisionById, feedback, convertedToProject (boolean, default false)
 
 **Key Relationships:**
+
 - Belongs to one Person (the proposed candidate).
 - References one Resourcing Request and one Candidate Proposal.
 - Visible on Person profile (separate from Project History).
@@ -503,9 +554,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** A controlled, link-accessible view of selected sections of an employee profile for use by Sales / Delivery Managers during candidate review.
 
 **Key Fields:**
+
 - id, personId, createdById, allowedSections (list), token, isActive
 
 **Key Relationships:**
+
 - Created by a Unit Manager for one Person.
 - Linked to one Candidate Proposal.
 
@@ -516,9 +569,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** A metadata record representing a file associated with an employee (no real file stored in MVP).
 
 **Key Fields:**
+
 - id, personId, name, type (Contract, CV, Certificate, IDP Document, Joining Interview Feedback, Performance Document, Other), uploadedById, uploadedAt, visibility (Manager Only, Employee Visible, Shareable, Sensitive), mockFileName
 
 **Key Relationships:**
+
 - Belongs to one Person.
 - Uploaded by one Person (manager or employee depending on type).
 
@@ -529,9 +584,11 @@ The following items are reasonable next steps after the MVP is delivered but are
 **Purpose:** A reference link or document record tracking the employee's current development plan status.
 
 **Key Fields:**
+
 - id, personId, documentReference, status (Not Started, In Progress, Completed), lastUpdatedAt
 
 **Key Relationships:**
+
 - Belongs to one Person.
 - Referenced in the Documents tab via IDP Document type.
 
@@ -623,213 +680,213 @@ The following items are reasonable next steps after the MVP is delivered but are
 
 ### 10.1 Role Switcher
 
-| ID | Requirement |
-|---|---|
+| ID        | Requirement                                                                                                                                                           |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | FR-RS-001 | The application must provide a role switcher that allows the user to select between Unit Manager, Sales / Delivery Manager, and Employee without real authentication. |
-| FR-RS-002 | Switching roles must immediately change the visible navigation, available actions, and accessible data. |
-| FR-RS-003 | The Unit Manager role must default to a named seeded persona. |
-| FR-RS-004 | The Sales / DM role must default to a named seeded persona. |
-| FR-RS-005 | The Employee role must default to a named seeded persona. |
+| FR-RS-002 | Switching roles must immediately change the visible navigation, available actions, and accessible data.                                                               |
+| FR-RS-003 | The Unit Manager role must default to a named seeded persona.                                                                                                         |
+| FR-RS-004 | The Sales / DM role must default to a named seeded persona.                                                                                                           |
+| FR-RS-005 | The Employee role must default to a named seeded persona.                                                                                                             |
 
 ---
 
 ### 10.2 Manager Dashboard
 
-| ID | Requirement |
-|---|---|
-| FR-DB-001 | The dashboard must display a subordinate headcount widget showing the total number of direct and indirect reports. |
-| FR-DB-002 | The dashboard must display an active risks widget showing the count of open risks for all subordinates. |
-| FR-DB-003 | The dashboard must display an open action items widget showing the count of open action items for all subordinates. |
+| ID        | Requirement                                                                                                                      |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| FR-DB-001 | The dashboard must display a subordinate headcount widget showing the total number of direct and indirect reports.               |
+| FR-DB-002 | The dashboard must display an active risks widget showing the count of open risks for all subordinates.                          |
+| FR-DB-003 | The dashboard must display an open action items widget showing the count of open action items for all subordinates.              |
 | FR-DB-004 | The dashboard must display an active resourcing requests widget showing the count of requests currently assigned to the manager. |
-| FR-DB-005 | The dashboard must display a list of the manager's own open action items sorted by due date in ascending order. |
-| FR-DB-006 | Action items with a due date in the past must be visually highlighted as overdue. |
-| FR-DB-007 | The dashboard must provide quick navigation links to: Subordinates, Custom Lists, Resourcing, and Risks. |
+| FR-DB-005 | The dashboard must display a list of the manager's own open action items sorted by due date in ascending order.                  |
+| FR-DB-006 | Action items with a due date in the past must be visually highlighted as overdue.                                                |
+| FR-DB-007 | The dashboard must provide quick navigation links to: Subordinates, Custom Lists, Resourcing, and Risks.                         |
 
 ---
 
 ### 10.3 Subordinates List
 
-| ID | Requirement |
-|---|---|
-| FR-SL-001 | The subordinates list must display only employees who report to the currently selected Unit Manager. |
+| ID        | Requirement                                                                                                          |
+| --------- | -------------------------------------------------------------------------------------------------------------------- |
+| FR-SL-001 | The subordinates list must display only employees who report to the currently selected Unit Manager.                 |
 | FR-SL-002 | The table must include the following columns: full name, position, grade, current project or status, and risk level. |
-| FR-SL-003 | The user must be able to sort the table by any column. |
-| FR-SL-004 | The user must be able to filter the list by position, grade, status, and risk level. |
-| FR-SL-005 | Clicking any row must open the full Employee Profile in managerial view. |
-| FR-SL-006 | The list must show an empty state message when no subordinates match the active filter. |
+| FR-SL-003 | The user must be able to sort the table by any column.                                                               |
+| FR-SL-004 | The user must be able to filter the list by position, grade, status, and risk level.                                 |
+| FR-SL-005 | Clicking any row must open the full Employee Profile in managerial view.                                             |
+| FR-SL-006 | The list must show an empty state message when no subordinates match the active filter.                              |
 
 ---
 
 ### 10.4 Employee Profile — Managerial View
 
-| ID | Requirement |
-|---|---|
+| ID        | Requirement                                                                                                                                                                |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | FR-EP-001 | The profile must display a header with: photo placeholder or initials, full name, position, grade, unit, manager, current status, availability percentage, and risk badge. |
-| FR-EP-002 | The profile must provide the following tabs: Overview, Job and Skills, Risks and Action Items, Resourcing History, Project History, and Documents and IDP. |
-| FR-EP-003 | The Overview tab must show: basic info, contact info, employment type, English level, current status, and summary counts for risks and open action items. |
-| FR-EP-004 | The Job and Skills tab must show: position, grade, unit, manager, hire date, employment status, work location, English level, and a skills list. |
-| FR-EP-005 | The Risks and Action Items tab must show: current risk level, risk history, risk notes, and all open and closed action items. |
-| FR-EP-006 | The Resourcing History tab must show: all assignment attempts with request name, proposed date, proposed by, reviewed by, decision, and feedback. |
-| FR-EP-007 | The Project History tab must show: all projects the person worked on with project name, role, start date, end date, and allocation percentage. |
-| FR-EP-008 | Assignment history and project history must never be displayed in the same tab or mixed in the same list. |
-| FR-EP-009 | The Documents and IDP tab must show: a list of document records with name, type, visibility, and upload date, plus the IDP status. |
-| FR-EP-010 | A custom fields section must display all custom field values for the employee. |
-| FR-EP-011 | HR and management notes must only be visible in the managerial view and must not appear in the Employee personal view. |
-| FR-EP-012 | The Unit Manager must be able to edit: English level, IDP reference, skills, management notes, and custom field values for their direct subordinates. |
+| FR-EP-002 | The profile must provide the following tabs: Overview, Job and Skills, Risks and Action Items, Resourcing History, Project History, and Documents and IDP.                 |
+| FR-EP-003 | The Overview tab must show: basic info, contact info, employment type, English level, current status, and summary counts for risks and open action items.                  |
+| FR-EP-004 | The Job and Skills tab must show: position, grade, unit, manager, hire date, employment status, work location, English level, and a skills list.                           |
+| FR-EP-005 | The Risks and Action Items tab must show: current risk level, risk history, risk notes, and all open and closed action items.                                              |
+| FR-EP-006 | The Resourcing History tab must show: all assignment attempts with request name, proposed date, proposed by, reviewed by, decision, and feedback.                          |
+| FR-EP-007 | The Project History tab must show: all projects the person worked on with project name, role, start date, end date, and allocation percentage.                             |
+| FR-EP-008 | Assignment history and project history must never be displayed in the same tab or mixed in the same list.                                                                  |
+| FR-EP-009 | The Documents and IDP tab must show: a list of document records with name, type, visibility, and upload date, plus the IDP status.                                         |
+| FR-EP-010 | A custom fields section must display all custom field values for the employee.                                                                                             |
+| FR-EP-011 | HR and management notes must only be visible in the managerial view and must not appear in the Employee personal view.                                                     |
+| FR-EP-012 | The Unit Manager must be able to edit: English level, IDP reference, skills, management notes, and custom field values for their direct subordinates.                      |
 
 ---
 
 ### 10.5 Employee Profile — Personal View
 
-| ID | Requirement |
-|---|---|
-| FR-PV-001 | The employee personal view must show only the employee's own profile. |
-| FR-PV-002 | The employee must be able to edit: personal phone, personal email, and address. |
-| FR-PV-003 | The employee must be able to view their own action items. |
-| FR-PV-004 | The employee must be able to update their IDP status. |
+| ID        | Requirement                                                                                      |
+| --------- | ------------------------------------------------------------------------------------------------ |
+| FR-PV-001 | The employee personal view must show only the employee's own profile.                            |
+| FR-PV-002 | The employee must be able to edit: personal phone, personal email, and address.                  |
+| FR-PV-003 | The employee must be able to view their own action items.                                        |
+| FR-PV-004 | The employee must be able to update their IDP status.                                            |
 | FR-PV-005 | The employee must be able to add a certificate document record with a name and a mock file name. |
-| FR-PV-006 | The employee must not see manager-only notes, risk records, or assignment history. |
-| FR-PV-007 | Changes saved by the employee must be confirmed with a visible success message. |
+| FR-PV-006 | The employee must not see manager-only notes, risk records, or assignment history.               |
+| FR-PV-007 | Changes saved by the employee must be confirmed with a visible success message.                  |
 
 ---
 
 ### 10.6 Custom Lists
 
-| ID | Requirement |
-|---|---|
-| FR-CL-001 | The Unit Manager must be able to define custom fields with the following types: Text, Number, Date, Single Select, and Boolean. |
+| ID        | Requirement                                                                                                                              |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-CL-001 | The Unit Manager must be able to define custom fields with the following types: Text, Number, Date, Single Select, and Boolean.          |
 | FR-CL-002 | The Unit Manager must be able to create a named custom list by selecting an employee filter and choosing which fields appear as columns. |
-| FR-CL-003 | Each saved custom list must appear as a separate tab on the Custom Lists page. |
-| FR-CL-004 | Custom field columns in a custom list must be inline-editable. Clicking a cell enters edit mode. |
-| FR-CL-005 | Saving a cell edit in a custom list must update the corresponding custom field value on the employee profile. |
-| FR-CL-006 | System field columns (name, position, grade, status) must be read-only in custom list tables. |
-| FR-CL-007 | Boolean fields must display as a checkbox or toggle in edit mode. |
-| FR-CL-008 | Single select fields must display a dropdown in edit mode showing only configured options. |
-| FR-CL-009 | Date fields must use one consistent date format throughout the application. |
-| FR-CL-010 | The Unit Manager must be able to share a custom list with selected other managers. |
-| FR-CL-011 | A manager receiving a shared list must be able to view the list but cannot change its structure. |
-| FR-CL-012 | The three seeded demo lists (Bench, Booked, Needs Conversation) must be pre-loaded and immediately usable. |
-| FR-CL-013 | An empty custom list must display a useful empty state message. |
+| FR-CL-003 | Each saved custom list must appear as a separate tab on the Custom Lists page.                                                           |
+| FR-CL-004 | Custom field columns in a custom list must be inline-editable. Clicking a cell enters edit mode.                                         |
+| FR-CL-005 | Saving a cell edit in a custom list must update the corresponding custom field value on the employee profile.                            |
+| FR-CL-006 | System field columns (name, position, grade, status) must be read-only in custom list tables.                                            |
+| FR-CL-007 | Boolean fields must display as a checkbox or toggle in edit mode.                                                                        |
+| FR-CL-008 | Single select fields must display a dropdown in edit mode showing only configured options.                                               |
+| FR-CL-009 | Date fields must use one consistent date format throughout the application.                                                              |
+| FR-CL-010 | The Unit Manager must be able to share a custom list with selected other managers.                                                       |
+| FR-CL-011 | A manager receiving a shared list must be able to view the list but cannot change its structure.                                         |
+| FR-CL-012 | The three seeded demo lists (Bench, Booked, Needs Conversation) must be pre-loaded and immediately usable.                               |
+| FR-CL-013 | An empty custom list must display a useful empty state message.                                                                          |
 
 ---
 
 ### 10.7 Profile Sharing
 
-| ID | Requirement |
-|---|---|
-| FR-PS-001 | The Unit Manager must be able to generate a shared profile view for any of their direct subordinates. |
-| FR-PS-002 | The shared profile generation screen must allow the manager to select which sections to include, with per-section control. |
+| ID        | Requirement                                                                                                                                                                                                                       |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-PS-001 | The Unit Manager must be able to generate a shared profile view for any of their direct subordinates.                                                                                                                             |
+| FR-PS-002 | The shared profile generation screen must allow the manager to select which sections to include, with per-section control.                                                                                                        |
 | FR-PS-003 | Sensitive sections must be excluded by default when a shared profile is generated. Sensitive sections include: contact info, emergency contact, risks, manager notes, HR notes, feedback, documents, and sensitive custom fields. |
-| FR-PS-004 | The generated shared profile must be accessible via a unique link token. |
-| FR-PS-005 | The shared profile view must display only the sections the manager explicitly selected. |
-| FR-PS-006 | A shared profile must include by default: name, position, grade, skills, English level, availability, and project history. |
-| FR-PS-007 | Opening a shared profile link must not require login. |
+| FR-PS-004 | The generated shared profile must be accessible via a unique link token.                                                                                                                                                          |
+| FR-PS-005 | The shared profile view must display only the sections the manager explicitly selected.                                                                                                                                           |
+| FR-PS-006 | A shared profile must include by default: name, position, grade, skills, English level, availability, and project history.                                                                                                        |
+| FR-PS-007 | Opening a shared profile link must not require login.                                                                                                                                                                             |
 
 ---
 
 ### 10.8 Resourcing Request Creation
 
-| ID | Requirement |
-|---|---|
-| FR-RR-001 | The Sales / Delivery Manager must be able to create a new resourcing request. |
+| ID        | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-RR-001 | The Sales / Delivery Manager must be able to create a new resourcing request.                                                                                                                                                                                                                                                                                                                                                                                 |
 | FR-RR-002 | The request form must include: title (required), project name (required), client name (optional), required role (required), required skills (required, multi-value), grade level (required), English level (required), expected compensation level (required), workload percentage (required), start date (required), duration or end date (required), assigned Unit Manager (required), priority (required, default Medium), and business reason (optional). |
-| FR-RR-003 | Submitting the form must change the request status to Submitted. |
-| FR-RR-004 | A submitted request must immediately appear in the assigned Unit Manager's Incoming Requests queue. |
-| FR-RR-005 | The Sales / DM must be able to see all requests they created in My Requests. |
-| FR-RR-006 | The Sales / DM must be able to cancel a Draft or Submitted request. |
-| FR-RR-007 | The form must block submission if any required field is empty. |
+| FR-RR-003 | Submitting the form must change the request status to Submitted.                                                                                                                                                                                                                                                                                                                                                                                              |
+| FR-RR-004 | A submitted request must immediately appear in the assigned Unit Manager's Incoming Requests queue.                                                                                                                                                                                                                                                                                                                                                           |
+| FR-RR-005 | The Sales / DM must be able to see all requests they created in My Requests.                                                                                                                                                                                                                                                                                                                                                                                  |
+| FR-RR-006 | The Sales / DM must be able to cancel a Draft or Submitted request.                                                                                                                                                                                                                                                                                                                                                                                           |
+| FR-RR-007 | The form must block submission if any required field is empty.                                                                                                                                                                                                                                                                                                                                                                                                |
 
 ---
 
 ### 10.9 Candidate Proposal
 
-| ID | Requirement |
-|---|---|
-| FR-CP-001 | The Unit Manager must be able to open an assigned request and view its requirements. |
+| ID        | Requirement                                                                                                                                                    |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-CP-001 | The Unit Manager must be able to open an assigned request and view its requirements.                                                                           |
 | FR-CP-002 | The Unit Manager must be able to browse employees from their unit and see availability, skills, grade, English level, risk level, and current status for each. |
-| FR-CP-003 | The Unit Manager must be able to select one or more internal employees as candidates for the request. |
-| FR-CP-004 | The Unit Manager must be able to add one external candidate entry by providing a valid URL. |
-| FR-CP-005 | The Unit Manager must be able to add a free-text fit summary for each proposed internal candidate. |
-| FR-CP-006 | The system must display a warning when a candidate's current allocation plus the requested workload would exceed 100 percent. |
-| FR-CP-007 | The system must display a warning when a candidate has a scheduled leave that overlaps the request start date or duration. |
-| FR-CP-008 | The system must display a warning when a candidate has a risk level of High or Critical. |
-| FR-CP-009 | Warnings must be visible to the Unit Manager but must not prevent proposal submission. |
-| FR-CP-010 | The Unit Manager must be able to generate a shared profile for each internal candidate before submitting. |
-| FR-CP-011 | Submitting the candidates must change the request status to Candidates Proposed. |
-| FR-CP-012 | The Unit Manager must be able to withdraw a proposed candidate before the DM has made a decision. |
+| FR-CP-003 | The Unit Manager must be able to select one or more internal employees as candidates for the request.                                                          |
+| FR-CP-004 | The Unit Manager must be able to add one external candidate entry by providing a valid URL.                                                                    |
+| FR-CP-005 | The Unit Manager must be able to add a free-text fit summary for each proposed internal candidate.                                                             |
+| FR-CP-006 | The system must display a warning when a candidate's current allocation plus the requested workload would exceed 100 percent.                                  |
+| FR-CP-007 | The system must display a warning when a candidate has a scheduled leave that overlaps the request start date or duration.                                     |
+| FR-CP-008 | The system must display a warning when a candidate has a risk level of High or Critical.                                                                       |
+| FR-CP-009 | Warnings must be visible to the Unit Manager but must not prevent proposal submission.                                                                         |
+| FR-CP-010 | The Unit Manager must be able to generate a shared profile for each internal candidate before submitting.                                                      |
+| FR-CP-011 | Submitting the candidates must change the request status to Candidates Proposed.                                                                               |
+| FR-CP-012 | The Unit Manager must be able to withdraw a proposed candidate before the DM has made a decision.                                                              |
 
 ---
 
 ### 10.10 Candidate Review and Decision
 
-| ID | Requirement |
-|---|---|
-| FR-CD-001 | The Sales / DM must be able to open a request in Candidates Proposed status and see all proposed candidates. |
-| FR-CD-002 | Each proposed internal candidate must show a link to the shared profile. |
-| FR-CD-003 | Each proposed external candidate must show the URL provided by the Unit Manager. |
-| FR-CD-004 | The Sales / DM must be able to approve one candidate per request in MVP. |
-| FR-CD-005 | Approving a candidate must change the candidate status to Approved and update the request status to Approved. |
-| FR-CD-006 | The Sales / DM must be able to reject a candidate by providing a written rejection reason. |
+| ID        | Requirement                                                                                                        |
+| --------- | ------------------------------------------------------------------------------------------------------------------ |
+| FR-CD-001 | The Sales / DM must be able to open a request in Candidates Proposed status and see all proposed candidates.       |
+| FR-CD-002 | Each proposed internal candidate must show a link to the shared profile.                                           |
+| FR-CD-003 | Each proposed external candidate must show the URL provided by the Unit Manager.                                   |
+| FR-CD-004 | The Sales / DM must be able to approve one candidate per request in MVP.                                           |
+| FR-CD-005 | Approving a candidate must change the candidate status to Approved and update the request status to Approved.      |
+| FR-CD-006 | The Sales / DM must be able to reject a candidate by providing a written rejection reason.                         |
 | FR-CD-007 | The rejection reason field must be required when rejecting. The system must block rejection if the field is empty. |
-| FR-CD-008 | Rejecting all remaining candidates with no approved candidate must change the request status to Rejected. |
-| FR-CD-009 | An optional note may be provided on approval. |
+| FR-CD-008 | Rejecting all remaining candidates with no approved candidate must change the request status to Rejected.          |
+| FR-CD-009 | An optional note may be provided on approval.                                                                      |
 
 ---
 
 ### 10.11 Assignment History
 
-| ID | Requirement |
-|---|---|
-| FR-AH-001 | Every candidate proposal attempt must create an assignment history record at the time the decision is made. |
+| ID        | Requirement                                                                                                                                                                         |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-AH-001 | Every candidate proposal attempt must create an assignment history record at the time the decision is made.                                                                         |
 | FR-AH-002 | Each assignment history record must include: request title, candidate type, proposed date, proposed by, decision date, decision by, final status, and feedback or rejection reason. |
-| FR-AH-003 | Assignment history must be visible on the Employee Profile under a dedicated Resourcing History tab. |
-| FR-AH-004 | Assignment history must also be visible in the Unit Manager's Resourcing section under Assignments. |
-| FR-AH-005 | Assignment history must never be displayed in the same view as project history. |
-| FR-AH-006 | Assignment history must be read-only for all roles. |
+| FR-AH-003 | Assignment history must be visible on the Employee Profile under a dedicated Resourcing History tab.                                                                                |
+| FR-AH-004 | Assignment history must also be visible in the Unit Manager's Resourcing section under Assignments.                                                                                 |
+| FR-AH-005 | Assignment history must never be displayed in the same view as project history.                                                                                                     |
+| FR-AH-006 | Assignment history must be read-only for all roles.                                                                                                                                 |
 
 ---
 
 ## 11. Business Rules
 
-| ID | Rule |
-|---|---|
-| BR-001 | A Unit Manager can only propose candidates from their own unit. |
-| BR-002 | A Sales / DM cannot browse employee profiles directly. They may only view a shared profile provided by a Unit Manager or an external URL. |
-| BR-003 | An Employee can only view and edit their own profile. |
-| BR-004 | Rejection of a candidate always requires a written reason. |
-| BR-005 | Sensitive profile sections are excluded from shared profiles by default and must be explicitly enabled. |
+| ID     | Rule                                                                                                                                                  |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BR-001 | A Unit Manager can only propose candidates from their own unit.                                                                                       |
+| BR-002 | A Sales / DM cannot browse employee profiles directly. They may only view a shared profile provided by a Unit Manager or an external URL.             |
+| BR-003 | An Employee can only view and edit their own profile.                                                                                                 |
+| BR-004 | Rejection of a candidate always requires a written reason.                                                                                            |
+| BR-005 | Sensitive profile sections are excluded from shared profiles by default and must be explicitly enabled.                                               |
 | BR-006 | Assignment history and project history are always separate. A successful assignment does not automatically create a project history entry in the MVP. |
-| BR-007 | Custom list inline editing applies only to custom field columns. System fields are always read-only in lists. |
-| BR-008 | A manager who receives a shared custom list can view the list but cannot change its structure or settings. |
-| BR-009 | Shared managers of a custom list can only edit custom field values for employees they manage directly. |
-| BR-010 | A request in Draft or Submitted status can be cancelled by the creator. |
-| BR-011 | A candidate in Proposed status can be withdrawn by the proposing Unit Manager before a decision is made. |
-| BR-012 | A candidate with a High or Critical risk level may be proposed but must trigger a visible warning. |
-| BR-013 | A candidate whose allocation plus the requested workload would exceed 100 percent must trigger a visible warning. |
-| BR-014 | A candidate with a scheduled leave overlapping the request period must trigger a visible warning. |
-| BR-015 | External candidates require a valid URL. The URL must be validated as a non-empty, properly formatted URL. |
+| BR-007 | Custom list inline editing applies only to custom field columns. System fields are always read-only in lists.                                         |
+| BR-008 | A manager who receives a shared custom list can view the list but cannot change its structure or settings.                                            |
+| BR-009 | Shared managers of a custom list can only edit custom field values for employees they manage directly.                                                |
+| BR-010 | A request in Draft or Submitted status can be cancelled by the creator.                                                                               |
+| BR-011 | A candidate in Proposed status can be withdrawn by the proposing Unit Manager before a decision is made.                                              |
+| BR-012 | A candidate with a High or Critical risk level may be proposed but must trigger a visible warning.                                                    |
+| BR-013 | A candidate whose allocation plus the requested workload would exceed 100 percent must trigger a visible warning.                                     |
+| BR-014 | A candidate with a scheduled leave overlapping the request period must trigger a visible warning.                                                     |
+| BR-015 | External candidates require a valid URL. The URL must be validated as a non-empty, properly formatted URL.                                            |
 
 ---
 
 ## 12. Assumptions
 
-| ID | Assumption |
-|---|---|
-| AS-001 | All data in the MVP is seeded or mocked. No real user data is entered. |
-| AS-002 | Authentication is simulated through a role switcher. No real login is implemented. |
-| AS-003 | The Unit Manager persona sees only their direct and indirect reports. |
-| AS-004 | A Sales / DM cannot access employee profiles outside of the shared profile mechanism. |
-| AS-005 | An Employee can only access their own profile. |
-| AS-006 | Shared profile links do not expire in the MVP. An isActive flag is sufficient. |
-| AS-007 | Availability percentage can be seeded directly or calculated from mock allocation records. Either approach is acceptable. |
-| AS-008 | Document upload is simulated by storing a mock file name. No actual file is stored. |
-| AS-009 | One approved candidate is sufficient to fulfill a request in the MVP. Multiple approvals are not supported. |
-| AS-010 | The Unit Manager cannot act as a Sales / DM and approve their own candidate proposals. |
-| AS-011 | The employee cannot see their own assignment history in the MVP. |
-| AS-012 | Rejection feedback is visible to the Unit Manager and Sales / DM only. It is not shown to the employee. |
-| AS-013 | Risk records and manager notes are not included in shared profiles unless explicitly selected. |
-| AS-014 | The MVP runs as a frontend-only web application in a desktop browser. |
-| AS-015 | Mock data is acceptable for all demo flows; local client-side state may supplement seeded data. |
+| ID     | Assumption                                                                                                                         |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| AS-001 | All data in the MVP is seeded or mocked. No real user data is entered.                                                             |
+| AS-002 | Authentication is simulated through a role switcher. No real login is implemented.                                                 |
+| AS-003 | The Unit Manager persona sees only their direct and indirect reports.                                                              |
+| AS-004 | A Sales / DM cannot access employee profiles outside of the shared profile mechanism.                                              |
+| AS-005 | An Employee can only access their own profile.                                                                                     |
+| AS-006 | Shared profile links do not expire in the MVP. An isActive flag is sufficient.                                                     |
+| AS-007 | Availability percentage can be seeded directly or calculated from mock allocation records. Either approach is acceptable.          |
+| AS-008 | Document upload is simulated by storing a mock file name. No actual file is stored.                                                |
+| AS-009 | One approved candidate is sufficient to fulfill a request in the MVP. Multiple approvals are not supported.                        |
+| AS-010 | The Unit Manager cannot act as a Sales / DM and approve their own candidate proposals.                                             |
+| AS-011 | The employee cannot see their own assignment history in the MVP.                                                                   |
+| AS-012 | Rejection feedback is visible to the Unit Manager and Sales / DM only. It is not shown to the employee.                            |
+| AS-013 | Risk records and manager notes are not included in shared profiles unless explicitly selected.                                     |
+| AS-014 | The MVP runs as a frontend-only web application in a desktop browser.                                                              |
+| AS-015 | Mock data is acceptable for all demo flows; local client-side state may supplement seeded data.                                    |
 | AS-016 | Desktop Chrome or another modern desktop browser is the target validation environment; suggested minimum viewport width is 1280px. |
 
 ---
@@ -838,96 +895,96 @@ The following items are reasonable next steps after the MVP is delivered but are
 
 ### Role Switcher
 
-| ID | Criterion |
-|---|---|
+| ID        | Criterion                                                                                   |
+| --------- | ------------------------------------------------------------------------------------------- |
 | AC-RS-001 | When the user selects Unit Manager, the dashboard page loads with manager-specific content. |
 | AC-RS-002 | When the user selects Sales / Delivery Manager, the resourcing page with My Requests loads. |
-| AC-RS-003 | When the user selects Employee, the My Profile page loads. |
-| AC-RS-004 | Switching roles changes all visible navigation and content without a page reload. |
+| AC-RS-003 | When the user selects Employee, the My Profile page loads.                                  |
+| AC-RS-004 | Switching roles changes all visible navigation and content without a page reload.           |
 
 ### Dashboard
 
-| ID | Criterion |
-|---|---|
-| AC-DB-001 | The dashboard shows four correctly labeled widgets with non-zero seeded values. |
-| AC-DB-002 | The action items list is sorted by due date ascending. |
+| ID        | Criterion                                                                                    |
+| --------- | -------------------------------------------------------------------------------------------- |
+| AC-DB-001 | The dashboard shows four correctly labeled widgets with non-zero seeded values.              |
+| AC-DB-002 | The action items list is sorted by due date ascending.                                       |
 | AC-DB-003 | At least one overdue action item is visually highlighted differently from non-overdue items. |
-| AC-DB-004 | Each navigation link on the dashboard opens the correct page. |
+| AC-DB-004 | Each navigation link on the dashboard opens the correct page.                                |
 
 ### Subordinates List
 
-| ID | Criterion |
-|---|---|
-| AC-SL-001 | The list shows only employees belonging to the selected Unit Manager's unit. |
+| ID        | Criterion                                                                             |
+| --------- | ------------------------------------------------------------------------------------- |
+| AC-SL-001 | The list shows only employees belonging to the selected Unit Manager's unit.          |
 | AC-SL-002 | All five required columns are visible: name, position, grade, status, and risk level. |
-| AC-SL-003 | Sorting by name changes the row order correctly. |
-| AC-SL-004 | Filtering by risk level returns only matching employees. |
-| AC-SL-005 | Clicking a row opens the employee profile for that person. |
+| AC-SL-003 | Sorting by name changes the row order correctly.                                      |
+| AC-SL-004 | Filtering by risk level returns only matching employees.                              |
+| AC-SL-005 | Clicking a row opens the employee profile for that person.                            |
 
 ### Employee Profile
 
-| ID | Criterion |
-|---|---|
-| AC-EP-001 | The profile header shows name, position, grade, unit, availability, and risk badge. |
-| AC-EP-002 | All required tabs are present and display relevant content. |
-| AC-EP-003 | The Resourcing History tab and Project History tab are separate and show different data. |
-| AC-EP-004 | Manager-only notes are not visible in the Employee personal view. |
+| ID        | Criterion                                                                                    |
+| --------- | -------------------------------------------------------------------------------------------- |
+| AC-EP-001 | The profile header shows name, position, grade, unit, availability, and risk badge.          |
+| AC-EP-002 | All required tabs are present and display relevant content.                                  |
+| AC-EP-003 | The Resourcing History tab and Project History tab are separate and show different data.     |
+| AC-EP-004 | Manager-only notes are not visible in the Employee personal view.                            |
 | AC-EP-005 | Editing a custom field value in the profile saves and displays the updated value after save. |
 
 ### Custom Lists
 
-| ID | Criterion |
-|---|---|
-| AC-CL-001 | Three seeded custom list tabs are present on the Custom Lists page. |
-| AC-CL-002 | Clicking a cell in a custom field column enters inline edit mode. |
+| ID        | Criterion                                                                             |
+| --------- | ------------------------------------------------------------------------------------- |
+| AC-CL-001 | Three seeded custom list tabs are present on the Custom Lists page.                   |
+| AC-CL-002 | Clicking a cell in a custom field column enters inline edit mode.                     |
 | AC-CL-003 | Saving an inline edit updates the custom field value visible on the employee profile. |
-| AC-CL-004 | System field columns cannot be edited in the list. |
-| AC-CL-005 | A shared list appears in the receiving manager's Custom Lists tabs. |
+| AC-CL-004 | System field columns cannot be edited in the list.                                    |
+| AC-CL-005 | A shared list appears in the receiving manager's Custom Lists tabs.                   |
 
 ### Profile Sharing
 
-| ID | Criterion |
-|---|---|
-| AC-PS-001 | The Unit Manager can open a Generate Shared Profile action from the employee profile. |
+| ID        | Criterion                                                                                        |
+| --------- | ------------------------------------------------------------------------------------------------ |
+| AC-PS-001 | The Unit Manager can open a Generate Shared Profile action from the employee profile.            |
 | AC-PS-002 | The generation screen shows per-section checkboxes. Sensitive sections are unchecked by default. |
-| AC-PS-003 | The generated link opens a view showing only the selected sections. |
-| AC-PS-004 | Sensitive sections are not visible in the shared profile unless explicitly enabled. |
+| AC-PS-003 | The generated link opens a view showing only the selected sections.                              |
+| AC-PS-004 | Sensitive sections are not visible in the shared profile unless explicitly enabled.              |
 
 ### Resourcing Request
 
-| ID | Criterion |
-|---|---|
-| AC-RR-001 | The Sales / DM can complete and submit a request form with all required fields. |
-| AC-RR-002 | Submitting the form changes the request status to Submitted. |
+| ID        | Criterion                                                                                |
+| --------- | ---------------------------------------------------------------------------------------- |
+| AC-RR-001 | The Sales / DM can complete and submit a request form with all required fields.          |
+| AC-RR-002 | Submitting the form changes the request status to Submitted.                             |
 | AC-RR-003 | The submitted request appears immediately in the Unit Manager's Incoming Requests queue. |
-| AC-RR-004 | Attempting to submit with a missing required field shows a validation error message. |
+| AC-RR-004 | Attempting to submit with a missing required field shows a validation error message.     |
 
 ### Candidate Proposal
 
-| ID | Criterion |
-|---|---|
-| AC-CP-001 | The Unit Manager can select at least one internal candidate from their unit. |
+| ID        | Criterion                                                                         |
+| --------- | --------------------------------------------------------------------------------- |
+| AC-CP-001 | The Unit Manager can select at least one internal candidate from their unit.      |
 | AC-CP-002 | A warning appears when the candidate's total allocation would exceed 100 percent. |
-| AC-CP-003 | The Unit Manager can add an external candidate URL to the same request. |
-| AC-CP-004 | Submitting candidates changes the request status to Candidates Proposed. |
+| AC-CP-003 | The Unit Manager can add an external candidate URL to the same request.           |
+| AC-CP-004 | Submitting candidates changes the request status to Candidates Proposed.          |
 
 ### Candidate Review
 
-| ID | Criterion |
-|---|---|
-| AC-CD-001 | The Sales / DM sees each proposed candidate with a shared profile link or external URL. |
-| AC-CD-002 | Approving a candidate changes the candidate status to Approved and updates the request status. |
+| ID        | Criterion                                                                                                  |
+| --------- | ---------------------------------------------------------------------------------------------------------- |
+| AC-CD-001 | The Sales / DM sees each proposed candidate with a shared profile link or external URL.                    |
+| AC-CD-002 | Approving a candidate changes the candidate status to Approved and updates the request status.             |
 | AC-CD-003 | Attempting to reject a candidate without entering a reason shows a validation error and blocks submission. |
-| AC-CD-004 | Rejecting a candidate with a reason changes the candidate status to Rejected and records the reason. |
+| AC-CD-004 | Rejecting a candidate with a reason changes the candidate status to Rejected and records the reason.       |
 
 ### Assignment History
 
-| ID | Criterion |
-|---|---|
+| ID        | Criterion                                                                                        |
+| --------- | ------------------------------------------------------------------------------------------------ |
 | AC-AH-001 | After a decision, an assignment history record appears on the employee's Resourcing History tab. |
-| AC-AH-002 | The assignment history record shows the correct request title, status, and feedback. |
-| AC-AH-003 | The assignment history section and project history section are separate. |
-| AC-AH-004 | Assignment history records are read-only. No edit action is available. |
+| AC-AH-002 | The assignment history record shows the correct request title, status, and feedback.             |
+| AC-AH-003 | The assignment history section and project history section are separate.                         |
+| AC-AH-004 | Assignment history records are read-only. No edit action is available.                           |
 
 ### QA Validation Scope
 
@@ -938,30 +995,37 @@ QA must not block MVP acceptance on back-end persistence, real integrations, pro
 ## 14. Demo Scenarios
 
 ### Scenario 1: Unit Manager Dashboard
+
 **Goal:** Show operational overview.
 **Steps:** Switch to Unit Manager → View dashboard widgets → Identify overdue action items → Navigate to Subordinates.
 
 ### Scenario 2: Find a Person and View Profile
+
 **Goal:** Show people management.
 **Steps:** Open Subordinates → Filter or sort → Click employee row → Review all profile tabs.
 
 ### Scenario 3: Custom List Inline Edit
+
 **Goal:** Show manager-owned tracking.
 **Steps:** Open Custom Lists → Select Bench tab → Edit Bench Status inline → Open employee profile → Confirm the value changed.
 
 ### Scenario 4: Create a Resourcing Request
+
 **Goal:** Show DM request creation.
 **Steps:** Switch to DM → Open Resourcing → New Request → Fill fields → Submit → Confirm status is Submitted.
 
 ### Scenario 5: Propose a Candidate
+
 **Goal:** Show Unit Manager fulfillment.
 **Steps:** Switch to Unit Manager → Incoming Requests → Open request → Select candidate → Review warnings → Generate shared profile → Add external URL → Submit.
 
 ### Scenario 6: Approve and Reject Candidates
+
 **Goal:** Show decision and history.
 **Steps:** Switch to DM → Open request → Open shared profile → Approve one candidate → Reject other with feedback → Switch to Unit Manager → Open employee profile → Verify assignment history.
 
 ### Scenario 7: Employee Self-Service
+
 **Goal:** Show employee profile access.
 **Steps:** Switch to Employee → My Profile → Edit phone → Update IDP status → Add certificate → Confirm save.
 
@@ -971,29 +1035,29 @@ QA must not block MVP acceptance on back-end persistence, real integrations, pro
 
 The following questions do not block BRD completion. Use the recommended default for implementation.
 
-| Question | Recommended Default |
-|---|---|
-| Can one request approve multiple candidates? | No. One approval fulfills the request in MVP. |
-| Can the Unit Manager edit request details? | No. The Unit Manager can only add proposals. |
-| Can the Sales / DM reopen a rejected request? | No. Create a new request. |
-| Should shared profiles expire? | No expiry in MVP. isActive flag only. |
-| Should rejection feedback be visible to the employee? | No. Manager and DM only. |
-| Should the employee see their own assignment history? | No in MVP. |
-| Should risks be shareable in a shared profile? | Yes, but excluded by default. |
-| Should custom fields be global or manager-owned? | Manager-owned for MVP. |
-| Should employee-uploaded certificates require manager approval? | No. Mark as Employee Uploaded automatically. |
-| Should approval update the employee's allocation record? | No. Record assignment history only. |
+| Question                                                        | Recommended Default                           |
+| --------------------------------------------------------------- | --------------------------------------------- |
+| Can one request approve multiple candidates?                    | No. One approval fulfills the request in MVP. |
+| Can the Unit Manager edit request details?                      | No. The Unit Manager can only add proposals.  |
+| Can the Sales / DM reopen a rejected request?                   | No. Create a new request.                     |
+| Should shared profiles expire?                                  | No expiry in MVP. isActive flag only.         |
+| Should rejection feedback be visible to the employee?           | No. Manager and DM only.                      |
+| Should the employee see their own assignment history?           | No in MVP.                                    |
+| Should risks be shareable in a shared profile?                  | Yes, but excluded by default.                 |
+| Should custom fields be global or manager-owned?                | Manager-owned for MVP.                        |
+| Should employee-uploaded certificates require manager approval? | No. Mark as Employee Uploaded automatically.  |
+| Should approval update the employee's allocation record?        | No. Record assignment history only.           |
 
 ---
 
-*End of Document*
+_End of Document_
 """
 
 os.makedirs('/mnt/uploads/docs/requirements', exist_ok=True)
 
 output_path = '/mnt/uploads/docs/requirements/BRD.md'
 with open(output_path, 'w', encoding='utf-8') as f:
-    f.write(brd_content)
+f.write(brd_content)
 
 file_size = os.path.getsize(output_path)
 line_count = brd_content.count('\n')
@@ -1007,7 +1071,7 @@ print()
 sections = [line.strip() for line in brd_content.split('\n') if line.strip().startswith('## ')]
 print("BRD Sections generated:")
 for s in sections:
-    print(f"  {s}")
+print(f" {s}")
 
 print()
 req_count = brd_content.count('| FR-')
@@ -1016,8 +1080,8 @@ as_count = brd_content.count('| AS-')
 ac_count = brd_content.count('| AC-')
 
 print(f"Requirement coverage summary:")
-print(f"  Functional Requirements (FR-*): {req_count}")
-print(f"  Business Rules (BR-*):          {br_count}")
-print(f"  Assumptions (AS-*):             {as_count}")
-print(f"  Acceptance Criteria (AC-*):     {ac_count}")
-print(f"  Total traceable items:          {req_count + br_count + as_count + ac_count}")
+print(f" Functional Requirements (FR-_): {req_count}")
+print(f" Business Rules (BR-_): {br*count}")
+print(f" Assumptions (AS-*): {as*count}")
+print(f" Acceptance Criteria (AC-*): {ac_count}")
+print(f" Total traceable items: {req_count + br_count + as_count + ac_count}")

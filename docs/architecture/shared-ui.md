@@ -12,7 +12,7 @@ Examples:
 
 | Feature widget             | Underlying primitive | Owner                                                              |
 | -------------------------- | -------------------- | ------------------------------------------------------------------ |
-| Role switcher dropdown     | `Select`             | `Select` in `shared/ui`; switcher in `features/roles`              |
+| Role switcher buttons      | `Button`             | `Button` in `shared/ui`; switcher in `features/roles`              |
 | Profile section navigation | `Tabs`               | `Tabs` in `shared/ui`; profile tabs in `features/employee-profile` |
 | Approve request action     | `Button`             | `Button` in `shared/ui`; panel in `features/resourcing`            |
 | Request status label       | `Badge`              | `Badge` in `shared/ui`; table cell in feature table                |
@@ -22,10 +22,11 @@ Examples:
 Before writing JSX for any interactive control, complete this check:
 
 1. **Name the primitive, not the feature widget.**
-   - "role switcher dropdown" → primitive: **Select**
-   - "profile sections" → primitive: **Tabs**
-   - "mark as available" → primitive: **Checkbox** or **Switch**
-   - "approve request" → primitive: **Button**
+   - "role switcher segmented buttons" -> primitive: **Button**
+   - "unit filter dropdown" -> primitive: **Select**
+   - "profile sections" -> primitive: **Tabs**
+   - "mark as available" -> primitive: **Checkbox** or **Switch**
+   - "approve request" -> primitive: **Button**
 
 2. **Search `src/shared/ui/`** for an existing component (see inventory below).
    - If it exists, import and use it. Do not restyle the same control inline.
@@ -50,16 +51,16 @@ Before writing JSX for any interactive control, complete this check:
 
 ```text
 Need a UI control
-  │
-  ├─ Already in src/shared/ui? ──yes──> Import and use it
-  │
-  └─ no
-       │
-       ├─ App-agnostic primitive (select, tabs, checkbox, dialog, …)?
-       │     └── Add to src/shared/ui once; theme per visual-theme.md
-       │
-       └─ Knows PMR domain (Person, Request, Role, Risk, …)?
-             └── Feature/page component built from shared primitives
+  |
+  +-- Already in src/shared/ui? -- yes --> Import and use it
+  |
+  +-- no
+       |
+       +-- App-agnostic primitive (select, tabs, checkbox, dialog, ...)?
+       |     +-- Add to src/shared/ui once; theme per visual-theme.md
+       |
+       +-- Knows PMR domain (Person, Request, Role, Risk, ...)?
+             +-- Feature/page component built from shared primitives
 ```
 
 ## What Belongs In `src/shared/ui`
@@ -94,15 +95,15 @@ Shared UI must:
 Keep these out of shared UI:
 
 - Components that encode business rules (`CandidateProposalPanel`, `RoleSwitcher`, `SubordinatesTable`).
-- Components tied to one page and not reusable as a primitive (`HomePageHeader`).
+- Components tied to one page and not reusable as a primitive (`ExamplePageHeader`).
 - One-off layout that only makes sense in a single feature screen.
-- Domain-specific badge/table cell renderers that know request/candidate/risk semantics — use shared `Badge`/`StatusPill` with props from the feature instead.
+- Domain-specific badge/table cell renderers that know request/candidate/risk semantics. Use shared `Badge`/`StatusPill` with props from the feature instead.
 
 If a component no longer references PMR domain concepts, move it from a feature to `src/shared/ui`.
 
 ## shadcn/ui Policy
 
-1. **Generic control needed** → add via shadcn CLI, then place under `src/shared/ui/{name}/` using project folder conventions (`ComponentName.tsx`, types, index).
+1. **Generic control needed** -> add via shadcn CLI, then place under `src/shared/ui/{name}/` using project folder conventions (`ComponentName.tsx`, types, index).
 2. **Do not import shadcn/Radix primitives directly from feature or page code** when a shared wrapper exists or should exist.
 3. **Theme customization** happens in the shared component (CVA variants, constants) and global CSS variables in `src/styles/`, not in feature files.
 4. **Features pass data and behavior only**: `value`, `onValueChange`, `placeholder`, `disabled`, `options`, `aria-label`, etc.
@@ -131,7 +132,7 @@ src/shared/ui/select/
 Do not implement these in `features/`, `pages/`, or `app/`:
 
 ```tsx
-// Styled native select in a feature — use shared Select instead
+// Styled native select in a feature - use shared Select instead
 <select className="h-9 w-full rounded-md border border-slate-200 ...">
   {options.map(...)}
 </select>
@@ -141,20 +142,20 @@ Do not implement these in `features/`, `pages/`, or `app/`:
   <ChevronDown />
 </div>
 
-// Inline tabs styling in a profile feature — use shared Tabs
+// Inline tabs styling in a profile feature - use shared Tabs
 <div className="flex gap-2 border-b">
   <button className={isActive ? 'border-b-2 border-blue-700 ...' : '...'}>
 ```
 
-Preferred pattern:
+Preferred Select pattern:
 
 ```tsx
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select'
 
-export const RoleSwitcher: FC<RoleSwitcherProps> = ({ value, options, onChange }) => (
+export const UnitFilter: FC<UnitFilterProps> = ({ value, options, onChange }) => (
   <Select value={value} onValueChange={onChange}>
-    <SelectTrigger aria-label="Active role">
-      <SelectValue placeholder="Select role" />
+    <SelectTrigger aria-label="Unit filter">
+      <SelectValue placeholder="Select unit" />
     </SelectTrigger>
     <SelectContent>
       {options.map((option) => (

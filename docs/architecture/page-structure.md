@@ -7,14 +7,14 @@ Use this guide when creating a new route-level page. Pages should compose featur
 Create pages under `src/pages/{page-name}`:
 
 ```text
-src/pages/home-page/
-  HomePage.tsx
-  HomePage.types.ts
+src/pages/example-page/
+  ExamplePage.tsx
+  ExamplePage.types.ts
   index.ts
   components/
-    home-page-header/
-      HomePageHeader.tsx
-      HomePageHeader.types.ts
+    example-page-header/
+      ExamplePageHeader.tsx
+      ExamplePageHeader.types.ts
       index.ts
 ```
 
@@ -52,24 +52,24 @@ A page should not:
 ## Basic Page Example
 
 ```text
-src/pages/home-page/
-  HomePage.tsx
-  HomePage.types.ts
+src/pages/example-page/
+  ExamplePage.tsx
+  ExamplePage.types.ts
   index.ts
 ```
 
 ```tsx
-// HomePage.types.ts
-export type HomePageProps = Record<string, never>
+// ExamplePage.types.ts
+export type ExamplePageProps = Record<string, never>
 ```
 
 ```tsx
-// HomePage.tsx
+// ExamplePage.tsx
 import type { FC } from 'react'
 import { Button } from '@/shared/ui/button'
-import type { HomePageProps } from './HomePage.types'
+import type { ExamplePageProps } from './ExamplePage.types'
 
-export const HomePage: FC<HomePageProps> = () => {
+export const ExamplePage: FC<ExamplePageProps> = () => {
   return (
     <main className="min-h-screen bg-slate-50 px-6 py-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-6">
@@ -92,8 +92,8 @@ export const HomePage: FC<HomePageProps> = () => {
 
 ```ts
 // index.ts
-export { HomePage } from './HomePage'
-export type { HomePageProps } from './HomePage.types'
+export { ExamplePage } from './ExamplePage'
+export type { ExamplePageProps } from './ExamplePage.types'
 ```
 
 ## Async Page Example
@@ -102,26 +102,26 @@ Page-level async state should be explicit and readable:
 
 ```tsx
 import type { FC } from 'react'
-import { HomeSummary } from '@/features/home/components/home-summary'
-import { useHomeSummaryQuery } from '@/features/home/hooks/use-home-summary-query'
-import type { HomePageProps } from './HomePage.types'
+import { ExampleSummary } from '@/features/example/components/example-summary'
+import { useExampleSummaryQuery } from '@/features/example/hooks/use-example-summary-query'
+import type { ExamplePageProps } from './ExamplePage.types'
 
-export const HomePage: FC<HomePageProps> = () => {
-  const { data, isPending, isError } = useHomeSummaryQuery()
+export const ExamplePage: FC<ExamplePageProps> = () => {
+  const { data, isPending, isError } = useExampleSummaryQuery()
 
   if (isPending) {
-    return <HomePageSkeleton />
+    return <ExamplePageSkeleton />
   }
 
   if (isError) {
-    return <HomePageError />
+    return <ExamplePageError />
   }
 
   if (data.items.length === 0) {
-    return <HomePageEmptyState />
+    return <ExamplePageEmptyState />
   }
 
-  return <HomeSummary summary={data} />
+  return <ExampleSummary summary={data} />
 }
 ```
 
@@ -132,26 +132,26 @@ Keep route paths and route registration centralized under `src/app`:
 ```text
 src/app/routes.ts
 src/app/router.tsx
-src/pages/home-page/
+src/pages/example-page/
 ```
 
 Declare path helpers in `src/app/routes.ts`:
 
 ```ts
-export const getHomePagePath = () => '/'
+export const getExamplePagePath = () => '/example'
 ```
 
 Register the route in `src/app/router.tsx`:
 
 ```tsx
 import { createBrowserRouter } from 'react-router'
-import { getHomePagePath } from './routes'
-import { HomePage } from '@/pages/home-page'
+import { getExamplePagePath } from './routes'
+import { ExamplePage } from '@/pages/example-page'
 
 export const router = createBrowserRouter([
   {
-    path: getHomePagePath(),
-    element: <HomePage />,
+    path: getExamplePagePath(),
+    element: <ExamplePage />,
   },
 ])
 ```
@@ -160,10 +160,10 @@ Use route helpers everywhere else:
 
 ```tsx
 import { Link } from 'react-router'
-import { getHomePagePath } from '@/app/routes'
+import { getExamplePagePath } from '@/app/routes'
 
-export const HomeLink: FC = () => {
-  return <Link to={getHomePagePath()}>Home</Link>
+export const ExampleLink: FC = () => {
+  return <Link to={getExamplePagePath()}>Example</Link>
 }
 ```
 
