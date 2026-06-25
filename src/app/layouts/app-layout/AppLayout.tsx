@@ -1,35 +1,79 @@
 import type { FC } from 'react'
+import { BriefcaseBusiness, LayoutDashboard, UserRound, UsersRound } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router'
-import { getHomePagePath } from '@/app/routes'
+import {
+  getDashboardPagePath,
+  getMyProfilePagePath,
+  getResourcingRequestsPagePath,
+} from '@/app/routes'
+import { RoleSwitcher } from '@/features/roles/components/role-switcher'
 import { cn } from '@/lib/utils'
+import { useRoleStore } from '@/store/role-store'
+import type { Role } from '@/types/role'
 
-const navigationItems = [{ label: 'Home', to: getHomePagePath() }] as const
+type NavigationItem = {
+  label: string
+  to: string
+  Icon: LucideIcon
+}
+
+const navigationItemsByRole: Record<Role, NavigationItem[]> = {
+  'unit-manager': [{ label: 'Dashboard', to: getDashboardPagePath(), Icon: LayoutDashboard }],
+  'delivery-manager': [
+    { label: 'Resourcing Requests', to: getResourcingRequestsPagePath(), Icon: BriefcaseBusiness },
+  ],
+  employee: [{ label: 'My Profile', to: getMyProfilePagePath(), Icon: UserRound }],
+}
 
 export const AppLayout: FC = () => {
+  const activeRole = useRoleStore((state) => state.activeRole)
+  const navigationItems = navigationItemsByRole[activeRole]
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950">
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-4">
-          <div>
-            <p className="text-xs font-semibold uppercase text-blue-700">People Operations</p>
-            <p className="text-lg font-semibold">People Management & Resourcing</p>
+      <header className="border-b border-slate-200 bg-white shadow-sm">
+        <div className="h-1 bg-slate-800" aria-hidden="true" />
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5 px-6 py-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <div
+              className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sky-700 ring-1 ring-sky-200"
+              aria-hidden="true"
+            >
+              <UsersRound className="size-5" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase text-sky-700">People Operations</p>
+              <p className="truncate text-lg font-semibold text-slate-950">
+                People Management & Resourcing
+              </p>
+            </div>
           </div>
-          <nav aria-label="Primary navigation" className="flex flex-wrap items-center gap-2">
-            {navigationItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  cn(
-                    'rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2',
-                    isActive ? 'bg-slate-900 text-white hover:bg-slate-900' : 'text-slate-700',
-                  )
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
+          <div className="flex flex-wrap items-center justify-end gap-4">
+            <RoleSwitcher />
+            <nav
+              aria-label="Primary navigation"
+              className="flex flex-wrap items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1"
+            >
+              {navigationItems.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    cn(
+                      'inline-flex h-9 items-center gap-2 rounded-md px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-700 focus-visible:ring-offset-2',
+                      isActive
+                        ? 'bg-slate-950 text-white shadow-sm hover:bg-slate-900'
+                        : 'text-slate-700 hover:bg-white hover:text-slate-950',
+                    )
+                  }
+                >
+                  <item.Icon className="size-4" aria-hidden="true" />
+                  {item.label}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
         </div>
       </header>
       <Outlet />

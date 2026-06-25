@@ -11,6 +11,7 @@ Before writing JSX for form fields, dropdowns, tabs, checkboxes, dialogs, or oth
 3. Search `src/shared/ui/` and reuse an existing primitive when available.
 4. If the primitive is app-agnostic and missing, add it to `src/shared/ui/` once — style it per `visual-theme.md` — then compose it from feature components.
 5. Do not duplicate control styling (`border`, `rounded-md`, focus rings, chevrons, tab active states) inside `features/`, `pages/`, or `app/`.
+6. Check the primitive-level interaction states before finishing: hover, active/selected, focus-visible, disabled, keyboard access, and cursor affordance.
 
 Feature components wire domain data and handlers. Shared UI owns generic control appearance and behavior.
 
@@ -304,6 +305,8 @@ export const PeopleTableSection: FC = () => {
 - Prefer shared UI from `src/shared/ui/` before adding new primitives; see `shared-ui.md`.
 - Prefer shadcn/ui as the base for new shared primitives, themed once in `src/shared/ui/`.
 - Do not implement styled generic controls inline in features when they belong in shared UI.
+- Do not patch generic behavior such as pointer cursors, disabled cursors, focus rings, hover states, selected states, or primary colors in only one feature component. Update the shared primitive when the behavior is app-agnostic.
+- When building segmented controls such as a role switcher, compose existing shared primitives first, verify the selected state is clear without relying on color alone, and keep the active treatment aligned with `visual-theme.md`.
 - Keep constants and utilities colocated only when they are component-specific.
 - Keep accessibility basics: semantic tags, form labels, button elements for actions, visible focus states, and keyboard-friendly controls.
 - After changes, run `npm run build`, `npm run lint`, and `npm run format:check`.

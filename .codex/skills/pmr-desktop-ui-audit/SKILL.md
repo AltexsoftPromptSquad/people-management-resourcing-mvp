@@ -1,11 +1,20 @@
 ---
 name: pmr-desktop-ui-audit
-description: Audit newly created or changed People Management & Resourcing MVP pages using the Chrome DevTools MCP in desktop view only. Use when Codex has built, modified, or reviewed React SPA pages, route screens, dashboards, forms, tables, or feature UI and needs to verify desktop layout, visual quality, accessibility basics, console/runtime errors, network failures, and realistic PMR usability before finishing.
+description: Audit People Management & Resourcing MVP pages using the Chrome DevTools MCP in desktop view only. Use only when the user explicitly requests a desktop UI audit, or after asking for and receiving permission to run it.
 ---
 
 # PMR Desktop UI Audit
 
-Use this skill after creating or changing visible PMR application pages. The audit is desktop-only and uses the Chrome DevTools MCP when it is available.
+Use this skill only when the user explicitly asks for a desktop UI audit, or after you ask for and receive permission to run it. Do not run this skill automatically after creating or changing visible PMR application pages.
+
+The audit is desktop-only and uses the Chrome DevTools MCP when it is available.
+
+## Permission Rule
+
+- Do not start a desktop UI audit automatically.
+- If the user explicitly asks for the audit, proceed.
+- If you believe an audit would be useful but the user did not ask for it, ask for permission before starting.
+- If the user says not to run audits automatically, honor that instruction and do not treat visible UI changes as an audit trigger.
 
 ## Scope
 
