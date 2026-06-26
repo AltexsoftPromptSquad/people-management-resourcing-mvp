@@ -4,6 +4,8 @@ This document defines how to build, place, and reuse UI primitives in `src/share
 
 For folder ownership and import direction, see `project-structure.md`. For component file layout, see `component-structure.md`. For colors, variants, and semantic tones, see `visual-theme.md`.
 
+For deciding when repeated filter, table, search, pagination, and state behavior should become shared UI or shared hooks, see `state-and-rendering.md`.
+
 ## Purpose
 
 `src/shared/ui` is the design-system layer of the app. Generic controls are styled once here and reused everywhere. Feature and page components compose shared primitives; they do not reimplement them inline.
@@ -82,6 +84,10 @@ Put app-agnostic primitives and composed UI building blocks here:
 **Data display**
 
 - `table` primitives, `data-table` wrapper, `page-header`, `section-header`
+
+**Filter and table composition**
+
+- `search-input`, `filter-bar`, `active-filters`, `pagination`, `table-toolbar`, `column-visibility-menu`
 
 Shared UI must:
 
@@ -179,24 +185,29 @@ Do not patch generic primitive behavior only at the feature level:
 
 Update this table when adding or removing shared primitives.
 
-| Component     | Path                          | Status    | Notes                         |
-| ------------- | ----------------------------- | --------- | ----------------------------- |
-| Button        | `src/shared/ui/button`        | Available | CVA variants; primary actions |
-| Badge         | `src/shared/ui/badge`         | Available | Semantic `tone` prop          |
-| ShadcnBadge   | `src/shared/ui/shadcn-badge`  | Available | shadcn-style badge wrapper    |
-| Select        | `src/shared/ui/select`        | Planned   | Add on first dropdown need    |
-| Input         | `src/shared/ui/input`         | Planned   | Forms, filters, search        |
-| Textarea      | `src/shared/ui/textarea`      | Planned   | Long text fields              |
-| Checkbox      | `src/shared/ui/checkbox`      | Planned   | Boolean form fields           |
-| Radio group   | `src/shared/ui/radio-group`   | Planned   | Single choice lists           |
-| Switch        | `src/shared/ui/switch`        | Planned   | Toggle settings               |
-| Tabs          | `src/shared/ui/tabs`          | Planned   | Section navigation            |
-| Dialog        | `src/shared/ui/dialog`        | Planned   | Confirmations, modals         |
-| Dropdown menu | `src/shared/ui/dropdown-menu` | Planned   | Action menus                  |
-| Table         | `src/shared/ui/table`         | Planned   | TanStack Table layouts        |
-| Empty state   | `src/shared/ui/empty-state`   | Available | List/table empty views        |
-| Error state   | `src/shared/ui/error-state`   | Available | Query error fallback          |
-| Loading state | `src/shared/ui/loading-state` | Available | Skeletons/spinners            |
+| Component      | Path                           | Status    | Notes                         |
+| -------------- | ------------------------------ | --------- | ----------------------------- |
+| Button         | `src/shared/ui/button`         | Available | CVA variants; primary actions |
+| Badge          | `src/shared/ui/badge`          | Available | Semantic `tone` prop          |
+| ShadcnBadge    | `src/shared/ui/shadcn-badge`   | Available | shadcn-style badge wrapper    |
+| Select         | `src/shared/ui/select`         | Planned   | Add on first dropdown need    |
+| Input          | `src/shared/ui/input`          | Planned   | Forms, filters, search        |
+| Textarea       | `src/shared/ui/textarea`       | Planned   | Long text fields              |
+| Checkbox       | `src/shared/ui/checkbox`       | Planned   | Boolean form fields           |
+| Radio group    | `src/shared/ui/radio-group`    | Planned   | Single choice lists           |
+| Switch         | `src/shared/ui/switch`         | Planned   | Toggle settings               |
+| Tabs           | `src/shared/ui/tabs`           | Planned   | Section navigation            |
+| Dialog         | `src/shared/ui/dialog`         | Planned   | Confirmations, modals         |
+| Dropdown menu  | `src/shared/ui/dropdown-menu`  | Planned   | Action menus                  |
+| Table          | `src/shared/ui/table`          | Planned   | TanStack Table layouts        |
+| Search input   | `src/shared/ui/search-input`   | Planned   | Debounced page/search filters |
+| Filter bar     | `src/shared/ui/filter-bar`     | Planned   | Reusable filter composition   |
+| Active filters | `src/shared/ui/active-filters` | Planned   | Applied filter chips/actions  |
+| Pagination     | `src/shared/ui/pagination`     | Planned   | Table/list pagination         |
+| Table toolbar  | `src/shared/ui/table-toolbar`  | Planned   | Search/filter/table actions   |
+| Empty state    | `src/shared/ui/empty-state`    | Available | List/table empty views        |
+| Error state    | `src/shared/ui/error-state`    | Available | Query error fallback          |
+| Loading state  | `src/shared/ui/loading-state`  | Available | Skeletons/spinners            |
 
 When you implement a planned primitive, change its status to **Available** and remove duplicate inline styling from features that should use it.
 
