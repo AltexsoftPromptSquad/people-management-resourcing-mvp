@@ -1,6 +1,11 @@
-import { BriefcaseBusiness, LayoutDashboard, UserRound } from 'lucide-react'
+import { BriefcaseBusiness, LayoutDashboard, UserRound, Users } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { getDashboardPagePath, getMyProfilePagePath, getResourcingRequestsPagePath } from './routes'
+import {
+  getDashboardPagePath,
+  getMyProfilePagePath,
+  getResourcingRequestsPagePath,
+  getSubordinatesPagePath,
+} from './routes'
 import type { Role } from '@/types/role'
 
 export type NavigationItem = {
@@ -10,7 +15,10 @@ export type NavigationItem = {
 }
 
 export const navigationItemsByRole: Record<Role, NavigationItem[]> = {
-  'unit-manager': [{ label: 'Dashboard', to: getDashboardPagePath(), Icon: LayoutDashboard }],
+  'unit-manager': [
+    { label: 'Dashboard', to: getDashboardPagePath(), Icon: LayoutDashboard },
+    { label: 'Subordinates', to: getSubordinatesPagePath(), Icon: Users },
+  ],
   'delivery-manager': [
     { label: 'Resourcing Requests', to: getResourcingRequestsPagePath(), Icon: BriefcaseBusiness },
   ],

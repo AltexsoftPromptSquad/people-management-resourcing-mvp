@@ -1,6 +1,6 @@
 # Current State
 
-**Last updated:** 2026-06-25
+**Last updated:** 2026-06-26
 
 ## Completed
 
@@ -19,9 +19,14 @@
 - [x] Phase 1 validation (see `phases/phase-1-foundation/VALIDATION.md`) and test artifacts generation
 - [x] Requirements (BRD) gaps analysis (see test/test_reports/requirements-test.md)
 
+- [x] Phase 2 planning docs created (`.planning/phases/phase-2-manager-dashboard-subordinates/`)
+- [x] Phase 2 implementation on `phase-2-impl/attempt-1`: dashboard widgets, action items, subordinates table, mock expansion
+
 ## Not Started
 
-- All BRD feature screens (dashboard, subordinates, profiles, resourcing, custom lists)
+- Phase 3 employee profile (managerial + personal views)
+- Phase 4 resourcing E2E workflow
+- Phase 5 custom lists and profile sharing polish
 
 ## Next Owner Actions
 
@@ -34,34 +39,32 @@
 
 ### Volodymyr (Development / JS implementation)
 
-1. Execute Phase 1 plan — role switcher, role-aware routes, mock data + seed data foundation.
-2. Align folder structure with `docs/architecture/` and AGENTS.md (`features/`, `mocks/`, `types/`).
-3. Wire TanStack Query provider and Zustand store for active role/persona.
-4. Keep routes thin; push domain logic into `src/features/`.
-5. Hand off to Ivan when Phase 1 implementation is ready for validation.
+1. Hand off Phase 2 implementation on `phase-2-impl/attempt-1` for validation.
+2. Support Ivan with widget count assumptions and subordinate filter/sort behavior notes.
+3. Begin Phase 3 only after Phase 2 validation sign-off.
 
 ### Ivan (QA / validation / test cases)
 
-1. Map BRD acceptance criteria (AC-) to Phase 1 validation checks in `VALIDATION.md`.
-2. Generate and run E2E Playwright tests for phase 1 validation
-3. Prepare test case skeletons per requirement group for Phases 2–4.
+1. Execute Phase 2 validation checklist in `phases/phase-2-manager-dashboard-subordinates/VALIDATION.md`.
+2. Verify dashboard widgets, action item ordering/overdue treatment, and subordinates table behavior.
+3. Confirm non-UM roles cannot access UM-only Phase 2 routes.
 
 ## Phase 1 Implementation Handoff
 
-| Item                             | Value                                                                                   |
-| -------------------------------- | --------------------------------------------------------------------------------------- |
-| Role switcher                    | Segmented buttons using the existing shared `Button` primitive                          |
-| Default role                     | Unit Manager                                                                            |
-| Unit Manager persona             | `persona-um-001` / Olena Kovalenko                                                      |
-| Sales / Delivery Manager persona | `persona-dm-001` / Marcus Reed                                                          |
-| Employee persona                 | `persona-employee-001` / Nazar Petrenko                                                 |
-| Root route                       | `/` redirects to the active role landing route                                          |
-| Unit Manager route               | `/dashboard`                                                                            |
-| Sales / Delivery Manager route   | `/resourcing/requests`                                                                  |
-| Employee route                   | `/my-profile`                                                                           |
-| Mock endpoints                   | `/api/personas`, `/api/units`, `/api/people`, `/api/skills`, `/api/resourcing/requests` |
-| Seed count                       | 75 people across 3 units; full 500+ seed deferred to Phase 2                            |
-| Deferred note                    | Persona names are placeholders until Carlos confirms final names                        |
+| Item                             | Value                                                                                                                                                                 |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Role switcher                    | Segmented buttons using the existing shared `Button` primitive                                                                                                        |
+| Default role                     | Unit Manager                                                                                                                                                          |
+| Unit Manager persona             | `persona-um-001` / Olena Kovalenko                                                                                                                                    |
+| Sales / Delivery Manager persona | `persona-dm-001` / Marcus Reed                                                                                                                                        |
+| Employee persona                 | `persona-employee-001` / Nazar Petrenko                                                                                                                               |
+| Root route                       | `/` redirects to the active role landing route                                                                                                                        |
+| Unit Manager route               | `/dashboard`                                                                                                                                                          |
+| Sales / Delivery Manager route   | `/resourcing/requests`                                                                                                                                                |
+| Employee route                   | `/my-profile`                                                                                                                                                         |
+| Mock endpoints                   | `/api/personas`, `/api/units`, `/api/people`, `/api/skills`, `/api/resourcing/requests`, `/api/dashboard/summary`, `/api/dashboard/action-items`, `/api/subordinates` |
+| Seed count                       | 540 people across 3 units                                                                                                                                             |
+| Deferred note                    | Persona names are placeholders until Carlos confirms final names                                                                                                      |
 
 ## Blockers / Open Decisions
 
