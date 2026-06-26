@@ -53,7 +53,7 @@ const unitAssignments = [
   { unitId: 'unit-data', managerId: 'person-manager-003' },
 ]
 
-const generatedPeople = Array.from({ length: 72 }, (_, index) => {
+const generatedPeople = Array.from({ length: 537 }, (_, index) => {
   const assignment = unitAssignments[index % unitAssignments.length]
 
   return createPerson({
