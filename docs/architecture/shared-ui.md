@@ -184,8 +184,8 @@ Update this table when adding or removing shared primitives.
 | Button        | `src/shared/ui/button`        | Available | CVA variants; primary actions |
 | Badge         | `src/shared/ui/badge`         | Available | Semantic `tone` prop          |
 | ShadcnBadge   | `src/shared/ui/shadcn-badge`  | Available | shadcn-style badge wrapper    |
-| Select        | `src/shared/ui/select`        | Planned   | Add on first dropdown need    |
-| Input         | `src/shared/ui/input`         | Planned   | Forms, filters, search        |
+| Select        | `src/shared/ui/select`        | Available | Native wrapper with PMR theme |
+| Input         | `src/shared/ui/input`         | Available | Forms, filters, search        |
 | Textarea      | `src/shared/ui/textarea`      | Planned   | Long text fields              |
 | Checkbox      | `src/shared/ui/checkbox`      | Planned   | Boolean form fields           |
 | Radio group   | `src/shared/ui/radio-group`   | Planned   | Single choice lists           |

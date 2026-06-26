@@ -1,6 +1,6 @@
 # Current State
 
-**Last updated:** 2026-06-25
+**Last updated:** 2026-06-26
 
 ## Completed
 
@@ -18,10 +18,17 @@
 
 - [x] Phase 1 validation (see `phases/phase-1-foundation/VALIDATION.md`) and test artifacts generation
 - [x] Requirements (BRD) gaps analysis (see test/test_reports/requirements-test.md)
+- [x] Phase 2 implementation completed: dashboard widgets/action-items/quick-links, subordinates table with filter+sort, profile stub route, expanded seed data and MSW endpoints
+
+## In Progress
+
+- [ ] Phase 2 validation sign-off in progress (`.planning/phases/phase-2-manager-dashboard-subordinates/VALIDATION.md`)
 
 ## Not Started
 
-- All BRD feature screens (dashboard, subordinates, profiles, resourcing, custom lists)
+- Full Phase 3 profile workflows
+- Full Phase 4 resourcing proposal/review workflows
+- Full Phase 5 custom list builder/share workflows
 
 ## Next Owner Actions
 
@@ -34,11 +41,9 @@
 
 ### Volodymyr (Development / JS implementation)
 
-1. Execute Phase 1 plan — role switcher, role-aware routes, mock data + seed data foundation.
-2. Align folder structure with `docs/architecture/` and AGENTS.md (`features/`, `mocks/`, `types/`).
-3. Wire TanStack Query provider and Zustand store for active role/persona.
-4. Keep routes thin; push domain logic into `src/features/`.
-5. Hand off to Ivan when Phase 1 implementation is ready for validation.
+1. Support Ivan during Phase 2 validation and fix defects found in checklist execution.
+2. Prepare Phase 3 implementation plan update after QA sign-off.
+3. Keep route pages thin and continue feature-first architecture as next phases expand.
 
 ### Ivan (QA / validation / test cases)
 
@@ -62,6 +67,33 @@
 | Mock endpoints                   | `/api/personas`, `/api/units`, `/api/people`, `/api/skills`, `/api/resourcing/requests` |
 | Seed count                       | 75 people across 3 units; full 500+ seed deferred to Phase 2                            |
 | Deferred note                    | Persona names are placeholders until Carlos confirms final names                        |
+
+## Phase 2 Implementation Handoff
+
+| Item                            | Value                                                                                                                      |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Unit Manager routes             | `/dashboard`, `/subordinates`, `/people/:personId`                                                                         |
+| Dashboard widgets               | Subordinates, Active Risks, Open Action Items, Active Resourcing Requests                                                  |
+| Dashboard quick links           | Subordinates, Custom Lists (placeholder), Resourcing Incoming (placeholder), Risks (placeholder)                           |
+| Subordinates interactions       | URL-backed filter + sort state (`search`, `position`, `grade`, `currentStatus`, `riskLevel`, `sortField`, `sortDirection`) |
+| Subordinates required columns   | Name, Position, Grade, Status, Risk                                                                                        |
+| Profile drilldown               | Row click opens `/people/:personId` Phase 3-ready stub                                                                     |
+| Mock endpoints                  | `/api/dashboard/summary`, `/api/dashboard/action-items`, `/api/subordinates`                                               |
+| Seed totals                     | 540 people total (3 persona anchors + 537 generated)                                                                       |
+| Unit Manager subordinate count  | 180 (records with `managerId=person-um-001`)                                                                               |
+| Expected dashboard summary (UM) | Derived from `/api/dashboard/summary?managerId=person-um-001`; values are deterministic and non-empty for the current seed |
+| Deferred work                   | Full profile tabs/editing, DM/UM resourcing workflows, custom list builder/share workflows                                 |
+
+## Validation Status
+
+- Build check: `npm run build` (pass)
+- Lint check: `npm run lint` (pass)
+- Format check: `npm run format:check` (pass)
+- Manual desktop validation: Pending Ivan QA run-through of Phase 2 validation checklist
+
+## Blockers / Open Decisions
+
+- No active implementation blockers for Phase 2 delivery.
 
 ## Blockers / Open Decisions
 

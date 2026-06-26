@@ -4,6 +4,16 @@ export const getHomePagePath = () => '/'
 
 export const getDashboardPagePath = () => '/dashboard'
 
+export const getSubordinatesPagePath = () => '/subordinates'
+
+export const getPersonProfilePagePath = (personId: string) => `/people/${personId}`
+
+export const getCustomListsPagePath = () => '/custom-lists'
+
+export const getRisksPagePath = () => '/risks'
+
+export const getResourcingIncomingPagePath = () => '/resourcing/incoming'
+
 export const getResourcingRequestsPagePath = () => '/resourcing/requests'
 
 export const getMyProfilePagePath = () => '/my-profile'

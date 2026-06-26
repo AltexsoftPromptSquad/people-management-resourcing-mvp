@@ -1,0 +1,1 @@
+export { SubordinatesTable } from './SubordinatesTable'
