@@ -2,6 +2,8 @@
 
 Use this guide when creating a new route-level page. Pages should compose feature components, shared UI, and data hooks without becoming large business-logic containers.
 
+For page state ownership, URL search params, query keys, filters, tables, and render stability, read `state-and-rendering.md` before implementing the behavior.
+
 ## Placement
 
 Create pages under `src/pages/{page-name}`:
@@ -48,6 +50,74 @@ A page should not:
 - Hard-code large mock datasets.
 - Own complex domain transformations.
 - Duplicate feature logic that belongs in `src/features/{domain}`.
+
+## URL Search Params And Query State
+
+For the full decision flow, see `state-and-rendering.md`.
+
+Pages may use URL search params for shareable view state such as active tab, selected unit, sort order, pagination, and applied filters. Do not wire every keystroke directly to URL params when that value also drives a TanStack Query key.
+
+Use this pattern for search and filter-heavy pages:
+
+1. Define typed default search params for the page.
+2. Read URL-synchronized params through `useSearchParamState(defaultParams)`.
+3. Keep editable draft controls in a page or feature hook while the user is typing.
+4. Debounce text-like draft values before writing them to URL params, or write them on submit/blur when that is the better UX.
+5. Build TanStack Query keys from URL-synchronized normalized params only.
+6. Pass URL-synchronized params to feature query hooks and local draft params to filter controls.
+
+This avoids request-per-character behavior while preserving shareable URLs.
+
+Recommended ownership:
+
+```text
+src/shared/hooks/
+  use-debounced-value.ts
+  use-throttled-callback.ts
+  use-search-param-state.ts
+```
+
+Use `src/shared/hooks` for app-agnostic timing and URL-state hooks. `useSearchParamState` owns one internal params state synchronized with the URL, plus parsing, serialization, default-value cleanup, and router replacement. Page or feature hooks own temporary draft filter state, apply buttons, debounced URL writes, and pagination reset behavior. Put domain-specific query hooks in `src/features/{domain}/hooks`.
+
+Avoid:
+
+```tsx
+const [searchParams, setSearchParams] = useSearchParams()
+
+const search = searchParams.get('search') ?? ''
+const query = usePeopleQuery({ search })
+
+const handleSearchChange = (value: string) => {
+  setSearchParams({ search: value })
+}
+```
+
+Prefer:
+
+```tsx
+const defaultPeopleSearchParams = {
+  search: '',
+  page: 1,
+  unitIds: [] as readonly string[],
+}
+
+const { params, setParams } = useSearchParamState(defaultPeopleSearchParams)
+const [draftParams, setDraftParams] = useState(params)
+
+const debouncedSearch = useDebouncedValue(draftParams.search, 300)
+
+useEffect(() => {
+  setDraftParams(params)
+}, [params])
+
+useEffect(() => {
+  setParams({ search: debouncedSearch, page: 1 })
+}, [debouncedSearch, setParams])
+
+const peopleQuery = usePeopleQuery(params)
+```
+
+When a page has an explicit **Apply filters** action, write URL params on that action instead of debouncing every field. Reset pagination to page 1 when writing search, filter, or sort changes that can change the result set.
 
 ## Basic Page Example
 

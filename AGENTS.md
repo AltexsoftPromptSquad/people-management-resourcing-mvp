@@ -22,6 +22,7 @@ Use `docs/architecture/` as the first stop for implementation decisions:
 - `component-structure.md` for component placement, file layout, exports, props, and async state rules.
 - `shared-ui.md` before adding or styling generic controls such as selects, tabs, checkboxes, inputs, dialogs, and buttons.
 - `page-structure.md` for route pages, page responsibilities, route registration, and path helpers.
+- `state-and-rendering.md` for page state ownership, URL search params, query keys, filters, tables, and render stability.
 - `visual-theme.md` for brand direction, palette, semantic colors, status tones, and accessibility color rules.
 
 When docs overlap, prefer the more specific document.
@@ -34,6 +35,7 @@ When docs overlap, prefer the more specific document.
 - Put generated or static mock data in `src/mocks/`, not UI components.
 - Do not hard-code large datasets directly inside components.
 - Keep route paths and route registration centralized in `src/app/routes.ts` and `src/app/router.tsx`.
+- Follow `docs/architecture/state-and-rendering.md` for URL params, filters, tables, query keys, and render behavior.
 - Read `import.meta.env` only in `src/config.ts`; import typed config values elsewhere.
 - Use TanStack Query for server-like data, even when backed by MSW.
 - Use Zustand only for local UI/application state that is not server-like data.
