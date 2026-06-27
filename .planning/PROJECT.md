@@ -10,15 +10,18 @@ All data is seeded or mocked. No real backend, authentication, or external integ
 
 ## Current Repo State
 
-| Area                            | Status                                                                |
-| ------------------------------- | --------------------------------------------------------------------- |
-| Tooling                         | Vite, React, TypeScript, Tailwind, ESLint, Prettier, Husky — in place |
-| BRD                             | Committed at `docs/requirements/# Business Requirements Document.md`  |
-| App shell                       | Partial — `AppLayout`, header nav, home page                          |
-| Routing                         | Basic — React Router with `/` home route and fallback redirect        |
-| UI primitives                   | Early — Button, Badge, shadcn-badge; `components.json` present        |
-| Feature modules                 | Not started — no `features/`, `mocks/`, domain types                  |
-| Role switcher / mock data layer | Not started                                                           |
+| Area                            | Status                                                                              |
+| ------------------------------- | ----------------------------------------------------------------------------------- |
+| Tooling                         | Vite, React, TypeScript, Tailwind, ESLint, Prettier, Husky — in place               |
+| BRD                             | v1.1 — Remediated 2026-06-27. See `docs/requirements/DECISION-LOG.md`               |
+| App shell                       | Phase 1 complete — `AppLayout`, role-aware nav, role switcher, route guards         |
+| Routing                         | Phase 1 complete — React Router, role-landing redirects, fallback                   |
+| UI primitives                   | Phase 1 — Button, Badge, EmptyState, ErrorState, LoadingState                       |
+| Feature modules                 | Phase 1 — `features/roles` only; remaining features not started                     |
+| Role switcher / mock data layer | Phase 1 complete — MSW, personas, 75 employees seeded                               |
+| Domain types                    | Phase 1 — Person (partial), Persona, Unit, Skill, Role, ResourcingRequest (partial) |
+
+**Next:** Phase 2 — Manager Dashboard & Subordinates. See `.planning/phases/phase-2-dashboard/PLAN.md`.
 
 ## Key Roles (Product)
 
@@ -51,4 +54,6 @@ This MVP supports an **AI-first delivery experiment**:
 - Requirements are traceable by ID (FR-_, BR-_, AC-\*) for test case and task generation
 - Demo-ready seeded personas: 1 UM, 1 DM, 1 Employee; 500+ employees, 10 requests, 3 custom lists
 
-**Source of truth:** `docs/requirements/# Business Requirements Document.md` (v1.0, Draft — Ready for Review)
+**Source of truth:** `docs/requirements/# Business Requirements Document.md` (v1.1, Active — Remediated 2026-06-27)
+
+**Decision log:** `docs/requirements/DECISION-LOG.md` — audit findings G-1, G-2, G-3, D-1, D-3, A-2, A-3 resolved.
