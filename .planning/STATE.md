@@ -11,6 +11,7 @@
 - [x] Tooling — ESLint, Prettier, Husky, lint-staged
 - [x] Architecture docs — `page-structure.md`, `component-structure.md`, `project-structure.md`, `shared-ui.md`, `visual-theme.md`
 - [x] Architecture docs — `data-models.md`, `ux-requirements.md`, `ux-behavior.md`, `feature-rules.md` (added 2026-06-27)
+- [x] **Carlos Nunes approved all 7 DECISION-LOG decisions** (G-1, G-2, G-3, D-1, D-3, A-2, A-3) — 2026-06-27
 
 - [x] Phase 1 SRS created (`.planning/phases/phase-1-foundation/SRS.md`)
 - [x] Phase 1 implementation plan created (`.planning/phases/phase-1-foundation/IMPLEMENTATION_PLAN.md`)
@@ -21,23 +22,17 @@
 
 ## In Progress
 
-- [ ] **Carlos approval** of remediation decisions (see `docs/requirements/DECISION-LOG.md`)
+- [ ] Phase 2 — Manager Dashboard & Subordinates (**unblocked — ready to begin**)
 
 ## Not Started
 
-- Phase 2 — Manager Dashboard & Subordinates (ready to begin pending Carlos approval)
 - All BRD feature screens: dashboard, subordinates, profiles, resourcing, custom lists
 
 ## Next Owner Actions
 
 ### Carlos (Product / BA / BRD)
 
-**Required to unblock Phase 2 implementation:**
-
-1. **Review and approve** `docs/requirements/DECISION-LOG.md` — 7 proposed decisions (G-1, G-2, G-3, D-1, D-3, A-2, A-3). All have recommended defaults; Carlos confirms or amends.
-2. **Confirm persona names** — Olena Kovalenko (UM), Marcus Reed (DM), Nazar Petrenko (Employee) — accept placeholders or provide final names.
-3. **Confirm BRD v1.1 scope** — review new entities (Feedback, ScheduledLeave) and updated FRs in BRD.
-4. **Phase 2 start approval** — once items 1–3 are confirmed, Phase 2 implementation may begin.
+No pending actions. All decisions approved 2026-06-27.
 
 ### Volodymyr (Development / JS implementation)
 
@@ -69,22 +64,22 @@
 
 ## Blockers / Open Decisions
 
-| Item                                        | Status                             | Notes                                                             |
-| ------------------------------------------- | ---------------------------------- | ----------------------------------------------------------------- |
-| **G-1 Feedbacks entity**                    | Proposed — pending Carlos approval | BRD v1.1 updated: entity §8.16, FR-EP-013–014, AC-EP-006–007      |
-| **G-2 Scheduled Leaves entity**             | Proposed — pending Carlos approval | BRD v1.1 updated: entity §8.17, FR-EP-003 updated, AC-EP-008      |
-| **G-3 Custom list filter-field builder**    | Proposed — pending Carlos approval | BRD v1.1 updated: FR-CL-002 updated, AC-CL-006                    |
-| **D-1 One approval per request**            | Proposed — pending Carlos approval | AS-009 confirmed; §15 updated                                     |
-| **D-3 No auto project history creation**    | Proposed — pending Carlos approval | BR-006 confirmed; §15 updated                                     |
-| **A-2 Skills in scope**                     | Proposed — pending Carlos approval | Confirmed in BRD v1.1; no BRD changes needed                      |
-| **A-3 Candidate fit warnings in scope**     | Proposed — pending Carlos approval | FR-CP-006–008, BR-012–014 confirmed; leave warning wired to §8.17 |
-| **Persona names**                           | Proposed — pending Carlos approval | Placeholders: Olena Kovalenko, Marcus Reed, Nazar Petrenko        |
-| Employee sees assignment history            | Decided — No                       | AS-011                                                            |
-| Shared profile expiry                       | Decided — No                       | AS-006                                                            |
-| Desktop-only validation                     | Decided                            | BRD AS-016                                                        |
-| Shared custom lists are view-only           | Decided                            | BR-008/009                                                        |
-| BRD trailing non-markdown content           | Resolved — removed 2026-06-27      | [N-4] Python script trimmed from BRD file                         |
-| Git auth for push/pull in some environments | Environment                        | Use local terminal or SSH                                         |
+| Item                                        | Status                              | Notes                                                             |
+| ------------------------------------------- | ----------------------------------- | ----------------------------------------------------------------- |
+| **G-1 Feedbacks entity**                    | Approved — Carlos Nunes, 2026-06-27 | BRD v1.1 updated: entity §8.16, FR-EP-013–014, AC-EP-006–007      |
+| **G-2 Scheduled Leaves entity**             | Approved — Carlos Nunes, 2026-06-27 | BRD v1.1 updated: entity §8.17, FR-EP-003 updated, AC-EP-008      |
+| **G-3 Custom list filter-field builder**    | Approved — Carlos Nunes, 2026-06-27 | BRD v1.1 updated: FR-CL-002 updated, AC-CL-006                    |
+| **D-1 One approval per request**            | Approved — Carlos Nunes, 2026-06-27 | AS-009 confirmed; §15 updated                                     |
+| **D-3 No auto project history creation**    | Approved — Carlos Nunes, 2026-06-27 | BR-006 confirmed; §15 updated                                     |
+| **A-2 Skills in scope**                     | Approved — Carlos Nunes, 2026-06-27 | Confirmed in BRD v1.1; no BRD changes needed                      |
+| **A-3 Candidate fit warnings in scope**     | Approved — Carlos Nunes, 2026-06-27 | FR-CP-006–008, BR-012–014 confirmed; leave warning wired to §8.17 |
+| **Persona names**                           | Approved — Carlos Nunes, 2026-06-27 | Placeholders: Olena Kovalenko, Marcus Reed, Nazar Petrenko        |
+| Employee sees assignment history            | Decided — No                        | AS-011                                                            |
+| Shared profile expiry                       | Decided — No                        | AS-006                                                            |
+| Desktop-only validation                     | Decided                             | BRD AS-016                                                        |
+| Shared custom lists are view-only           | Decided                             | BR-008/009                                                        |
+| BRD trailing non-markdown content           | Resolved — removed 2026-06-27       | [N-4] Python script trimmed from BRD file                         |
+| Git auth for push/pull in some environments | Environment                         | Use local terminal or SSH                                         |
 
 ## Chosen Approach
 

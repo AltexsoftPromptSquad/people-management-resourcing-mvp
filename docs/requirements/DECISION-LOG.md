@@ -1,12 +1,12 @@
 # Decision Log — BRD Remediation
 
-**Date:** 2026-06-27  
-**Author:** Product Owner / BA / Solution Architect — Remediation Pass  
-**Status:** Proposed for Approval  
-**Triggered by:** Engineering audit findings from Phase 1 validation (Ivan Zamikula, 2026-06-25)  
+**Date:** 2026-06-27
+**Author:** Product Owner / BA / Solution Architect — Remediation Pass
+**Status:** Approved — Carlos Nunes, 2026-06-27
+**Triggered by:** Engineering audit findings from Phase 1 validation (Ivan Zamikula, 2026-06-25)
 **Source of truth consulted:** Test Assignment PDF, BRD v1.0, `.planning/` docs, Phase 1 validation report
 
-All decisions in this log are proposed and require stakeholder sign-off (Carlos Nunes, Product Owner) before Phase 2+ implementation proceeds. Approved items are incorporated into BRD v1.1.
+All decisions in this log have been reviewed and approved by Carlos Nunes (Product Owner, 2026-06-27). BRD v1.1 is the active source of truth. Phase 2 implementation may proceed.
 
 ---
 
@@ -28,7 +28,7 @@ All decisions in this log are proposed and require stakeholder sign-off (Carlos 
 - Seed data: minimum 2 feedback entries per demo employee
 - Phase: 3 (Employee Profile)
 
-**Status:** Proposed for Approval
+**Status:** Approved — Carlos Nunes, 2026-06-27
 
 ---
 
@@ -50,7 +50,7 @@ All decisions in this log are proposed and require stakeholder sign-off (Carlos 
 - Seed data: minimum 1 scheduled leave per demo employee
 - Phase: 3 for display; Phase 4 for leave-overlap warning
 
-**Status:** Proposed for Approval
+**Status:** Approved — Carlos Nunes, 2026-06-27
 
 ---
 
@@ -69,7 +69,7 @@ All decisions in this log are proposed and require stakeholder sign-off (Carlos 
 - New AC: AC-CL-006
 - Phase: 5 (Custom Lists)
 
-**Status:** Proposed for Approval
+**Status:** Approved — Carlos Nunes, 2026-06-27
 
 ---
 
@@ -88,7 +88,7 @@ All decisions in this log are proposed and require stakeholder sign-off (Carlos 
 - §15 updated from "Open Question" to "Confirmed Decision"
 - No code or model changes required
 
-**Status:** Proposed for Approval
+**Status:** Approved — Carlos Nunes, 2026-06-27
 
 ---
 
@@ -108,7 +108,7 @@ All decisions in this log are proposed and require stakeholder sign-off (Carlos 
 - §7.2 Out of Scope entry confirmed
 - No code or model changes required beyond current state
 
-**Status:** Proposed for Approval
+**Status:** Approved — Carlos Nunes, 2026-06-27
 
 ---
 
@@ -129,7 +129,7 @@ All decisions in this log are proposed and require stakeholder sign-off (Carlos 
 - Status changes from "Needs confirm" to "Confirmed" in STATE.md
 - Seed data requirement: skills for all demo employees (minimum 3 per person)
 
-**Status:** Proposed for Approval
+**Status:** Approved — Carlos Nunes, 2026-06-27
 
 ---
 
@@ -149,18 +149,18 @@ All decisions in this log are proposed and require stakeholder sign-off (Carlos 
 - Status changes from "Needs confirm" to "Confirmed" in STATE.md
 - Seed data requirement: at least 1 leave-overlap scenario, 1 over-allocation scenario, and 1 high-risk candidate in seeded data
 
-**Status:** Proposed for Approval
+**Status:** Approved — Carlos Nunes, 2026-06-27
 
 ---
 
 ## Summary Table
 
-| ID  | Decision                              | BRD Action                                 | Phase Impact | Status                |
-| --- | ------------------------------------- | ------------------------------------------ | ------------ | --------------------- |
-| G-1 | Feedbacks — Include in MVP            | New entity §8.16, FR-EP-013–014, new ACs   | Phase 3      | Proposed for Approval |
-| G-2 | Scheduled Leaves — Include in MVP     | New entity §8.17, update FR-EP-003, new AC | Phase 3–4    | Proposed for Approval |
-| G-3 | Filter-field builder — Include in MVP | Update FR-CL-002, new AC                   | Phase 5      | Proposed for Approval |
-| D-1 | One approval per request — Confirmed  | §15 confirmed, AS-009 stays                | No change    | Proposed for Approval |
-| D-3 | No auto project history — Confirmed   | BR-006 stays, §15 confirmed                | No change    | Proposed for Approval |
-| A-2 | Skills — Confirmed in scope           | §8.3 confirmed, remove uncertain status    | No change    | Proposed for Approval |
-| A-3 | Candidate warnings — Confirmed        | BR-012–014 confirmed, FR-CP-007 wired      | Phase 4      | Proposed for Approval |
+| ID  | Decision                              | BRD Action                                 | Phase Impact | Status                              |
+| --- | ------------------------------------- | ------------------------------------------ | ------------ | ----------------------------------- |
+| G-1 | Feedbacks — Include in MVP            | New entity §8.16, FR-EP-013–014, new ACs   | Phase 3      | Approved — Carlos Nunes, 2026-06-27 |
+| G-2 | Scheduled Leaves — Include in MVP     | New entity §8.17, update FR-EP-003, new AC | Phase 3–4    | Approved — Carlos Nunes, 2026-06-27 |
+| G-3 | Filter-field builder — Include in MVP | Update FR-CL-002, new AC                   | Phase 5      | Approved — Carlos Nunes, 2026-06-27 |
+| D-1 | One approval per request — Confirmed  | §15 confirmed, AS-009 stays                | No change    | Approved — Carlos Nunes, 2026-06-27 |
+| D-3 | No auto project history — Confirmed   | BR-006 stays, §15 confirmed                | No change    | Approved — Carlos Nunes, 2026-06-27 |
+| A-2 | Skills — Confirmed in scope           | §8.3 confirmed, remove uncertain status    | No change    | Approved — Carlos Nunes, 2026-06-27 |
+| A-3 | Candidate warnings — Confirmed        | BR-012–014 confirmed, FR-CP-007 wired      | Phase 4      | Approved — Carlos Nunes, 2026-06-27 |
