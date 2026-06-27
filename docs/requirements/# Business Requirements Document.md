@@ -9,10 +9,11 @@
 | Field             | Value                                                                    |
 | ----------------- | ------------------------------------------------------------------------ |
 | Document Name     | Business Requirements Document — People Management & Resourcing MVP      |
-| Version           | 1.0                                                                      |
-| Status            | Draft — Ready for Review                                                 |
+| Version           | 1.1                                                                      |
+| Status            | Active — Remediated 2026-06-27                                           |
 | Author            | Business Analyst                                                         |
 | Date              | 2026-05-18                                                               |
+| Remediation Date  | 2026-06-27                                                               |
 | Intended Audience | QA Engineers, Developers, AI Agents, Product Managers, Demo Stakeholders |
 
 **Source Materials:**
@@ -21,6 +22,8 @@
 - AI-First Delivery Experiment Guidelines
 - PMR_MVP_Domain_Research_Notes_Iteration_2.md (Iteration 2)
 - People_Management_Resourcing_MVP_Deep_Research.md
+
+**Remediation source:** `docs/requirements/DECISION-LOG.md` (2026-06-27) — closes audit findings G-1, G-2, G-3, D-1, D-3, A-2, A-3.
 
 ---
 
@@ -377,7 +380,7 @@ The following items are reasonable next steps after the MVP is delivered but are
 
 - Belongs to one Unit.
 - Managed by one Unit Manager.
-- Has zero or more Skills, Risks, Action Items, Documents, Assignment History Items, Project History Items.
+- Has zero or more Skills, Risks, Action Items, Documents, Feedback Items, Scheduled Leave Items, Assignment History Items, Project History Items.
 - Has zero or more Custom Field Values.
 
 ---
@@ -594,6 +597,52 @@ The following items are reasonable next steps after the MVP is delivered but are
 
 ---
 
+### 8.16 Feedback
+
+**Purpose:** A written HR or performance observation entered by a manager about an employee. Distinct from resourcing rejection feedback (which lives on Candidate Proposal / Assignment History).
+
+**Key Fields:**
+
+- id, personId, authorId, type (HR Note, Performance, General), content, createdAt, visibility (Manager Only, Shareable)
+
+**Key Relationships:**
+
+- Belongs to one Person (the subject employee).
+- Author is a Unit Manager (Person).
+
+**Ownership and Visibility:**
+
+- Created and owned by the Unit Manager for their direct subordinates.
+- Visible only in the Managerial Profile view under the Feedbacks tab.
+- Never shown in the Employee personal view.
+- `visibility = Shareable` feedback may be included in a shared profile only if the manager explicitly selects the Feedbacks section when generating the shared view.
+- Sensitive sections policy: Feedbacks are excluded from shared profiles by default (FR-PS-003).
+
+---
+
+### 8.17 Scheduled Leave
+
+**Purpose:** Records a planned absence for an employee. Used to display current leave status on the managerial profile and to detect candidate availability conflicts during resourcing.
+
+**Key Fields:**
+
+- id, personId, leaveType (Annual, Sick, Parental, Other), startDate, endDate, status (Confirmed, Tentative), notes
+
+**Key Relationships:**
+
+- Belongs to one Person.
+- Referenced by FR-CP-007 and BR-014 for leave-overlap detection during candidate proposal.
+
+**Ownership and Visibility:**
+
+- Created by the Unit Manager for their subordinates.
+- Visible in the Managerial Profile Overview tab as a read-only list.
+- Not shown in the Employee personal view.
+- Not included in shared profiles by default (consistent with contact info exclusion policy).
+- Available to the candidate proposal system for overlap detection against request start date and duration.
+
+---
+
 ## 9. Core User Journeys
 
 ### 9.1 Unit Manager Journey
@@ -602,7 +651,7 @@ The following items are reasonable next steps after the MVP is delivered but are
 2. Dashboard loads with widgets: subordinate count, active risks, open action items, and active resourcing requests.
 3. Manager reviews overdue action items directly on the dashboard.
 4. Manager clicks on a subordinate name to open their profile.
-5. Manager reviews profile sections: overview, skills, risks, action items, documents, assignment history, and project history.
+5. Manager reviews profile sections: overview (including scheduled leaves), skills, risks, action items, feedbacks, documents, assignment history, and project history.
 6. Manager returns to the dashboard and navigates to Resourcing > Incoming Requests.
 7. Manager opens an assigned request and reviews requirements.
 8. Manager views suggested internal candidates from their unit.
@@ -719,20 +768,22 @@ The following items are reasonable next steps after the MVP is delivered but are
 
 ### 10.4 Employee Profile — Managerial View
 
-| ID        | Requirement                                                                                                                                                                |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| FR-EP-001 | The profile must display a header with: photo placeholder or initials, full name, position, grade, unit, manager, current status, availability percentage, and risk badge. |
-| FR-EP-002 | The profile must provide the following tabs: Overview, Job and Skills, Risks and Action Items, Resourcing History, Project History, and Documents and IDP.                 |
-| FR-EP-003 | The Overview tab must show: basic info, contact info, employment type, English level, current status, and summary counts for risks and open action items.                  |
-| FR-EP-004 | The Job and Skills tab must show: position, grade, unit, manager, hire date, employment status, work location, English level, and a skills list.                           |
-| FR-EP-005 | The Risks and Action Items tab must show: current risk level, risk history, risk notes, and all open and closed action items.                                              |
-| FR-EP-006 | The Resourcing History tab must show: all assignment attempts with request name, proposed date, proposed by, reviewed by, decision, and feedback.                          |
-| FR-EP-007 | The Project History tab must show: all projects the person worked on with project name, role, start date, end date, and allocation percentage.                             |
-| FR-EP-008 | Assignment history and project history must never be displayed in the same tab or mixed in the same list.                                                                  |
-| FR-EP-009 | The Documents and IDP tab must show: a list of document records with name, type, visibility, and upload date, plus the IDP status.                                         |
-| FR-EP-010 | A custom fields section must display all custom field values for the employee.                                                                                             |
-| FR-EP-011 | HR and management notes must only be visible in the managerial view and must not appear in the Employee personal view.                                                     |
-| FR-EP-012 | The Unit Manager must be able to edit: English level, IDP reference, skills, management notes, and custom field values for their direct subordinates.                      |
+| ID        | Requirement                                                                                                                                                                                               |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-EP-001 | The profile must display a header with: photo placeholder or initials, full name, position, grade, unit, manager, current status, availability percentage, and risk badge.                                |
+| FR-EP-002 | The profile must provide the following tabs: Overview, Job and Skills, Risks and Action Items, Feedbacks, Resourcing History, Project History, and Documents and IDP.                                     |
+| FR-EP-003 | The Overview tab must show: basic info, contact info, employment type, English level, current status, summary counts for risks and open action items, and a list of upcoming and recent scheduled leaves. |
+| FR-EP-004 | The Job and Skills tab must show: position, grade, unit, manager, hire date, employment status, work location, English level, and a skills list.                                                          |
+| FR-EP-005 | The Risks and Action Items tab must show: current risk level, risk history, risk notes, and all open and closed action items.                                                                             |
+| FR-EP-006 | The Resourcing History tab must show: all assignment attempts with request name, proposed date, proposed by, reviewed by, decision, and feedback.                                                         |
+| FR-EP-007 | The Project History tab must show: all projects the person worked on with project name, role, start date, end date, and allocation percentage.                                                            |
+| FR-EP-008 | Assignment history and project history must never be displayed in the same tab or mixed in the same list.                                                                                                 |
+| FR-EP-009 | The Documents and IDP tab must show: a list of document records with name, type, visibility, and upload date, plus the IDP status.                                                                        |
+| FR-EP-010 | A custom fields section must display all custom field values for the employee.                                                                                                                            |
+| FR-EP-011 | HR and management notes must only be visible in the managerial view and must not appear in the Employee personal view.                                                                                    |
+| FR-EP-012 | The Unit Manager must be able to edit: English level, IDP reference, skills, management notes, and custom field values for their direct subordinates.                                                     |
+| FR-EP-013 | The Feedbacks tab must display a chronological list of feedback entries for the employee, each showing: type, content, author name, and date.                                                             |
+| FR-EP-014 | The Unit Manager must be able to add a new feedback entry for a subordinate from the Feedbacks tab. The entry must include type (required) and content (required).                                        |
 
 ---
 
@@ -752,35 +803,35 @@ The following items are reasonable next steps after the MVP is delivered but are
 
 ### 10.6 Custom Lists
 
-| ID        | Requirement                                                                                                                              |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| FR-CL-001 | The Unit Manager must be able to define custom fields with the following types: Text, Number, Date, Single Select, and Boolean.          |
-| FR-CL-002 | The Unit Manager must be able to create a named custom list by selecting an employee filter and choosing which fields appear as columns. |
-| FR-CL-003 | Each saved custom list must appear as a separate tab on the Custom Lists page.                                                           |
-| FR-CL-004 | Custom field columns in a custom list must be inline-editable. Clicking a cell enters edit mode.                                         |
-| FR-CL-005 | Saving a cell edit in a custom list must update the corresponding custom field value on the employee profile.                            |
-| FR-CL-006 | System field columns (name, position, grade, status) must be read-only in custom list tables.                                            |
-| FR-CL-007 | Boolean fields must display as a checkbox or toggle in edit mode.                                                                        |
-| FR-CL-008 | Single select fields must display a dropdown in edit mode showing only configured options.                                               |
-| FR-CL-009 | Date fields must use one consistent date format throughout the application.                                                              |
-| FR-CL-010 | The Unit Manager must be able to share a custom list with selected other managers.                                                       |
-| FR-CL-011 | A manager receiving a shared list must be able to view the list but cannot change its structure.                                         |
-| FR-CL-012 | The three seeded demo lists (Bench, Booked, Needs Conversation) must be pre-loaded and immediately usable.                               |
-| FR-CL-013 | An empty custom list must display a useful empty state message.                                                                          |
+| ID        | Requirement                                                                                                                                                                                                                                                                       |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-CL-001 | The Unit Manager must be able to define custom fields with the following types: Text, Number, Date, Single Select, and Boolean.                                                                                                                                                   |
+| FR-CL-002 | The Unit Manager must be able to create a named custom list by selecting an employee filter, choosing which fields appear as columns, and designating each custom field as a filter, a column, or both. Any custom field may serve as a filter, a column, or both simultaneously. |
+| FR-CL-003 | Each saved custom list must appear as a separate tab on the Custom Lists page.                                                                                                                                                                                                    |
+| FR-CL-004 | Custom field columns in a custom list must be inline-editable. Clicking a cell enters edit mode.                                                                                                                                                                                  |
+| FR-CL-005 | Saving a cell edit in a custom list must update the corresponding custom field value on the employee profile.                                                                                                                                                                     |
+| FR-CL-006 | System field columns (name, position, grade, status) must be read-only in custom list tables.                                                                                                                                                                                     |
+| FR-CL-007 | Boolean fields must display as a checkbox or toggle in edit mode.                                                                                                                                                                                                                 |
+| FR-CL-008 | Single select fields must display a dropdown in edit mode showing only configured options.                                                                                                                                                                                        |
+| FR-CL-009 | Date fields must use one consistent date format throughout the application.                                                                                                                                                                                                       |
+| FR-CL-010 | The Unit Manager must be able to share a custom list with selected other managers.                                                                                                                                                                                                |
+| FR-CL-011 | A manager receiving a shared list must be able to view the list but cannot change its structure.                                                                                                                                                                                  |
+| FR-CL-012 | The three seeded demo lists (Bench, Booked, Needs Conversation) must be pre-loaded and immediately usable.                                                                                                                                                                        |
+| FR-CL-013 | An empty custom list must display a useful empty state message.                                                                                                                                                                                                                   |
 
 ---
 
 ### 10.7 Profile Sharing
 
-| ID        | Requirement                                                                                                                                                                                                                       |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| FR-PS-001 | The Unit Manager must be able to generate a shared profile view for any of their direct subordinates.                                                                                                                             |
-| FR-PS-002 | The shared profile generation screen must allow the manager to select which sections to include, with per-section control.                                                                                                        |
-| FR-PS-003 | Sensitive sections must be excluded by default when a shared profile is generated. Sensitive sections include: contact info, emergency contact, risks, manager notes, HR notes, feedback, documents, and sensitive custom fields. |
-| FR-PS-004 | The generated shared profile must be accessible via a unique link token.                                                                                                                                                          |
-| FR-PS-005 | The shared profile view must display only the sections the manager explicitly selected.                                                                                                                                           |
-| FR-PS-006 | A shared profile must include by default: name, position, grade, skills, English level, availability, and project history.                                                                                                        |
-| FR-PS-007 | Opening a shared profile link must not require login.                                                                                                                                                                             |
+| ID        | Requirement                                                                                                                                                                                                                                          |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-PS-001 | The Unit Manager must be able to generate a shared profile view for any of their direct subordinates.                                                                                                                                                |
+| FR-PS-002 | The shared profile generation screen must allow the manager to select which sections to include, with per-section control.                                                                                                                           |
+| FR-PS-003 | Sensitive sections must be excluded by default when a shared profile is generated. Sensitive sections include: contact info, emergency contact, risks, manager notes, HR notes, feedbacks, scheduled leaves, documents, and sensitive custom fields. |
+| FR-PS-004 | The generated shared profile must be accessible via a unique link token.                                                                                                                                                                             |
+| FR-PS-005 | The shared profile view must display only the sections the manager explicitly selected.                                                                                                                                                              |
+| FR-PS-006 | A shared profile must include by default: name, position, grade, skills, English level, availability, and project history.                                                                                                                           |
+| FR-PS-007 | Opening a shared profile link must not require login.                                                                                                                                                                                                |
 
 ---
 
@@ -808,7 +859,7 @@ The following items are reasonable next steps after the MVP is delivered but are
 | FR-CP-004 | The Unit Manager must be able to add one external candidate entry by providing a valid URL.                                                                    |
 | FR-CP-005 | The Unit Manager must be able to add a free-text fit summary for each proposed internal candidate.                                                             |
 | FR-CP-006 | The system must display a warning when a candidate's current allocation plus the requested workload would exceed 100 percent.                                  |
-| FR-CP-007 | The system must display a warning when a candidate has a scheduled leave that overlaps the request start date or duration.                                     |
+| FR-CP-007 | The system must display a warning when a candidate has a ScheduledLeave record whose date range overlaps the request start date or duration period.            |
 | FR-CP-008 | The system must display a warning when a candidate has a risk level of High or Critical.                                                                       |
 | FR-CP-009 | Warnings must be visible to the Unit Manager but must not prevent proposal submission.                                                                         |
 | FR-CP-010 | The Unit Manager must be able to generate a shared profile for each internal candidate before submitting.                                                      |
@@ -848,23 +899,24 @@ The following items are reasonable next steps after the MVP is delivered but are
 
 ## 11. Business Rules
 
-| ID     | Rule                                                                                                                                                  |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| BR-001 | A Unit Manager can only propose candidates from their own unit.                                                                                       |
-| BR-002 | A Sales / DM cannot browse employee profiles directly. They may only view a shared profile provided by a Unit Manager or an external URL.             |
-| BR-003 | An Employee can only view and edit their own profile.                                                                                                 |
-| BR-004 | Rejection of a candidate always requires a written reason.                                                                                            |
-| BR-005 | Sensitive profile sections are excluded from shared profiles by default and must be explicitly enabled.                                               |
-| BR-006 | Assignment history and project history are always separate. A successful assignment does not automatically create a project history entry in the MVP. |
-| BR-007 | Custom list inline editing applies only to custom field columns. System fields are always read-only in lists.                                         |
-| BR-008 | A manager who receives a shared custom list can view the list but cannot change its structure or settings.                                            |
-| BR-009 | Shared managers of a custom list can only edit custom field values for employees they manage directly.                                                |
-| BR-010 | A request in Draft or Submitted status can be cancelled by the creator.                                                                               |
-| BR-011 | A candidate in Proposed status can be withdrawn by the proposing Unit Manager before a decision is made.                                              |
-| BR-012 | A candidate with a High or Critical risk level may be proposed but must trigger a visible warning.                                                    |
-| BR-013 | A candidate whose allocation plus the requested workload would exceed 100 percent must trigger a visible warning.                                     |
-| BR-014 | A candidate with a scheduled leave overlapping the request period must trigger a visible warning.                                                     |
-| BR-015 | External candidates require a valid URL. The URL must be validated as a non-empty, properly formatted URL.                                            |
+| ID     | Rule                                                                                                                                                                                        |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BR-001 | A Unit Manager can only propose candidates from their own unit.                                                                                                                             |
+| BR-002 | A Sales / DM cannot browse employee profiles directly. They may only view a shared profile provided by a Unit Manager or an external URL.                                                   |
+| BR-003 | An Employee can only view and edit their own profile.                                                                                                                                       |
+| BR-004 | Rejection of a candidate always requires a written reason.                                                                                                                                  |
+| BR-005 | Sensitive profile sections are excluded from shared profiles by default and must be explicitly enabled.                                                                                     |
+| BR-006 | Assignment history and project history are always separate. A successful assignment does not automatically create a project history entry in the MVP.                                       |
+| BR-007 | Custom list inline editing applies only to custom field columns. System fields are always read-only in lists.                                                                               |
+| BR-008 | A manager who receives a shared custom list can view the list but cannot change its structure or settings.                                                                                  |
+| BR-009 | Shared managers of a custom list can only edit custom field values for employees they manage directly.                                                                                      |
+| BR-010 | A request in Draft or Submitted status can be cancelled by the creator.                                                                                                                     |
+| BR-011 | A candidate in Proposed status can be withdrawn by the proposing Unit Manager before a decision is made.                                                                                    |
+| BR-012 | A candidate with a High or Critical risk level may be proposed but must trigger a visible warning.                                                                                          |
+| BR-013 | A candidate whose allocation plus the requested workload would exceed 100 percent must trigger a visible warning.                                                                           |
+| BR-014 | A candidate with a ScheduledLeave record whose date range overlaps the request period must trigger a visible warning. The ScheduledLeave entity is the authoritative source for this check. |
+| BR-015 | External candidates require a valid URL. The URL must be validated as a non-empty, properly formatted URL.                                                                                  |
+| BR-016 | Feedback entries on the managerial profile are visible only to the Unit Manager. They are excluded from shared profiles by default and are never shown in the Employee personal view.       |
 
 ---
 
@@ -923,23 +975,27 @@ The following items are reasonable next steps after the MVP is delivered but are
 
 ### Employee Profile
 
-| ID        | Criterion                                                                                    |
-| --------- | -------------------------------------------------------------------------------------------- |
-| AC-EP-001 | The profile header shows name, position, grade, unit, availability, and risk badge.          |
-| AC-EP-002 | All required tabs are present and display relevant content.                                  |
-| AC-EP-003 | The Resourcing History tab and Project History tab are separate and show different data.     |
-| AC-EP-004 | Manager-only notes are not visible in the Employee personal view.                            |
-| AC-EP-005 | Editing a custom field value in the profile saves and displays the updated value after save. |
+| ID        | Criterion                                                                                                                                       |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| AC-EP-001 | The profile header shows name, position, grade, unit, availability, and risk badge.                                                             |
+| AC-EP-002 | All required tabs are present and display relevant content.                                                                                     |
+| AC-EP-003 | The Resourcing History tab and Project History tab are separate and show different data.                                                        |
+| AC-EP-004 | Manager-only notes are not visible in the Employee personal view.                                                                               |
+| AC-EP-005 | Editing a custom field value in the profile saves and displays the updated value after save.                                                    |
+| AC-EP-006 | The Feedbacks tab shows at least two seeded feedback entries, each displaying type, content, author name, and date.                             |
+| AC-EP-007 | The Feedbacks tab has an "Add Feedback" action that, when used, adds the new entry to the list immediately without a page reload.               |
+| AC-EP-008 | The Overview tab shows a Scheduled Leaves section with at least one seeded leave entry displaying leave type, start date, end date, and status. |
 
 ### Custom Lists
 
-| ID        | Criterion                                                                             |
-| --------- | ------------------------------------------------------------------------------------- |
-| AC-CL-001 | Three seeded custom list tabs are present on the Custom Lists page.                   |
-| AC-CL-002 | Clicking a cell in a custom field column enters inline edit mode.                     |
-| AC-CL-003 | Saving an inline edit updates the custom field value visible on the employee profile. |
-| AC-CL-004 | System field columns cannot be edited in the list.                                    |
-| AC-CL-005 | A shared list appears in the receiving manager's Custom Lists tabs.                   |
+| ID        | Criterion                                                                                                                                                                                  |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| AC-CL-001 | Three seeded custom list tabs are present on the Custom Lists page.                                                                                                                        |
+| AC-CL-002 | Clicking a cell in a custom field column enters inline edit mode.                                                                                                                          |
+| AC-CL-003 | Saving an inline edit updates the custom field value visible on the employee profile.                                                                                                      |
+| AC-CL-004 | System field columns cannot be edited in the list.                                                                                                                                         |
+| AC-CL-005 | A shared list appears in the receiving manager's Custom Lists tabs.                                                                                                                        |
+| AC-CL-006 | When creating or editing a custom list, the manager can designate each custom field as a filter, a column, or both, and the list respects this designation when rendering filter controls. |
 
 ### Profile Sharing
 
@@ -1031,57 +1087,29 @@ QA must not block MVP acceptance on back-end persistence, real integrations, pro
 
 ---
 
-## 15. Open Questions
+## 15. Confirmed Decisions
 
-The following questions do not block BRD completion. Use the recommended default for implementation.
+The following decisions were finalised during BRD remediation (2026-06-27). See `docs/requirements/DECISION-LOG.md` for full rationale. No further stakeholder input is required for implementation.
 
-| Question                                                        | Recommended Default                           |
-| --------------------------------------------------------------- | --------------------------------------------- |
-| Can one request approve multiple candidates?                    | No. One approval fulfills the request in MVP. |
-| Can the Unit Manager edit request details?                      | No. The Unit Manager can only add proposals.  |
-| Can the Sales / DM reopen a rejected request?                   | No. Create a new request.                     |
-| Should shared profiles expire?                                  | No expiry in MVP. isActive flag only.         |
-| Should rejection feedback be visible to the employee?           | No. Manager and DM only.                      |
-| Should the employee see their own assignment history?           | No in MVP.                                    |
-| Should risks be shareable in a shared profile?                  | Yes, but excluded by default.                 |
-| Should custom fields be global or manager-owned?                | Manager-owned for MVP.                        |
-| Should employee-uploaded certificates require manager approval? | No. Mark as Employee Uploaded automatically.  |
-| Should approval update the employee's allocation record?        | No. Record assignment history only.           |
+| Decision                                                               | Confirmed Value                                                                | Decision Log Ref |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------- |
+| Can one request approve multiple candidates?                           | No. One approval fulfills the request in MVP.                                  | D-1              |
+| Can the Unit Manager edit request details?                             | No. The Unit Manager can only add proposals.                                   | —                |
+| Can the Sales / DM reopen a rejected request?                          | No. Create a new request.                                                      | —                |
+| Should shared profiles expire?                                         | No expiry in MVP. `isActive` flag only.                                        | —                |
+| Should rejection feedback be visible to the employee?                  | No. Manager and DM only.                                                       | —                |
+| Should the employee see their own assignment history?                  | No in MVP.                                                                     | —                |
+| Should risks be shareable in a shared profile?                         | Yes, but excluded by default.                                                  | —                |
+| Should custom fields be global or manager-owned?                       | Manager-owned for MVP.                                                         | —                |
+| Should employee-uploaded certificates require manager approval?        | No. Mark as Employee Uploaded automatically.                                   | —                |
+| Should approval update the employee's allocation record?               | No. Record assignment history only.                                            | D-3              |
+| Does a successful assignment create a project history entry?           | No. `convertedToProject` flag only. Seeded data only.                          | D-3              |
+| Are Skills in MVP scope?                                               | Yes. Skill entity, Job & Skills tab, required skills on requests are in scope. | A-2              |
+| Are candidate fit warnings (allocation, leave overlap, risk) in scope? | Yes. FR-CP-006–008 and BR-012–014 are confirmed scope.                         | A-3              |
+| Are Feedbacks in MVP scope?                                            | Yes. Feedback entity, Feedbacks tab on profile, manager can add entries.       | G-1              |
+| Are Scheduled Leaves in MVP scope?                                     | Yes. ScheduledLeave entity, Overview tab section, leave-overlap warning.       | G-2              |
+| Does the custom list builder support filter/column/both fields?        | Yes. FR-CL-002 updated to require this capability.                             | G-3              |
 
 ---
 
 _End of Document_
-"""
-
-os.makedirs('/mnt/uploads/docs/requirements', exist_ok=True)
-
-output_path = '/mnt/uploads/docs/requirements/BRD.md'
-with open(output_path, 'w', encoding='utf-8') as f:
-f.write(brd_content)
-
-file_size = os.path.getsize(output_path)
-line_count = brd_content.count('\n')
-
-print(f"BRD successfully written to: {output_path}")
-print(f"File size: {file_size:,} bytes ({file_size/1024:.1f} KB)")
-print(f"Line count: {line_count:,} lines")
-print(f"Character count: {len(brd_content):,} characters")
-print()
-
-sections = [line.strip() for line in brd_content.split('\n') if line.strip().startswith('## ')]
-print("BRD Sections generated:")
-for s in sections:
-print(f" {s}")
-
-print()
-req_count = brd_content.count('| FR-')
-br_count = brd_content.count('| BR-')
-as_count = brd_content.count('| AS-')
-ac_count = brd_content.count('| AC-')
-
-print(f"Requirement coverage summary:")
-print(f" Functional Requirements (FR-_): {req_count}")
-print(f" Business Rules (BR-_): {br*count}")
-print(f" Assumptions (AS-*): {as*count}")
-print(f" Acceptance Criteria (AC-*): {ac_count}")
-print(f" Total traceable items: {req_count + br_count + as_count + ac_count}")

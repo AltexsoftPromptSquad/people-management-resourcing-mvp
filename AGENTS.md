@@ -23,6 +23,10 @@ Use `docs/architecture/` as the first stop for implementation decisions:
 - `shared-ui.md` before adding or styling generic controls such as selects, tabs, checkboxes, inputs, dialogs, and buttons.
 - `page-structure.md` for route pages, page responsibilities, route registration, and path helpers.
 - `visual-theme.md` for brand direction, palette, semantic colors, status tones, and accessibility color rules.
+- `data-models.md` for complete entity definitions, field lists, relationships, visibility rules, and seed data requirements.
+- `ux-requirements.md` for required page sections, mandatory UI states (loading/empty/error), navigation expectations, and consistency rules.
+- `ux-behavior.md` for exact interaction sequences, component state machines, copy strings (empty states, toasts, confirm dialogs, validation errors), timing values, keyboard behavior, and accessibility checklist. Read before implementing any interactive feature.
+- `feature-rules.md` for feature boundaries, what may be shared, what must not be duplicated, business logic placement, and state management rules.
 
 When docs overlap, prefer the more specific document.
 
@@ -55,6 +59,9 @@ For PR reviews, prioritize P0/P1 issues:
 - Missing loading, empty, or error states for async UI.
 - Duplicate generic control styling instead of shared UI primitives.
 - Backend/server/db additions outside frontend-only MVP scope.
+- Sensitive data (feedbacks, risks, manager notes, scheduled leaves) visible in Employee personal view or shared profile when not explicitly selected.
+- Assignment history and project history mixed in the same view.
+- Candidate warnings missing or incorrectly blocking submission.
 - Failing build, lint, or format checks.
 
 Do not nitpick formatting, naming, or style unless it causes a real bug, scalability issue, or maintainability risk.

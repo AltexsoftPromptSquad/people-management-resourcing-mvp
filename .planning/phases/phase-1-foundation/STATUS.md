@@ -2,7 +2,7 @@
 
 **Owner:** Volodymyr  
 **Last updated:** 2026-06-25  
-**Status:** Implemented, pending final validation/sign-off
+**Status:** Phase 1 Complete — Validated 2026-06-25
 
 ## Maintenance Rule
 
@@ -31,14 +31,13 @@ Any agent or engineer working on Phase 1 must update this file when implementati
 - `npm.cmd run lint` passed.
 - Production build with `VITE_ENABLE_MOCKS=true` passed.
 - `public/mockServiceWorker.js` is included in `dist/` after build.
+- Phase 1 Playwright validation passed — all 20 checks. See `tests/test_reports/phase1/phase-1-playwright-validation.md`.
 
 ## Still To Do
 
-- Run Phase 1 validation checklist in `VALIDATION.md`.
-- Confirm persona names with Carlos or formally accept placeholders.
-- Validate demo deployment on Vercel with `VITE_ENABLE_MOCKS=true`.
-- Resolve existing repository-wide `format:check` failures in older markdown files, or agree they are outside Phase 1 implementation scope.
-- Ivan to sign off Phase 1 validation before Phase 2 starts.
+- Carlos confirmation of persona names (Olena Kovalenko, Marcus Reed, Nazar Petrenko) — pending
+- BRD remediation approval — Carlos reviewing `docs/requirements/DECISION-LOG.md`
+- Phase 2 implementation — ready to begin once Carlos sign-off is received
 
 ## Notes
 
