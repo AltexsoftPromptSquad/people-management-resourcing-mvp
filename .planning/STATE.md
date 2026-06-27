@@ -10,7 +10,7 @@
 - [x] App scaffold — Vite + React + TypeScript + Tailwind
 - [x] Tooling — ESLint, Prettier, Husky, lint-staged
 - [x] Architecture docs — `page-structure.md`, `component-structure.md`, `project-structure.md`, `shared-ui.md`, `visual-theme.md`
-- [x] Architecture docs — `data-models.md`, `ux-requirements.md`, `feature-rules.md` (added 2026-06-27)
+- [x] Architecture docs — `data-models.md`, `ux-requirements.md`, `ux-behavior.md`, `feature-rules.md` (added 2026-06-27)
 
 - [x] Phase 1 SRS created (`.planning/phases/phase-1-foundation/SRS.md`)
 - [x] Phase 1 implementation plan created (`.planning/phases/phase-1-foundation/IMPLEMENTATION_PLAN.md`)
