@@ -10,7 +10,7 @@ export const getMyProfilePagePath = () => '/my-profile'
 
 export const getSubordinatesPagePath = () => '/subordinates'
 
-export const getPersonProfilePagePath = (personId: string) => `/people/${personId}`
+export const getEmployeeProfilePagePath = (personId: string) => `/people/${personId}`
 
 export const getCustomListsPagePath = () => '/custom-lists'
 

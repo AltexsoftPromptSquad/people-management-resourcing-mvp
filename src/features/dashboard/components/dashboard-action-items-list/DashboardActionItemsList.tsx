@@ -1,5 +1,6 @@
 import type { FC } from 'react'
-import { Badge } from '@/shared/ui/badge'
+import { EmptyState } from '@/shared/ui/empty-state'
+import { StatusPill } from '@/shared/ui/status-pill'
 import type { DashboardActionItem } from '@/types/dashboard'
 
 export type DashboardActionItemsListProps = {
@@ -23,7 +24,11 @@ export const DashboardActionItemsList: FC<DashboardActionItemsListProps> = ({ ac
       </header>
 
       {actionItems.length === 0 ? (
-        <p className="px-5 py-8 text-sm text-slate-600">No open action items.</p>
+        <EmptyState
+          className="m-5"
+          title="No open action items"
+          description="Your manager action list is currently clear."
+        />
       ) : (
         <ul className="divide-y divide-slate-200">
           {actionItems.map((item) => (
@@ -36,9 +41,9 @@ export const DashboardActionItemsList: FC<DashboardActionItemsListProps> = ({ ac
                 <p className="mt-1 text-sm text-slate-600">Assignee: {item.assigneeName}</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <Badge tone={item.isOverdue ? 'danger' : 'neutral'}>
+                <StatusPill tone={item.isOverdue ? 'danger' : 'neutral'}>
                   {item.isOverdue ? 'Overdue' : item.status}
-                </Badge>
+                </StatusPill>
                 <span className="text-sm text-slate-600">Due {formatDueDate(item.dueDate)}</span>
               </div>
             </li>

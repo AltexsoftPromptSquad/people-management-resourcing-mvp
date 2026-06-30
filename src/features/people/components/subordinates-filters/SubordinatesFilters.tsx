@@ -1,13 +1,15 @@
 import type { FC } from 'react'
 import { Input } from '@/shared/ui/input'
 import { Select } from '@/shared/ui/select'
-import type { SubordinatesFilter } from '@/types/subordinates-query'
 import type { CurrentProjectStatus, RiskLevel } from '@/types/person'
+import type { SubordinatesFilter } from '@/types/subordinates-query'
 
 export type SubordinatesFiltersProps = {
   filter: SubordinatesFilter
+  draftSearch: string
   positions: string[]
   grades: string[]
+  onDraftSearchChange: (value: string) => void
   onFilterChange: (nextFilter: SubordinatesFilter) => void
 }
 
@@ -23,8 +25,10 @@ const riskOptions: RiskLevel[] = ['None', 'Low', 'Medium', 'High', 'Critical']
 
 export const SubordinatesFilters: FC<SubordinatesFiltersProps> = ({
   filter,
+  draftSearch,
   positions,
   grades,
+  onDraftSearchChange,
   onFilterChange,
 }) => {
   return (
@@ -32,11 +36,9 @@ export const SubordinatesFilters: FC<SubordinatesFiltersProps> = ({
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-medium text-slate-700">Search</span>
         <Input
-          value={filter.search ?? ''}
+          value={draftSearch}
           placeholder="Search by name"
-          onChange={(event) =>
-            onFilterChange({ ...filter, search: event.target.value || undefined })
-          }
+          onChange={(event) => onDraftSearchChange(event.target.value)}
         />
       </label>
 

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { getSubordinates } from '../api/get-subordinates'
 import { queryKeys } from '@/lib/query/query-keys'
 import type { SubordinatesFilter, SubordinatesSort } from '@/types/subordinates-query'
@@ -17,5 +17,6 @@ export const useSubordinatesQuery = (
         ...sort,
       }),
     enabled: Boolean(managerId),
+    placeholderData: keepPreviousData,
   })
 }

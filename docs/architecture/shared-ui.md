@@ -190,8 +190,8 @@ Update this table when adding or removing shared primitives.
 | Button         | `src/shared/ui/button`         | Available | CVA variants; primary actions |
 | Badge          | `src/shared/ui/badge`          | Available | Semantic `tone` prop          |
 | ShadcnBadge    | `src/shared/ui/shadcn-badge`   | Available | shadcn-style badge wrapper    |
-| Select         | `src/shared/ui/select`         | Planned   | Add on first dropdown need    |
-| Input          | `src/shared/ui/input`          | Planned   | Forms, filters, search        |
+| Select         | `src/shared/ui/select`         | Available | Shared native select wrapper  |
+| Input          | `src/shared/ui/input`          | Available | Forms, filters, search        |
 | Textarea       | `src/shared/ui/textarea`       | Planned   | Long text fields              |
 | Checkbox       | `src/shared/ui/checkbox`       | Planned   | Boolean form fields           |
 | Radio group    | `src/shared/ui/radio-group`    | Planned   | Single choice lists           |
@@ -200,6 +200,10 @@ Update this table when adding or removing shared primitives.
 | Dialog         | `src/shared/ui/dialog`         | Planned   | Confirmations, modals         |
 | Dropdown menu  | `src/shared/ui/dropdown-menu`  | Planned   | Action menus                  |
 | Table          | `src/shared/ui/table`          | Planned   | TanStack Table layouts        |
+| Data table     | `src/shared/ui/data-table`     | Available | Shared table container chrome |
+| Page header    | `src/shared/ui/page-header`    | Available | Reusable page intro/header    |
+| Status pill    | `src/shared/ui/status-pill`    | Available | Badge-based status display    |
+| Skeleton       | `src/shared/ui/skeleton`       | Available | Shared pulse placeholders     |
 | Search input   | `src/shared/ui/search-input`   | Planned   | Debounced page/search filters |
 | Filter bar     | `src/shared/ui/filter-bar`     | Planned   | Reusable filter composition   |
 | Active filters | `src/shared/ui/active-filters` | Planned   | Applied filter chips/actions  |

@@ -6,14 +6,15 @@ const managerId = 'person-um-001'
 const platformPeople = people.filter(
   (person) => person.unitId === 'unit-platform' && person.id !== managerId,
 )
+const baseDueDate = Date.UTC(2026, 6, 15, 9, 0, 0)
 
-const subordinateActionItems: ActionItem[] = platformPeople.slice(0, 24).map((person, index) =>
+const subordinateActionItems: ActionItem[] = platformPeople.slice(0, 26).map((person, index) =>
   createActionItem({
     index: index + 1,
     personId: person.id,
     ownerId: managerId,
     assigneeId: managerId,
-    dueDate: new Date(Date.now() + (index - 12) * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(baseDueDate + (index - 12) * 24 * 60 * 60 * 1000).toISOString(),
     status: index % 5 === 0 ? 'Done' : 'Open',
   }),
 )
@@ -24,7 +25,7 @@ const managerOwnActionItems: ActionItem[] = [
     personId: platformPeople[0]?.id ?? 'person-employee-001',
     ownerId: managerId,
     assigneeId: managerId,
-    dueDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(baseDueDate - 5 * 24 * 60 * 60 * 1000).toISOString(),
     status: 'Open',
   }),
   createActionItem({
@@ -32,7 +33,7 @@ const managerOwnActionItems: ActionItem[] = [
     personId: platformPeople[1]?.id ?? 'person-employee-001',
     ownerId: managerId,
     assigneeId: managerId,
-    dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(baseDueDate - 2 * 24 * 60 * 60 * 1000).toISOString(),
     status: 'Open',
   }),
   createActionItem({
@@ -40,7 +41,7 @@ const managerOwnActionItems: ActionItem[] = [
     personId: platformPeople[2]?.id ?? 'person-employee-001',
     ownerId: managerId,
     assigneeId: managerId,
-    dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(baseDueDate + 2 * 24 * 60 * 60 * 1000).toISOString(),
     status: 'In Progress',
   }),
   createActionItem({
@@ -48,7 +49,7 @@ const managerOwnActionItems: ActionItem[] = [
     personId: platformPeople[3]?.id ?? 'person-employee-001',
     ownerId: managerId,
     assigneeId: managerId,
-    dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(baseDueDate + 7 * 24 * 60 * 60 * 1000).toISOString(),
     status: 'Open',
   }),
   createActionItem({
@@ -56,7 +57,7 @@ const managerOwnActionItems: ActionItem[] = [
     personId: platformPeople[4]?.id ?? 'person-employee-001',
     ownerId: managerId,
     assigneeId: managerId,
-    dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(baseDueDate + 14 * 24 * 60 * 60 * 1000).toISOString(),
     status: 'Open',
   }),
 ]

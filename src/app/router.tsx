@@ -7,7 +7,7 @@ import {
   getFallbackRoutePath,
   getHomePagePath,
   getMyProfilePagePath,
-  getPersonProfilePagePath,
+  getEmployeeProfilePagePath,
   getResourcingIncomingPagePath,
   getResourcingRequestsPagePath,
   getRisksPagePath,
@@ -15,8 +15,8 @@ import {
 } from './routes'
 import { CustomListsPage } from '@/pages/custom-lists-page'
 import { DashboardPage } from '@/pages/dashboard-page'
+import { EmployeeProfilePage } from '@/pages/employee-profile-page'
 import { MyProfilePage } from '@/pages/my-profile-page'
-import { PersonProfilePage } from '@/pages/person-profile-page'
 import { ResourcingIncomingPage } from '@/pages/resourcing-incoming-page'
 import { ResourcingRequestsPage } from '@/pages/resourcing-requests-page'
 import { RisksPage } from '@/pages/risks-page'
@@ -48,10 +48,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: getPersonProfilePagePath(':personId'),
+        path: getEmployeeProfilePagePath(':personId'),
         element: (
           <RoleRoute allowedRole="unit-manager">
-            <PersonProfilePage />
+            <EmployeeProfilePage />
           </RoleRoute>
         ),
       },
