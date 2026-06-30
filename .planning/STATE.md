@@ -1,6 +1,6 @@
 # Current State
 
-**Last updated:** 2026-06-27
+**Last updated:** 2026-06-30
 
 ## Completed
 
@@ -19,14 +19,17 @@
 - [x] Phase 1 validation passed (Ivan Zamikula, 2026-06-25) — all 20 functional/browser/a11y checks, build/lint pass
 - [x] Requirements (BRD) gaps analysis (`tests/test_reports/requirements-test.md`)
 - [x] Phase 2 plan created (`.planning/phases/phase-2-dashboard/PLAN.md`)
+- [x] Phase 2 SRS created (`.planning/phases/phase-2-dashboard/SRS.md`)
+- [x] Phase 2 implementation plan created (`.planning/phases/phase-2-dashboard/IMPLEMENTATION_PLAN.md`)
+- [x] Phase 2 implemented (manager dashboard, subordinates flow, expanded mocks, query boundaries)
 
 ## In Progress
 
-- [ ] Phase 2 — Manager Dashboard & Subordinates (**unblocked — ready to begin**)
+- [ ] Phase 2 validation and final acceptance sign-off
 
 ## Not Started
 
-- All BRD feature screens: dashboard, subordinates, profiles, resourcing, custom lists
+- Phase 3+ feature depth: full employee profile, resourcing candidate workflows, custom lists, profile sharing, and later MVP screens
 
 ## Next Owner Actions
 
@@ -36,14 +39,13 @@ No pending actions. All decisions approved 2026-06-27.
 
 ### Volodymyr (Development / JS implementation)
 
-1. Wait for Carlos approval (above) before beginning Phase 2 implementation.
-2. Execute Phase 2 plan at `.planning/phases/phase-2-dashboard/PLAN.md`.
-3. Add all missing domain types from `docs/architecture/data-models.md`.
-4. Expand seed data to 500+ employees and add new entity seed data (feedbacks, leaves, risks, action items).
+1. Run Phase 2 validation checklist at `.planning/phases/phase-2-dashboard/VALIDATION.md`.
+2. Capture validation evidence and resolve any remaining QA findings.
+3. Start Phase 3 planning only after Phase 2 validation sign-off.
 
 ### Ivan (QA / validation)
 
-1. Prepare Phase 2 validation checklist (create `.planning/phases/phase-2-dashboard/VALIDATION.md`).
+1. Execute and sign off Phase 2 validation checklist in `.planning/phases/phase-2-dashboard/VALIDATION.md`.
 2. Prepare test case skeletons for Phases 3–5 based on updated BRD v1.1.
 
 ## Phase 1 Implementation Reference

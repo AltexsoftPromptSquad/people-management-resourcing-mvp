@@ -1,0 +1,58 @@
+import type { Feedback } from '@/types/feedback'
+
+export const feedbacks: Feedback[] = [
+  {
+    id: 'feedback-001',
+    personId: 'person-employee-001',
+    authorId: 'person-um-001',
+    type: 'Performance',
+    content: 'Strong ownership during sprint delivery and clear communication with QA.',
+    createdAt: '2026-05-20T09:00:00.000Z',
+    visibility: 'Manager Only',
+  },
+  {
+    id: 'feedback-002',
+    personId: 'person-employee-001',
+    authorId: 'person-um-001',
+    type: 'General',
+    content: 'Ready to mentor junior engineers in the next quarter.',
+    createdAt: '2026-06-10T10:30:00.000Z',
+    visibility: 'Shareable',
+  },
+  {
+    id: 'feedback-003',
+    personId: 'person-um-001',
+    authorId: 'person-manager-002',
+    type: 'HR Note',
+    content: 'Leadership progression discussion scheduled for Q3.',
+    createdAt: '2026-05-15T12:00:00.000Z',
+    visibility: 'Manager Only',
+  },
+  {
+    id: 'feedback-004',
+    personId: 'person-um-001',
+    authorId: 'person-manager-002',
+    type: 'General',
+    content: 'Maintains healthy delivery predictability across platform unit.',
+    createdAt: '2026-06-12T08:00:00.000Z',
+    visibility: 'Shareable',
+  },
+  {
+    id: 'feedback-005',
+    personId: 'person-dm-001',
+    authorId: 'person-manager-003',
+    type: 'Performance',
+    content: 'Clear stakeholder communication and accurate request definitions.',
+    createdAt: '2026-05-25T11:00:00.000Z',
+    visibility: 'Manager Only',
+  },
+  {
+    id: 'feedback-006',
+    personId: 'person-dm-001',
+    authorId: 'person-manager-003',
+    type: 'General',
+    content: 'Proactively collaborates with unit managers to reduce staffing risk.',
+    createdAt: '2026-06-11T09:15:00.000Z',
+    visibility: 'Shareable',
+  },
+]
