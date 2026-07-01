@@ -9,7 +9,7 @@ const platformPeople = people.filter(
   (person) => person.unitId === 'unit-platform' && person.id !== 'person-um-001',
 )
 
-export const risks: Risk[] = platformPeople.slice(0, 20).map((person, index) =>
+const seededRisks = platformPeople.slice(0, 20).map((person, index) =>
   createRisk({
     index: index + 1,
     personId: person.id,
@@ -17,3 +17,14 @@ export const risks: Risk[] = platformPeople.slice(0, 20).map((person, index) =>
     status: index < 14 ? 'Open' : 'Monitoring',
   }),
 )
+
+// Keep deterministic seed quality for Phase 2 checks.
+if (seededRisks[0]) {
+  seededRisks[0] = { ...seededRisks[0], level: 'High' }
+}
+
+if (seededRisks[1]) {
+  seededRisks[1] = { ...seededRisks[1], level: 'Critical' }
+}
+
+export const risks: Risk[] = seededRisks

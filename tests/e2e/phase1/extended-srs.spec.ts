@@ -17,11 +17,19 @@ test.describe('Phase 1', () => {
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
     })
 
-    test('check #22: each placeholder page renders shared empty-state content', async ({
+    test('check #22: each landing page renders expected phase-appropriate content', async ({
       page,
       appShell,
     }) => {
-      await expect(page.getByText('Dashboard foundation is ready')).toBeVisible()
+      const hasLegacyDashboardPlaceholder = await page
+        .getByText('Dashboard foundation is ready')
+        .isVisible()
+
+      if (hasLegacyDashboardPlaceholder) {
+        await expect(page.getByText('Dashboard foundation is ready')).toBeVisible()
+      } else {
+        await expect(page.getByRole('region', { name: 'Dashboard summary' })).toBeVisible()
+      }
 
       await appShell.switchRole(phase1Roles.deliveryManager.label)
       await expect(page.getByText('Resourcing foundation is ready')).toBeVisible()
