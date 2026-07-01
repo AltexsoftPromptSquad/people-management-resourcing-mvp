@@ -9,11 +9,13 @@ Before writing JSX for form fields, dropdowns, tabs, checkboxes, dialogs, or oth
 1. Read `docs/architecture/shared-ui.md`.
 2. Name the **primitive** (Select, Tabs, Button), not only the feature widget (role switcher, profile sections).
 3. Search `src/shared/ui/` and reuse an existing primitive when available.
-4. If the primitive is app-agnostic and missing, add it to `src/shared/ui/` once — style it per `visual-theme.md` — then compose it from feature components.
+4. If the primitive is app-agnostic and missing, add it to `src/shared/ui/` once - style it per `visual-theme.md` - then compose it from feature components.
 5. Do not duplicate control styling (`border`, `rounded-md`, focus rings, chevrons, tab active states) inside `features/`, `pages/`, or `app/`.
 6. Check the primitive-level interaction states before finishing: hover, active/selected, focus-visible, disabled, keyboard access, and cursor affordance.
 
 Feature components wire domain data and handlers. Shared UI owns generic control appearance and behavior.
+
+Filter, search, pagination, and sort components should be controlled by props and should not call React Router APIs directly. Prefer `value`, `onValueChange`, `draftValue`, `onDraftValueChange`, or `onApply` props so URL writes, debounce, pagination resets, and query invalidation stay centralized in the route page or page/feature hook.
 
 ## Placement Rules
 
@@ -83,7 +85,7 @@ export type BadgeProps = {
 ```tsx
 // Badge.tsx
 import type { FC } from 'react'
-import { cn } from '../../../lib/utils'
+import { cn } from '@/lib/utils'
 import type { BadgeProps, BadgeSize, BadgeTone } from './Badge.types'
 
 const toneClassName: Record<BadgeTone, string> = {
@@ -232,26 +234,26 @@ export type { PersonAllocationCardProps } from './PersonAllocationCard.types'
 Use `src/pages/{page-name}/components` for components that are only useful inside one page.
 
 ```text
-src/pages/home-page/components/home-page-header/
-  HomePageHeader.tsx
-  HomePageHeader.types.ts
+src/pages/example-page/components/example-page-header/
+  ExamplePageHeader.tsx
+  ExamplePageHeader.types.ts
   index.ts
 ```
 
 ```tsx
-// HomePageHeader.types.ts
-export type HomePageHeaderProps = {
+// ExamplePageHeader.types.ts
+export type ExamplePageHeaderProps = {
   title: string
   description: string
 }
 ```
 
 ```tsx
-// HomePageHeader.tsx
+// ExamplePageHeader.tsx
 import type { FC } from 'react'
-import type { HomePageHeaderProps } from './HomePageHeader.types'
+import type { ExamplePageHeaderProps } from './ExamplePageHeader.types'
 
-export const HomePageHeader: FC<HomePageHeaderProps> = ({ title, description }) => {
+export const ExamplePageHeader: FC<ExamplePageHeaderProps> = ({ title, description }) => {
   return (
     <header className="flex flex-wrap items-center justify-between gap-3">
       <div>
@@ -265,8 +267,8 @@ export const HomePageHeader: FC<HomePageHeaderProps> = ({ title, description }) 
 
 ```ts
 // index.ts
-export { HomePageHeader } from './HomePageHeader'
-export type { HomePageHeaderProps } from './HomePageHeader.types'
+export { ExamplePageHeader } from './ExamplePageHeader'
+export type { ExamplePageHeaderProps } from './ExamplePageHeader.types'
 ```
 
 ## Async State Rules
@@ -306,6 +308,7 @@ export const PeopleTableSection: FC = () => {
 - Prefer shadcn/ui as the base for new shared primitives, themed once in `src/shared/ui/`.
 - Do not implement styled generic controls inline in features when they belong in shared UI.
 - Do not patch generic behavior such as pointer cursors, disabled cursors, focus rings, hover states, selected states, or primary colors in only one feature component. Update the shared primitive when the behavior is app-agnostic.
+- Do not call `setSearchParams` from reusable feature or shared UI controls for every input change. Keep fast-changing input state local/draft, then let a page or feature hook write normalized params to the URL.
 - When building segmented controls such as a role switcher, compose existing shared primitives first, verify the selected state is clear without relying on color alone, and keep the active treatment aligned with `visual-theme.md`.
 - Keep constants and utilities colocated only when they are component-specific.
 - Keep accessibility basics: semantic tags, form labels, button elements for actions, visible focus states, and keyboard-friendly controls.

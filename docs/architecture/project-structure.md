@@ -72,10 +72,12 @@ Use `src/app` for application wiring, not domain behavior.
 src/app/
   layouts/
     app-layout/
+  navigation.ts
   providers/
     AppProviders.tsx
     query-provider/
     role-provider/
+  router-provider.tsx
   router.tsx
   routes.ts
 ```
@@ -84,6 +86,7 @@ Responsibilities:
 
 - Register routes in `router.tsx`.
 - Define route path helpers in `routes.ts`.
+- Keep app-shell navigation items and role-to-route mappings in `navigation.ts`.
 - Compose global providers: React Router, TanStack Query, and app-level context providers.
 - Own application layouts and role-aware navigation shell.
 - Own route guards and redirects, such as current-role landing redirects.
@@ -124,6 +127,7 @@ Pages should not contain:
 - Domain transformations.
 - Large mock data.
 - API handler logic.
+- State orchestration that belongs in a page/feature hook; see `state-and-rendering.md`.
 
 ## `src/features`
 
@@ -274,7 +278,7 @@ Examples:
 Rules:
 
 - Before building a control, check the shared UI inventory in `shared-ui.md`. Reuse existing primitives.
-- If a generic primitive is missing, add it to `src/shared/ui/{component-name}/` first — prefer shadcn/ui themed for PMR — then compose it from features.
+- If a generic primitive is missing, add it to `src/shared/ui/{component-name}/` first. Prefer shadcn/ui themed for PMR, then compose it from features.
 - Do not style native `<select>`, `<input>`, tab strips, or similar controls inline in `features/`, `pages/`, or `app/` when a shared primitive is needed or likely to be reused.
 - Shared UI should accept generic props and not import feature types.
 
@@ -282,14 +286,28 @@ Rules:
 
 Use shared hooks only for generic browser or UI behavior.
 
+For state ownership, URL search params, query keys, filters, tables, and render stability, see `state-and-rendering.md`.
+
 Examples:
 
 - `use-debounced-value`
+- `use-throttled-callback`
 - `use-disclosure`
 - `use-local-storage`
-- `use-table-search-param-state`
+- `use-search-param-state`
 
 Do not put domain hooks here. A hook that knows about people, roles, requests, candidates, risks, or profiles belongs in the relevant feature.
+
+Pages and page/feature hooks that sync filters, sorting, pagination, or tabs with the URL should use shared hooks instead of calling `useSearchParams` directly in every component. Keep these hooks app-agnostic and driven by typed default search params.
+
+Rules:
+
+- Do not add a root-level `src/hooks` folder. Generic hooks belong in `src/shared/hooks`; domain hooks belong in `src/features/{feature}/hooks`.
+- Use `use-debounced-value` for text input that affects URL params or TanStack Query keys, such as search boxes.
+- Use throttle only for continuous event streams where the latest value may be sampled, such as resize, scroll, or pointer movement. Do not use throttle as the default search-query behavior.
+- A reusable search-param hook should accept only typed default search params, keep one internal params state synchronized with the URL, and expose the normalized params object plus an update function for writing normalized params back to the router.
+- Query hooks should receive URL-synchronized, normalized params, not raw keystrokes or mutable `URLSearchParams` instances.
+- Avoid putting `URLSearchParams` objects directly in TanStack Query keys. Convert them to stable plain objects or primitives first.
 
 ### `src/shared/context`
 

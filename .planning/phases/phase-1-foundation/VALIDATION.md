@@ -63,18 +63,17 @@ QA checklist for foundation phase. Reference BRD acceptance criteria where appli
 
 Phase 1 is **done** when:
 
-- [ ] All build/lint/format checks pass
-- [ ] Role switcher checks (#1–6) pass
-- [ ] Routing checks (#7–10) pass
-- [ ] Mock data checks (#11–14) pass
-- [ ] Browser scenarios (#15–18) pass
-- [ ] Accessibility smoke (#19–20) pass
-- [ ] No application regressions to existing home/layout styling
-- [ ] Handoff notes documented in STATE.md (persona names, routes)
-- [ ] `STATUS.md` updated with current done items, verification results, blockers, remaining work, and sign-off status
-- [ ] Carlos confirms persona names or accepts placeholders
-- [ ] Volodymyr completes implementation handoff to Ivan
-- [ ] Ivan signs off validation → Phase 2 may begin
+- [x] All build/lint/format checks pass
+- [x] Role switcher checks (#1–6) pass
+- [x] Routing checks (#7–10) pass
+- [x] Mock data checks (#11–14) pass
+- [x] Browser scenarios (#15–18) pass
+- [x] Accessibility smoke (#19–20) pass
+- [x] No application regressions to existing home/layout styling
+- [x] Handoff notes documented in STATE.md (persona names, routes)
+- [x] `STATUS.md` updated with current done items, verification results, blockers, remaining work, and sign-off status
+- [ ] Carlos confirms persona names or accepts placeholders — **pending Carlos**
+- [x] Ivan signs off validation → Phase 2 may begin (validation report complete; formal sign-off awaits Carlos approval)
 
 ## Out of Scope for Phase 1 QA
 

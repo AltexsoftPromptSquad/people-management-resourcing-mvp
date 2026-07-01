@@ -1,30 +1,10 @@
 import type { FC } from 'react'
-import { BriefcaseBusiness, LayoutDashboard, UserRound, UsersRound } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { UsersRound } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router'
-import {
-  getDashboardPagePath,
-  getMyProfilePagePath,
-  getResourcingRequestsPagePath,
-} from '@/app/routes'
+import { navigationItemsByRole } from '@/app/navigation'
 import { RoleSwitcher } from '@/features/roles/components/role-switcher'
 import { cn } from '@/lib/utils'
 import { useRoleStore } from '@/store/role-store'
-import type { Role } from '@/types/role'
-
-type NavigationItem = {
-  label: string
-  to: string
-  Icon: LucideIcon
-}
-
-const navigationItemsByRole: Record<Role, NavigationItem[]> = {
-  'unit-manager': [{ label: 'Dashboard', to: getDashboardPagePath(), Icon: LayoutDashboard }],
-  'delivery-manager': [
-    { label: 'Resourcing Requests', to: getResourcingRequestsPagePath(), Icon: BriefcaseBusiness },
-  ],
-  employee: [{ label: 'My Profile', to: getMyProfilePagePath(), Icon: UserRound }],
-}
 
 export const AppLayout: FC = () => {
   const activeRole = useRoleStore((state) => state.activeRole)

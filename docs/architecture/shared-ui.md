@@ -4,6 +4,8 @@ This document defines how to build, place, and reuse UI primitives in `src/share
 
 For folder ownership and import direction, see `project-structure.md`. For component file layout, see `component-structure.md`. For colors, variants, and semantic tones, see `visual-theme.md`.
 
+For deciding when repeated filter, table, search, pagination, and state behavior should become shared UI or shared hooks, see `state-and-rendering.md`.
+
 ## Purpose
 
 `src/shared/ui` is the design-system layer of the app. Generic controls are styled once here and reused everywhere. Feature and page components compose shared primitives; they do not reimplement them inline.
@@ -12,7 +14,7 @@ Examples:
 
 | Feature widget             | Underlying primitive | Owner                                                              |
 | -------------------------- | -------------------- | ------------------------------------------------------------------ |
-| Role switcher dropdown     | `Select`             | `Select` in `shared/ui`; switcher in `features/roles`              |
+| Role switcher buttons      | `Button`             | `Button` in `shared/ui`; switcher in `features/roles`              |
 | Profile section navigation | `Tabs`               | `Tabs` in `shared/ui`; profile tabs in `features/employee-profile` |
 | Approve request action     | `Button`             | `Button` in `shared/ui`; panel in `features/resourcing`            |
 | Request status label       | `Badge`              | `Badge` in `shared/ui`; table cell in feature table                |
@@ -22,10 +24,11 @@ Examples:
 Before writing JSX for any interactive control, complete this check:
 
 1. **Name the primitive, not the feature widget.**
-   - "role switcher dropdown" → primitive: **Select**
-   - "profile sections" → primitive: **Tabs**
-   - "mark as available" → primitive: **Checkbox** or **Switch**
-   - "approve request" → primitive: **Button**
+   - "role switcher segmented buttons" -> primitive: **Button**
+   - "unit filter dropdown" -> primitive: **Select**
+   - "profile sections" -> primitive: **Tabs**
+   - "mark as available" -> primitive: **Checkbox** or **Switch**
+   - "approve request" -> primitive: **Button**
 
 2. **Search `src/shared/ui/`** for an existing component (see inventory below).
    - If it exists, import and use it. Do not restyle the same control inline.
@@ -50,16 +53,16 @@ Before writing JSX for any interactive control, complete this check:
 
 ```text
 Need a UI control
-  │
-  ├─ Already in src/shared/ui? ──yes──> Import and use it
-  │
-  └─ no
-       │
-       ├─ App-agnostic primitive (select, tabs, checkbox, dialog, …)?
-       │     └── Add to src/shared/ui once; theme per visual-theme.md
-       │
-       └─ Knows PMR domain (Person, Request, Role, Risk, …)?
-             └── Feature/page component built from shared primitives
+  |
+  +-- Already in src/shared/ui? -- yes --> Import and use it
+  |
+  +-- no
+       |
+       +-- App-agnostic primitive (select, tabs, checkbox, dialog, ...)?
+       |     +-- Add to src/shared/ui once; theme per visual-theme.md
+       |
+       +-- Knows PMR domain (Person, Request, Role, Risk, ...)?
+             +-- Feature/page component built from shared primitives
 ```
 
 ## What Belongs In `src/shared/ui`
@@ -82,6 +85,10 @@ Put app-agnostic primitives and composed UI building blocks here:
 
 - `table` primitives, `data-table` wrapper, `page-header`, `section-header`
 
+**Filter and table composition**
+
+- `search-input`, `filter-bar`, `active-filters`, `pagination`, `table-toolbar`, `column-visibility-menu`
+
 Shared UI must:
 
 - Accept generic props (`value`, `onValueChange`, `options`, `variant`, `size`, `disabled`, `className`).
@@ -94,15 +101,15 @@ Shared UI must:
 Keep these out of shared UI:
 
 - Components that encode business rules (`CandidateProposalPanel`, `RoleSwitcher`, `SubordinatesTable`).
-- Components tied to one page and not reusable as a primitive (`HomePageHeader`).
+- Components tied to one page and not reusable as a primitive (`ExamplePageHeader`).
 - One-off layout that only makes sense in a single feature screen.
-- Domain-specific badge/table cell renderers that know request/candidate/risk semantics — use shared `Badge`/`StatusPill` with props from the feature instead.
+- Domain-specific badge/table cell renderers that know request/candidate/risk semantics. Use shared `Badge`/`StatusPill` with props from the feature instead.
 
 If a component no longer references PMR domain concepts, move it from a feature to `src/shared/ui`.
 
 ## shadcn/ui Policy
 
-1. **Generic control needed** → add via shadcn CLI, then place under `src/shared/ui/{name}/` using project folder conventions (`ComponentName.tsx`, types, index).
+1. **Generic control needed** -> add via shadcn CLI, then place under `src/shared/ui/{name}/` using project folder conventions (`ComponentName.tsx`, types, index).
 2. **Do not import shadcn/Radix primitives directly from feature or page code** when a shared wrapper exists or should exist.
 3. **Theme customization** happens in the shared component (CVA variants, constants) and global CSS variables in `src/styles/`, not in feature files.
 4. **Features pass data and behavior only**: `value`, `onValueChange`, `placeholder`, `disabled`, `options`, `aria-label`, etc.
@@ -131,7 +138,7 @@ src/shared/ui/select/
 Do not implement these in `features/`, `pages/`, or `app/`:
 
 ```tsx
-// Styled native select in a feature — use shared Select instead
+// Styled native select in a feature - use shared Select instead
 <select className="h-9 w-full rounded-md border border-slate-200 ...">
   {options.map(...)}
 </select>
@@ -141,20 +148,20 @@ Do not implement these in `features/`, `pages/`, or `app/`:
   <ChevronDown />
 </div>
 
-// Inline tabs styling in a profile feature — use shared Tabs
+// Inline tabs styling in a profile feature - use shared Tabs
 <div className="flex gap-2 border-b">
   <button className={isActive ? 'border-b-2 border-blue-700 ...' : '...'}>
 ```
 
-Preferred pattern:
+Preferred Select pattern:
 
 ```tsx
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select'
 
-export const RoleSwitcher: FC<RoleSwitcherProps> = ({ value, options, onChange }) => (
+export const UnitFilter: FC<UnitFilterProps> = ({ value, options, onChange }) => (
   <Select value={value} onValueChange={onChange}>
-    <SelectTrigger aria-label="Active role">
-      <SelectValue placeholder="Select role" />
+    <SelectTrigger aria-label="Unit filter">
+      <SelectValue placeholder="Select unit" />
     </SelectTrigger>
     <SelectContent>
       {options.map((option) => (
@@ -178,24 +185,33 @@ Do not patch generic primitive behavior only at the feature level:
 
 Update this table when adding or removing shared primitives.
 
-| Component     | Path                          | Status    | Notes                         |
-| ------------- | ----------------------------- | --------- | ----------------------------- |
-| Button        | `src/shared/ui/button`        | Available | CVA variants; primary actions |
-| Badge         | `src/shared/ui/badge`         | Available | Semantic `tone` prop          |
-| ShadcnBadge   | `src/shared/ui/shadcn-badge`  | Available | shadcn-style badge wrapper    |
-| Select        | `src/shared/ui/select`        | Planned   | Add on first dropdown need    |
-| Input         | `src/shared/ui/input`         | Planned   | Forms, filters, search        |
-| Textarea      | `src/shared/ui/textarea`      | Planned   | Long text fields              |
-| Checkbox      | `src/shared/ui/checkbox`      | Planned   | Boolean form fields           |
-| Radio group   | `src/shared/ui/radio-group`   | Planned   | Single choice lists           |
-| Switch        | `src/shared/ui/switch`        | Planned   | Toggle settings               |
-| Tabs          | `src/shared/ui/tabs`          | Planned   | Section navigation            |
-| Dialog        | `src/shared/ui/dialog`        | Planned   | Confirmations, modals         |
-| Dropdown menu | `src/shared/ui/dropdown-menu` | Planned   | Action menus                  |
-| Table         | `src/shared/ui/table`         | Planned   | TanStack Table layouts        |
-| Empty state   | `src/shared/ui/empty-state`   | Available | List/table empty views        |
-| Error state   | `src/shared/ui/error-state`   | Available | Query error fallback          |
-| Loading state | `src/shared/ui/loading-state` | Available | Skeletons/spinners            |
+| Component      | Path                           | Status    | Notes                         |
+| -------------- | ------------------------------ | --------- | ----------------------------- |
+| Button         | `src/shared/ui/button`         | Available | CVA variants; primary actions |
+| Badge          | `src/shared/ui/badge`          | Available | Semantic `tone` prop          |
+| ShadcnBadge    | `src/shared/ui/shadcn-badge`   | Available | shadcn-style badge wrapper    |
+| Select         | `src/shared/ui/select`         | Available | Shared native select wrapper  |
+| Input          | `src/shared/ui/input`          | Available | Forms, filters, search        |
+| Textarea       | `src/shared/ui/textarea`       | Planned   | Long text fields              |
+| Checkbox       | `src/shared/ui/checkbox`       | Planned   | Boolean form fields           |
+| Radio group    | `src/shared/ui/radio-group`    | Planned   | Single choice lists           |
+| Switch         | `src/shared/ui/switch`         | Planned   | Toggle settings               |
+| Tabs           | `src/shared/ui/tabs`           | Planned   | Section navigation            |
+| Dialog         | `src/shared/ui/dialog`         | Planned   | Confirmations, modals         |
+| Dropdown menu  | `src/shared/ui/dropdown-menu`  | Planned   | Action menus                  |
+| Table          | `src/shared/ui/table`          | Planned   | TanStack Table layouts        |
+| Data table     | `src/shared/ui/data-table`     | Available | Shared table container chrome |
+| Page header    | `src/shared/ui/page-header`    | Available | Reusable page intro/header    |
+| Status pill    | `src/shared/ui/status-pill`    | Available | Badge-based status display    |
+| Skeleton       | `src/shared/ui/skeleton`       | Available | Shared pulse placeholders     |
+| Search input   | `src/shared/ui/search-input`   | Planned   | Debounced page/search filters |
+| Filter bar     | `src/shared/ui/filter-bar`     | Planned   | Reusable filter composition   |
+| Active filters | `src/shared/ui/active-filters` | Planned   | Applied filter chips/actions  |
+| Pagination     | `src/shared/ui/pagination`     | Planned   | Table/list pagination         |
+| Table toolbar  | `src/shared/ui/table-toolbar`  | Planned   | Search/filter/table actions   |
+| Empty state    | `src/shared/ui/empty-state`    | Available | List/table empty views        |
+| Error state    | `src/shared/ui/error-state`    | Available | Query error fallback          |
+| Loading state  | `src/shared/ui/loading-state`  | Available | Skeletons/spinners            |
 
 When you implement a planned primitive, change its status to **Available** and remove duplicate inline styling from features that should use it.
 

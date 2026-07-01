@@ -13,12 +13,13 @@ Use this skill for substantial frontend work in the People Management & Resourci
 2. Read `docs/architecture/component-structure.md` before creating or moving components.
 3. Read `docs/architecture/shared-ui.md` before adding or styling form controls, dropdowns, tabs, checkboxes, dialogs, or other generic interactive UI.
 4. Read `docs/architecture/page-structure.md` before creating or changing pages or routes.
-5. Identify the feature area: people, projects, allocations, skills, teams, or shared UI.
-6. Search `src/shared/ui/` for existing primitives. Reuse them; if a generic primitive is missing, add it to shared UI once before composing it in features.
-7. Place domain code under `src/features/<feature>/`.
-8. Keep route components thin and move behavior into feature modules.
-9. Add or update mock data/MSW handlers when the UI depends on server-like data.
-10. Run `npm run lint`, `npm run format:check`, and `npm run build` before finishing.
+5. Read `docs/architecture/state-and-rendering.md` before implementing page state, URL search params, filters, tables, query keys, or render-sensitive flows.
+6. Identify the feature area: people, projects, allocations, skills, teams, or shared UI.
+7. Search `src/shared/ui/` for existing primitives. Reuse them; if a generic primitive is missing, add it to shared UI once before composing it in features.
+8. Place domain code under `src/features/<feature>/`.
+9. Keep route components thin and move behavior into feature modules.
+10. Add or update mock data/MSW handlers when the UI depends on server-like data.
+11. Run `npm run lint`, `npm run format:check`, and `npm run build` before finishing.
 
 ## Core Rules
 
@@ -33,6 +34,7 @@ Use this skill for substantial frontend work in the People Management & Resourci
 - Use React Hook Form + Zod for non-trivial forms.
 - Use TanStack Table for sortable, filterable, data-heavy tables.
 - Include loading, empty, and error states when data is fetched or derived.
+- Keep URL params, draft inputs, query keys, table state, and render-sensitive derived data aligned with `docs/architecture/state-and-rendering.md`.
 - Do not add a backend, database, or server-only framework.
 - Do not hard-code large datasets inside components.
 
@@ -41,6 +43,7 @@ Use this skill for substantial frontend work in the People Management & Resourci
 Read only the relevant reference when needed:
 
 - Shared UI workflow and inventory: `docs/architecture/shared-ui.md`
+- State, URL params, query keys, tables, and render stability: `docs/architecture/state-and-rendering.md`
 - Forms and validation: `references/forms.md`
 - Tables and filtering: `references/tables.md`
 - Mock data and MSW: `references/mock-data.md`

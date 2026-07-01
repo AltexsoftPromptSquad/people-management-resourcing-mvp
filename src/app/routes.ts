@@ -8,6 +8,16 @@ export const getResourcingRequestsPagePath = () => '/resourcing/requests'
 
 export const getMyProfilePagePath = () => '/my-profile'
 
+export const getSubordinatesPagePath = () => '/subordinates'
+
+export const getEmployeeProfilePagePath = (personId: string) => `/people/${personId}`
+
+export const getCustomListsPagePath = () => '/custom-lists'
+
+export const getResourcingIncomingPagePath = () => '/resourcing/incoming'
+
+export const getRisksPagePath = () => '/risks'
+
 export const getFallbackRoutePath = () => '*'
 
 export const getRoleLandingPagePath = (role: Role) => {

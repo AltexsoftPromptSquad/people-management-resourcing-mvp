@@ -1,6 +1,7 @@
 # Requirements Summary
 
-Extracted from BRD v1.0. Full detail and tables live in `docs/requirements/# Business Requirements Document.md`.
+Extracted from BRD v1.1. Full detail and tables live in `docs/requirements/# Business Requirements Document.md`.
+Remediation decisions: `docs/requirements/DECISION-LOG.md` (2026-06-27).
 
 ## Core Business Requirements
 
@@ -28,9 +29,11 @@ Extracted from BRD v1.0. Full detail and tables live in `docs/requirements/# Bus
 
 - **FR-SL-001–006:** Unit-scoped table (name, position, grade, status, risk); sort/filter; row opens managerial profile; empty state.
 
-### FR-EP — Employee Profile — Managerial (12)
+### FR-EP — Employee Profile — Managerial (14)
 
-- **FR-EP-001–012:** Header, tabs (Overview, Job & Skills, Risks & Action Items, Resourcing History, Project History, Documents & IDP); custom fields; manager edits; assignment vs project history **never mixed**.
+- **FR-EP-001–012:** Header, tabs (Overview, Job & Skills, Risks & Action Items, **Feedbacks**, Resourcing History, Project History, Documents & IDP); custom fields; manager edits; assignment vs project history **never mixed**.
+- **FR-EP-013 (new):** Feedbacks tab — chronological list of feedback entries (type, content, author, date).
+- **FR-EP-014 (new):** Manager can add new feedback entries from the Feedbacks tab.
 
 ### FR-PV — Employee Profile — Personal (7)
 
@@ -38,7 +41,7 @@ Extracted from BRD v1.0. Full detail and tables live in `docs/requirements/# Bus
 
 ### FR-CL — Custom Lists (13)
 
-- **FR-CL-001–013:** Custom field types; named filtered lists as tabs; inline edit on custom columns only; share view-only; seeded Bench, Booked, Needs Conversation.
+- **FR-CL-001–013:** Custom field types; named filtered lists as tabs; **filter/column/both field designation** (G-3); inline edit on custom columns only; share view-only; seeded Bench, Booked, Needs Conversation.
 
 ### FR-PS — Profile Sharing (7)
 
@@ -50,7 +53,7 @@ Extracted from BRD v1.0. Full detail and tables live in `docs/requirements/# Bus
 
 ### FR-CP — Candidate Proposal (12)
 
-- **FR-CP-001–012:** UM views request; selects internal candidates; external URL; fit summary; warnings (allocation >100%, leave overlap, High/Critical risk); shared profile; submit → Candidates Proposed; withdraw before decision.
+- **FR-CP-001–012:** UM views request; selects internal candidates; external URL; fit summary; warnings (allocation >100%, **leave overlap using ScheduledLeave entity** [G-2], High/Critical risk [A-3 confirmed]); shared profile; submit → Candidates Proposed; withdraw before decision.
 
 ### FR-CD — Candidate Review (9)
 
@@ -62,40 +65,48 @@ Extracted from BRD v1.0. Full detail and tables live in `docs/requirements/# Bus
 
 ## Key Business Rules
 
-| ID         | Rule                                                                        |
-| ---------- | --------------------------------------------------------------------------- |
-| BR-001     | UM proposes candidates only from own unit                                   |
-| BR-002     | DM cannot browse employee profiles — only shared profile or external URL    |
-| BR-003     | Employee sees/edits own profile only                                        |
-| BR-004     | Candidate rejection always requires written reason                          |
-| BR-005     | Sensitive sections excluded from shared profiles by default                 |
-| BR-006     | Assignment history and project history are always separate                  |
-| BR-007     | Custom list inline edit — custom field columns only                         |
-| BR-008     | Shared custom list — view only, no structure changes                        |
-| BR-009     | Shared list recipients edit custom values only for their direct reports     |
-| BR-010     | Creator can cancel Draft or Submitted requests                              |
-| BR-011     | UM can withdraw Proposed candidate before DM decision                       |
-| BR-012–014 | High risk, over-allocation, leave overlap → visible warnings (non-blocking) |
-| BR-015     | External candidate URL must be valid and non-empty                          |
+| ID           | Rule                                                                                                   |
+| ------------ | ------------------------------------------------------------------------------------------------------ |
+| BR-001       | UM proposes candidates only from own unit                                                              |
+| BR-002       | DM cannot browse employee profiles — only shared profile or external URL                               |
+| BR-003       | Employee sees/edits own profile only                                                                   |
+| BR-004       | Candidate rejection always requires written reason                                                     |
+| BR-005       | Sensitive sections excluded from shared profiles by default                                            |
+| BR-006       | Assignment history and project history are always separate                                             |
+| BR-007       | Custom list inline edit — custom field columns only                                                    |
+| BR-008       | Shared custom list — view only, no structure changes                                                   |
+| BR-009       | Shared list recipients edit custom values only for their direct reports                                |
+| BR-010       | Creator can cancel Draft or Submitted requests                                                         |
+| BR-011       | UM can withdraw Proposed candidate before DM decision                                                  |
+| BR-012–014   | High risk, over-allocation, **ScheduledLeave overlap** → visible warnings (non-blocking)               |
+| BR-015       | External candidate URL must be valid and non-empty                                                     |
+| BR-016 _new_ | Feedback entries are manager-only; never shown in Employee personal view or shared profiles by default |
 
 ## Key Acceptance Criteria (by area)
 
-| Group              | IDs           | Highlights                                                                                        |
-| ------------------ | ------------- | ------------------------------------------------------------------------------------------------- |
-| Role Switcher      | AC-RS-001–004 | Each role loads correct landing page; nav/content change without full reload                      |
-| Dashboard          | AC-DB-001–004 | Four widgets with seeded values; sorted action items; overdue highlight; nav links work           |
-| Subordinates       | AC-SL-001–005 | Unit-scoped list; five columns; sort/filter; row → profile                                        |
-| Employee Profile   | AC-EP-001–005 | Header fields; all tabs; separate history tabs; manager notes hidden in personal view             |
-| Custom Lists       | AC-CL-001–005 | Three seeded tabs; inline edit persists to profile; system columns read-only; shared list visible |
-| Profile Sharing    | AC-PS-001–004 | Generate action; section checkboxes; link shows selected sections only                            |
-| Resourcing Request | AC-RR-001–004 | Submit with required fields; status Submitted; appears in UM queue; validation errors             |
-| Candidate Proposal | AC-CP-001–004 | Internal selection; allocation warning; external URL; status Candidates Proposed                  |
-| Candidate Review   | AC-CD-001–004 | Shared profile/URL visible; approve/reject with validation on rejection reason                    |
-| Assignment History | AC-AH-001–004 | Record after decision; correct data; separate from project history; read-only                     |
+| Group              | IDs           | Highlights                                                                                                                              |
+| ------------------ | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Role Switcher      | AC-RS-001–004 | Each role loads correct landing page; nav/content change without full reload                                                            |
+| Dashboard          | AC-DB-001–004 | Four widgets with seeded values; sorted action items; overdue highlight; nav links work                                                 |
+| Subordinates       | AC-SL-001–005 | Unit-scoped list; five columns; sort/filter; row → profile                                                                              |
+| Employee Profile   | AC-EP-001–008 | Header fields; all tabs incl. Feedbacks; scheduled leaves on Overview; separate history tabs; manager notes hidden in personal view     |
+| Custom Lists       | AC-CL-001–006 | Three seeded tabs; inline edit persists to profile; system columns read-only; shared list visible; filter/column/both designation works |
+| Profile Sharing    | AC-PS-001–004 | Generate action; section checkboxes; link shows selected sections only                                                                  |
+| Resourcing Request | AC-RR-001–004 | Submit with required fields; status Submitted; appears in UM queue; validation errors                                                   |
+| Candidate Proposal | AC-CP-001–004 | Internal selection; allocation warning; external URL; status Candidates Proposed                                                        |
+| Candidate Review   | AC-CD-001–004 | Shared profile/URL visible; approve/reject with validation on rejection reason                                                          |
+| Assignment History | AC-AH-001–004 | Record after decision; correct data; separate from project history; read-only                                                           |
 
 ## Out of Scope (BRD §7.2)
 
 Real auth, backend, database, file storage, external integrations, admin permission UI, automated project history from approvals, notification system.
+
+## New Entities (BRD v1.1 — remediation)
+
+| Entity           | Gap | Phase | Key purpose                                               |
+| ---------------- | --- | ----- | --------------------------------------------------------- |
+| `Feedback`       | G-1 | 3     | HR/performance feedback on managerial profile             |
+| `ScheduledLeave` | G-2 | 3–4   | Employee planned absences; used for leave-overlap warning |
 
 ## Assumptions (selected)
 
