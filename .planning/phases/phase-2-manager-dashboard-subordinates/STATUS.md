@@ -13,6 +13,7 @@
 - Mock seed expanded to 540 people with risks, action items, and resourcing request counts
 - MSW endpoints added: `/api/dashboard/summary`, `/api/dashboard/action-items`, `/api/subordinates`
 - Shared UI primitives added: `Input`, `Select`
+- `QA validation. Artifacts generated under /tests folder`
 
 ## QA Handoff Notes
 
@@ -30,6 +31,3 @@
 | Deferred               | Full profile tabs (Phase 3), resourcing workflows (Phase 4), custom lists (Phase 5) |
 
 ## Still To Do
-
-- Run Phase 2 validation checklist in `VALIDATION.md`
-- Ivan sign-off before Phase 3 starts
