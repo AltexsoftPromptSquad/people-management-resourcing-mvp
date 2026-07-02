@@ -33,7 +33,12 @@ test.describe('Phase 2 - routing and role guards', () => {
 
     await page.getByRole('button', { name: phase2Baselines.profileTarget.fullName }).first().click()
     await expect(page).toHaveURL(getEmployeeProfilePagePath(phase2Baselines.profileTarget.id))
-    await expect(page.getByRole('heading', { level: 1, name: 'Employee Profile' })).toBeVisible()
+    await expect(
+      page.getByRole('heading', {
+        level: 1,
+        name: phase2Baselines.profileTarget.fullName,
+      }),
+    ).toBeVisible()
   })
 
   test('P2-R05/P2-R06/P2-R07/P2-R08: non-UM roles are redirected away from UM pages', async ({

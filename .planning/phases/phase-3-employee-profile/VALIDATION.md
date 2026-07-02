@@ -2,7 +2,7 @@
 
 **Owner:** Ivan (QA / validation / test cases)
 
-**Status:** Pending execution (checklist authored; boxes tick as cases pass)
+**Status:** In progress (core automated gate checks executed; manual checklist completion pending)
 
 **Last updated:** 2026-07-02
 
@@ -34,9 +34,15 @@ DM `person-dm-001` (Marcus), Employee `person-employee-001` (Nazar).
 | ESLint           | `npm run lint`         | Exit 0; only documented TanStack Table warn  | P3-B02   |
 | Prettier         | `npm run format:check` | Exit 0; no formatting drift                  | P3-B03   |
 
-- [ ] `npm run build` passes (exit 0; Playwright suite green as part of the build gate).
-- [ ] `npm run lint` passes (0 errors; single known `react-hooks/incompatible-library` warning acceptable).
+- [x] `npm run build` passes (exit 0; Playwright suite green as part of the build gate).
+- [x] `npm run lint` passes (0 errors; single known `react-hooks/incompatible-library` warning acceptable).
 - [ ] `npm run format:check` passes.
+
+Additional validation rerun after shared UI migration (`react-tabs` + `react-toastify`):
+
+- [x] `npm run build` re-pass after migration.
+- [x] `npm run lint` re-pass after migration (same single known warning).
+- [x] `npm run test:e2e -- tests/e2e/phase3` re-pass (5/5).
 
 ## Routing & role guards (test plan §6.2)
 
@@ -212,12 +218,12 @@ Phase 3 validation is **done** when:
 
 To be completed at execution (mirror the Phase 2 evidence table).
 
-| Check area                    | Command                | Result | Evidence summary |
-| ----------------------------- | ---------------------- | ------ | ---------------- |
-| Build gate                    | `npm run build`        | ⏳     | pending          |
-| E2E automated validation gate | `npm run test:e2e`     | ⏳     | pending          |
-| Lint gate                     | `npm run lint`         | ⏳     | pending          |
-| Format gate                   | `npm run format:check` | ⏳     | pending          |
+| Check area                    | Command                                | Result | Evidence summary                                                                                       |
+| ----------------------------- | -------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------ |
+| Build gate                    | `npm run build`                        | ✅     | passes locally on branch `phase-3-impl/employee-profile`; re-verified after tabs/toast migration       |
+| E2E automated validation gate | `npm run test:e2e -- tests/e2e/phase3` | ✅     | 5/5 phase-3 specs passed locally; re-verified after tabs/toast migration                               |
+| Lint gate                     | `npm run lint`                         | ✅     | no errors; one known existing TanStack Table warning; unchanged after migration                        |
+| Format gate                   | `npm run format:check`                 | ⚠️     | repository-wide baseline formatting drift across pre-existing files (not introduced by this increment) |
 
 Supporting test reports (to be produced under `tests/test_reports/phase3/`):
 

@@ -192,11 +192,12 @@ Update this table when adding or removing shared primitives.
 | ShadcnBadge    | `src/shared/ui/shadcn-badge`   | Available | shadcn-style badge wrapper    |
 | Select         | `src/shared/ui/select`         | Available | Shared native select wrapper  |
 | Input          | `src/shared/ui/input`          | Available | Forms, filters, search        |
-| Textarea       | `src/shared/ui/textarea`       | Planned   | Long text fields              |
+| Textarea       | `src/shared/ui/textarea`       | Available | Long text fields              |
 | Checkbox       | `src/shared/ui/checkbox`       | Planned   | Boolean form fields           |
 | Radio group    | `src/shared/ui/radio-group`    | Planned   | Single choice lists           |
 | Switch         | `src/shared/ui/switch`         | Planned   | Toggle settings               |
-| Tabs           | `src/shared/ui/tabs`           | Planned   | Section navigation            |
+| Tabs           | `src/shared/ui/tabs`           | Available | Section navigation            |
+| Sheet          | `src/shared/ui/sheet`          | Available | Side panel forms and details  |
 | Dialog         | `src/shared/ui/dialog`         | Planned   | Confirmations, modals         |
 | Dropdown menu  | `src/shared/ui/dropdown-menu`  | Planned   | Action menus                  |
 | Table          | `src/shared/ui/table`          | Planned   | TanStack Table layouts        |
@@ -212,6 +213,7 @@ Update this table when adding or removing shared primitives.
 | Empty state    | `src/shared/ui/empty-state`    | Available | List/table empty views        |
 | Error state    | `src/shared/ui/error-state`    | Available | Query error fallback          |
 | Loading state  | `src/shared/ui/loading-state`  | Available | Skeletons/spinners            |
+| Toast          | `src/shared/ui/toast`          | Available | Global mutation notifications |
 
 When you implement a planned primitive, change its status to **Available** and remove duplicate inline styling from features that should use it.
 

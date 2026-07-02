@@ -47,5 +47,6 @@ export type Person = {
   currentProjectStatus: CurrentProjectStatus
   availabilityPercent: number
   riskLevel: RiskLevel
+  managementNotes?: string
   customFieldValues: Record<string, CustomFieldValue>
 }
