@@ -51,7 +51,7 @@
 
 ### Ivan (QA / validation)
 
-1. Map `phase-3-test-plan.md` P3-* cases to `SRS-F3-*` / `SRS-UX3-*` IDs in traceability.
+1. Map `phase-3-test-plan.md` P3-_ cases to `SRS-F3-_`/`SRS-UX3-\*` IDs in traceability.
 2. Draft `VALIDATION.md` after implementation lands.
 
 ## Phase 1 Implementation Reference
