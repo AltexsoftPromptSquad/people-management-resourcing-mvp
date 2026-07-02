@@ -116,9 +116,17 @@ test.describe('Phase 2 - source-confirmed checks', () => {
     const subordinatesPage = await readRepoFile('src/pages/subordinates-page/SubordinatesPage.tsx')
     expect(subordinatesPage).toContain("from '@/features/people/components/subordinates-filters'")
     expect(subordinatesPage).toContain("from '@/features/people/components/subordinates-table'")
-    expect(subordinatesPage).toContain('const searchDebounceMs = 350')
+    expect(subordinatesPage).toContain('useSubordinatesPageState')
     expect(subordinatesPage).toContain('aria-busy="true"')
     expect(subordinatesPage).not.toContain("from '@/mocks/")
+
+    const subordinatesPageStateHook = await readRepoFile(
+      'src/features/people/hooks/use-subordinates-page-state.ts',
+    )
+    expect(subordinatesPageStateHook).toContain('useSearchParamState')
+    expect(subordinatesPageStateHook).toContain('useDebouncedValue')
+    expect(subordinatesPageStateHook).toContain('350')
+    expect(subordinatesPageStateHook).not.toContain("from '@/mocks/")
 
     const dashboardApi = await readRepoFile(
       'src/features/dashboard/api/get-dashboard-action-items.ts',
