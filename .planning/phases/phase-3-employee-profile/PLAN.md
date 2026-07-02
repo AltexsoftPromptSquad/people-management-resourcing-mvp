@@ -4,7 +4,7 @@
 **Owner:** Volodymyr (development), Ivan (QA/validation)  
 **Depends on:** Phase 2 complete ✅  
 **BRD version:** v1.1  
-**Validation checklist:** `.planning/phases/phase-3-employee-profile/VALIDATION.md` (to be created by Ivan)  
+**Validation checklist:** `.planning/phases/phase-3-employee-profile/VALIDATION.md`  
 **Test plan:** `.planning/phases/phase-3-employee-profile/phase-3-test-plan.md`  
 **SRS:** `.planning/phases/phase-3-employee-profile/SRS.md`  
 **Product approval:** Carlos Nunes, 2026-07-02
