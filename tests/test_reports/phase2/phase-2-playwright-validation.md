@@ -9,7 +9,7 @@
 | Date executed      | 2026-07-01                                                                                                                                                               |
 | Executor           | Cursor Agent (Codex 5.3)                                                                                                                                                 |
 | Primary plan       | `tests/test_reports/phase2/phase-2-test-plan.md`                                                                                                                         |
-| Automated commands | `npm run build`; `npx playwright test tests/e2e/phase2`; targeted rechecks for flaky-sensitive cases (`P2-A05`, `P2-S03/P2-S04`, `P2-S05/P2-S06/P2-S07`)                 |
+| Automated commands | `npm run build`; `npm run test:e2e`; targeted rechecks for flaky-sensitive cases (`P2-A05`, `P2-S03/P2-S04`, `P2-S05/P2-S06/P2-S07`)                                     |
 | MCP browser checks | `user-playwright` MCP (`browser_navigate`, `browser_snapshot`, `browser_click`, `browser_select_option`, `browser_type`, `browser_wait_for`, `browser_console_messages`) |
 | Viewport           | 1280 x 800 (Playwright config default)                                                                                                                                   |
 
@@ -17,7 +17,7 @@
 
 ## 1) Overall Result
 
-- Final gate run (`npm run build`) passed end-to-end: **68 passed / 0 failed** (Phase 1 + Phase 2).
+- Final e2e gate run (`npm run test:e2e`) passed: **68 passed / 0 failed** (Phase 1 + Phase 2).
 - Phase 2 suite coverage is fully implemented and exercised, including newly added async/edge-state checks:
   - `P2-D07`, `P2-D08`, `P2-D10`
   - `P2-S10`, `P2-S13`

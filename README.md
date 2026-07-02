@@ -15,3 +15,29 @@ For Vercel demo environments, add this environment variable before building:
 ```text
 VITE_ENABLE_MOCKS=true
 ```
+
+## End-to-end tests
+
+Playwright tests live under `tests/e2e/`.
+
+First-time setup:
+
+```bash
+npm ci
+npx playwright install chromium
+```
+
+Run the suite:
+
+```bash
+npm run test:e2e
+```
+
+Optional helpers:
+
+```bash
+npm run test:e2e:ui
+npm run test:e2e:report
+```
+
+`npm run build` compiles the app only. E2E tests run separately through `npm run test:e2e` or the GitHub Actions `e2e` job.
