@@ -1,7 +1,9 @@
 import { http, HttpResponse } from 'msw'
 import { actionItems } from './data/action-items'
 import { assignmentHistory } from './data/assignment-history'
+import { documents } from './data/documents'
 import { feedbacks } from './data/feedbacks'
+import { idpRecords } from './data/idp'
 import { people } from './data/people'
 import { personas } from './data/personas'
 import { projectHistory } from './data/project-history'
@@ -15,7 +17,11 @@ import {
   getDashboardSummary,
   getFilteredSubordinates,
 } from './services/manager-data-service'
+import type { DocumentRecord } from '@/types/document'
 import type { Feedback } from '@/types/feedback'
+import type { IdpRecord } from '@/types/idp'
+import type { Person, PersonAddress } from '@/types/person'
+import type { Skill } from '@/types/skill'
 import type { SubordinatesFilter, SubordinatesSort } from '@/types/subordinates-query'
 
 const parseSubordinatesFilter = (url: URL): SubordinatesFilter => ({
@@ -31,6 +37,26 @@ const parseSubordinatesSort = (url: URL): SubordinatesSort => ({
   field: (url.searchParams.get('sortField') as SubordinatesSort['field']) ?? 'fullName',
   direction: (url.searchParams.get('sortDirection') as SubordinatesSort['direction']) ?? 'asc',
 })
+
+type PatchPersonPayload = {
+  personalPhone?: string
+  personalEmail?: string
+  address?: string | PersonAddress
+  englishLevel?: Person['englishLevel']
+  skills?: Array<{ skillId: string; level: Skill['level'] }>
+  managementNotes?: string
+  customFieldValues?: Person['customFieldValues']
+}
+
+type AddDocumentPayload = Pick<
+  DocumentRecord,
+  'name' | 'type' | 'uploadedById' | 'visibility' | 'mockFileName'
+>
+
+type PatchIdpPayload = {
+  status?: IdpRecord['status']
+  documentReference?: string
+}
 
 export const handlers = [
   http.get('/api/personas', () => HttpResponse.json(personas)),
@@ -94,6 +120,133 @@ export const handlers = [
   http.get('/api/people/:id/assignment-history', ({ params }) =>
     HttpResponse.json(assignmentHistory.filter((item) => item.employeeId === params.id)),
   ),
+  http.patch('/api/people/:id', async ({ params, request }) => {
+    const person = people.find((item) => item.id === params.id)
+
+    if (!person) {
+      return HttpResponse.json({ message: 'Person not found' }, { status: 404 })
+    }
+
+    const body = (await request.json()) as PatchPersonPayload
+
+    if (body.personalPhone !== undefined) {
+      person.personalPhone = body.personalPhone
+    }
+
+    if (body.personalEmail !== undefined) {
+      person.personalEmail = body.personalEmail
+    }
+
+    if (body.address !== undefined) {
+      person.address =
+        typeof body.address === 'string'
+          ? {
+              ...person.address,
+              addressLine: body.address,
+            }
+          : body.address
+    }
+
+    if (body.englishLevel !== undefined) {
+      person.englishLevel = body.englishLevel
+    }
+
+    if (body.managementNotes !== undefined) {
+      person.managementNotes = body.managementNotes
+    }
+
+    if (body.customFieldValues !== undefined) {
+      person.customFieldValues = {
+        ...person.customFieldValues,
+        ...body.customFieldValues,
+      }
+    }
+
+    if (body.skills && body.skills.length > 0) {
+      body.skills.forEach(({ skillId, level }) => {
+        const skill = skills.find((item) => item.id === skillId && item.personId === person.id)
+
+        if (skill) {
+          skill.level = level
+        }
+      })
+    }
+
+    return HttpResponse.json(person)
+  }),
+  http.get('/api/people/:id/documents', ({ params }) =>
+    HttpResponse.json(documents.filter((document) => document.personId === params.id)),
+  ),
+  http.post('/api/people/:id/documents', async ({ params, request }) => {
+    const person = people.find((item) => item.id === params.id)
+
+    if (!person) {
+      return HttpResponse.json({ message: 'Person not found' }, { status: 404 })
+    }
+
+    const body = (await request.json()) as AddDocumentPayload
+
+    const newDocument: DocumentRecord = {
+      id: `document-${String(documents.length + 1).padStart(3, '0')}`,
+      personId: person.id,
+      name: body.name,
+      type: body.type,
+      uploadedById: body.uploadedById,
+      uploadedAt: new Date(Date.UTC(2026, 6, 1, 10, 0, documents.length)).toISOString(),
+      visibility: body.visibility,
+      mockFileName: body.mockFileName,
+    }
+
+    documents.unshift(newDocument)
+
+    return HttpResponse.json(newDocument, { status: 201 })
+  }),
+  http.get('/api/people/:id/idp', ({ params }) => {
+    const idpRecord = idpRecords.find((item) => item.personId === params.id)
+
+    if (!idpRecord) {
+      return HttpResponse.json({ message: 'IDP not found' }, { status: 404 })
+    }
+
+    return HttpResponse.json(idpRecord)
+  }),
+  http.patch('/api/people/:id/idp', async ({ params, request }) => {
+    const person = people.find((item) => item.id === params.id)
+
+    if (!person) {
+      return HttpResponse.json({ message: 'Person not found' }, { status: 404 })
+    }
+
+    const body = (await request.json()) as PatchIdpPayload
+    const existingRecord = idpRecords.find((item) => item.personId === person.id)
+    const updatedAt = new Date(Date.UTC(2026, 6, 1, 10, 0, idpRecords.length)).toISOString()
+
+    if (existingRecord) {
+      if (body.status !== undefined) {
+        existingRecord.status = body.status
+      }
+
+      if (body.documentReference !== undefined) {
+        existingRecord.documentReference = body.documentReference
+      }
+
+      existingRecord.lastUpdatedAt = updatedAt
+
+      return HttpResponse.json(existingRecord)
+    }
+
+    const newRecord: IdpRecord = {
+      id: `idp-${String(idpRecords.length + 1).padStart(3, '0')}`,
+      personId: person.id,
+      documentReference: body.documentReference ?? '',
+      status: body.status ?? 'Not Started',
+      lastUpdatedAt: updatedAt,
+    }
+
+    idpRecords.push(newRecord)
+
+    return HttpResponse.json(newRecord)
+  }),
   http.get('/api/skills', () => HttpResponse.json(skills)),
   http.get('/api/resourcing/requests', ({ request }) => {
     const url = new URL(request.url)

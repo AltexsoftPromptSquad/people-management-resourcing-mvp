@@ -7,6 +7,7 @@ const toneClassName: Record<BadgeTone, string> = {
   success: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
   warning: 'bg-amber-50 text-amber-800 ring-amber-200',
   danger: 'bg-red-50 text-red-700 ring-red-200',
+  info: 'bg-sky-50 text-sky-700 ring-sky-200',
 }
 
 const sizeClassName: Record<BadgeSize, string> = {

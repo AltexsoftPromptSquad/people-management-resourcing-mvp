@@ -30,11 +30,20 @@
 
 ## In Progress
 
-- [ ] Phase 3 implementation (employee profile managerial + personal views)
+- [x] Phase 3 implementation started on `phase-3-impl/employee-profile`:
+  - shared primitives added: `tabs`, `sheet`, `textarea`, `toast`
+  - shared primitives `tabs`/`toast` migrated to `react-tabs` + `react-toastify` via `src/shared/ui` wrappers (consumer API preserved)
+  - API/query foundation expanded for mutations (`POST`/`PATCH`, `documents`, `idp`, `skills` keys)
+  - mock seed + handlers added for documents, IDP, and `PATCH /api/people/:id`
+  - `src/features/employee-profile/` scaffolded with API/hooks/components
+  - `/people/:id` upgraded from Phase 2 stub to managerial profile with seven tabs and edit flows
+  - `/my-profile` upgraded to personal self-service view (contact, IDP status, certificate add)
+- [x] Phase 3 handoff docs refreshed with latest evidence (`STATUS.md`, `VALIDATION.md`)
+- [ ] Phase 3 UX copy/a11y alignment final pass (SRS-COPY3-\* exact strings + keyboard review)
 
 ## Not Started
 
-- Phase 3 validation and sign-off
+- Phase 3 validation execution and QA sign-off
 - Phase 4+ (resourcing E2E, custom lists, profile sharing polish)
 
 ## Next Owner Actions
@@ -46,13 +55,14 @@
 
 ### Volodymyr (Development / JS implementation)
 
-1. Author `IMPLEMENTATION_PLAN.md` from Phase 3 SRS (next step).
-2. Implement Phase 3 on feature branch after implementation plan is ready.
+1. Complete final Phase 3 UX/copy/a11y alignment and verify against SRS + ux-behavior.
+2. Resolve/acknowledge `npm run format:check` repository-wide baseline drift before QA gate.
+3. Support Ivan QA run and close remaining checklist rows in Phase 3 `VALIDATION.md`.
 
 ### Ivan (QA / validation)
 
-1. Map `phase-3-test-plan.md` P3-_ cases to `SRS-F3-_`/`SRS-UX3-\*` IDs in traceability.
-2. Draft `VALIDATION.md` after implementation lands.
+1. Execute `phase-3-test-plan.md` P3-\* suite after dev marks implementation complete.
+2. Record pass/fail evidence in `VALIDATION.md` and publish sign-off decision.
 
 ## Phase 1 Implementation Reference
 

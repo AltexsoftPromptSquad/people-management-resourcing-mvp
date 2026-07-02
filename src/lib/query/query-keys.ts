@@ -10,6 +10,9 @@ export const queryKeys = {
   actionItems: (personId: string) => ['action-items', personId] as const,
   projectHistory: (personId: string) => ['project-history', personId] as const,
   assignmentHistory: (personId: string) => ['assignment-history', personId] as const,
+  skills: (personId: string) => ['skills', personId] as const,
+  documents: (personId: string) => ['documents', personId] as const,
+  idp: (personId: string) => ['idp', personId] as const,
   resourcingRequests: (filter: { createdById?: string; assignedManagerId?: string }) =>
     ['resourcing-requests', filter] as const,
   dashboardSummary: (managerId: string) => ['dashboard', 'summary', managerId] as const,

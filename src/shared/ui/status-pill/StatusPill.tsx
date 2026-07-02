@@ -3,5 +3,9 @@ import { Badge } from '@/shared/ui/badge'
 import type { StatusPillProps } from './StatusPill.types'
 
 export const StatusPill: FC<StatusPillProps> = ({ tone = 'neutral', children }) => {
-  return <Badge tone={tone}>{children}</Badge>
+  return (
+    <Badge tone={tone} className="shrink-0 whitespace-nowrap">
+      {children}
+    </Badge>
+  )
 }
