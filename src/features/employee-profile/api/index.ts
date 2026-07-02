@@ -1,5 +1,5 @@
 export { getPerson } from './get-person'
-export { getPersonActionItems } from './get-person-action-items'
+export { getActionItemsByAssignee, getPersonActionItems } from './get-person-action-items'
 export { getPersonAssignmentHistory } from './get-person-assignment-history'
 export { getPersonDocuments } from './get-person-documents'
 export { getPersonFeedbacks } from './get-person-feedbacks'

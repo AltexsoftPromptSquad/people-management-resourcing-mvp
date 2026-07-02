@@ -113,12 +113,13 @@ export const TabsTrigger: FC<TabsTriggerProps> = ({
   id,
   panelId,
   tabIndex,
-  ...props
+  tabRef,
 }) => {
   const { setActiveValue } = useTabsContext()
 
   return (
     <li
+      ref={tabRef}
       role="tab"
       data-value={value}
       aria-selected={selected}
@@ -141,7 +142,6 @@ export const TabsTrigger: FC<TabsTriggerProps> = ({
 
         setActiveValue(value)
       }}
-      {...props}
     >
       {children}
     </li>
@@ -156,7 +156,7 @@ export const TabsContent: FC<TabsContentProps> = ({
   id,
   tabId,
   children,
-  ...props
+  tabRef,
 }) => {
   const { baseId } = useTabsContext()
   const fallbackPanelId = `${baseId}-${value}-panel`
@@ -164,12 +164,12 @@ export const TabsContent: FC<TabsContentProps> = ({
 
   return (
     <div
+      ref={tabRef}
       id={panelId}
       role="tabpanel"
       aria-labelledby={tabId}
       hidden={!selected}
       className={cn('mt-4 outline-none', !selected && 'hidden', className)}
-      {...props}
     >
       {children}
     </div>

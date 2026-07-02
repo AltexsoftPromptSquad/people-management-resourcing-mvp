@@ -164,7 +164,12 @@ test.describe('Phase 2 - subordinates list', () => {
 
     await page.getByRole('button', { name: phase2Baselines.profileTarget.fullName }).first().click()
     await expect(page).toHaveURL(getProfilePathFor(phase2Baselines.profileTarget.id))
-    await expect(page.getByRole('heading', { level: 1, name: 'Employee Profile' })).toBeVisible()
+    await expect(
+      page.getByRole('heading', {
+        level: 1,
+        name: phase2Baselines.profileTarget.fullName,
+      }),
+    ).toBeVisible()
   })
 
   test('P2-S10: loading state appears while subordinates query is pending', async ({ page }) => {

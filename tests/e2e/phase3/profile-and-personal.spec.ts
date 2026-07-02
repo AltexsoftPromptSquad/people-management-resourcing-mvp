@@ -53,6 +53,11 @@ test.describe('Phase 3 - profile and personal flows', () => {
 
     await expect(page.getByRole('heading', { level: 1, name: 'My Profile' })).toBeVisible()
     await expect(page.getByText('Feedbacks')).toHaveCount(0)
+    await expect(page.getByText('Manager Only')).toHaveCount(0)
+    await expect(page.getByText('No action items')).toHaveCount(0)
+    await expect(page.getByRole('listitem').filter({ hasText: 'Due' })).toHaveCount(
+      phase3Baselines.actionItemsAssignedToEmployee,
+    )
 
     await page.getByRole('button', { name: 'Edit' }).click()
     await page.getByLabel('Personal phone').fill('+380670000777')

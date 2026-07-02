@@ -174,9 +174,19 @@ export const handlers = [
 
     return HttpResponse.json(person)
   }),
-  http.get('/api/people/:id/documents', ({ params }) =>
-    HttpResponse.json(documents.filter((document) => document.personId === params.id)),
-  ),
+  http.get('/api/people/:id/documents', ({ params, request }) => {
+    const url = new URL(request.url)
+    const visibility = url.searchParams.get('visibility') as DocumentRecord['visibility'] | null
+
+    const personDocuments = documents.filter((document) => document.personId === params.id)
+    if (!visibility) {
+      return HttpResponse.json(personDocuments)
+    }
+
+    return HttpResponse.json(
+      personDocuments.filter((document) => document.visibility === visibility),
+    )
+  }),
   http.post('/api/people/:id/documents', async ({ params, request }) => {
     const person = people.find((item) => item.id === params.id)
 
@@ -270,7 +280,16 @@ export const handlers = [
     return HttpResponse.json(resourcingRequests)
   }),
   http.get('/api/risks', () => HttpResponse.json(risks)),
-  http.get('/api/action-items', () => HttpResponse.json(actionItems)),
+  http.get('/api/action-items', ({ request }) => {
+    const url = new URL(request.url)
+    const assigneeId = url.searchParams.get('assigneeId')
+
+    if (!assigneeId) {
+      return HttpResponse.json(actionItems)
+    }
+
+    return HttpResponse.json(actionItems.filter((item) => item.assigneeId === assigneeId))
+  }),
   http.get('/api/dashboard/summary', ({ request }) => {
     const url = new URL(request.url)
     const managerId = url.searchParams.get('managerId')

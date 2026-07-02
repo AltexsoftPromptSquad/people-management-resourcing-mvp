@@ -2,10 +2,10 @@ import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import {
   useAddDocumentMutation,
-  useEmployeeProfileActionItemsQuery,
-  useEmployeeProfileDocumentsQuery,
+  useEmployeeAssigneeActionItemsQuery,
   useEmployeeProfileIdpQuery,
   useEmployeeProfilePersonQuery,
+  useEmployeeVisibleDocumentsQuery,
   useUpdateIdpMutation,
   useUpdatePersonMutation,
 } from '@/features/employee-profile'
@@ -60,8 +60,8 @@ export const MyProfilePage: FC<MyProfilePageProps> = () => {
   )
 
   const personQuery = useEmployeeProfilePersonQuery(activePersona?.personId)
-  const actionItemsQuery = useEmployeeProfileActionItemsQuery(activePersona?.personId)
-  const documentsQuery = useEmployeeProfileDocumentsQuery(activePersona?.personId)
+  const actionItemsQuery = useEmployeeAssigneeActionItemsQuery(activePersona?.personId)
+  const documentsQuery = useEmployeeVisibleDocumentsQuery(activePersona?.personId)
   const idpQuery = useEmployeeProfileIdpQuery(activePersona?.personId)
   const updatePersonMutation = useUpdatePersonMutation(activePersona?.personId ?? '')
   const updateIdpMutation = useUpdateIdpMutation(activePersona?.personId ?? '')

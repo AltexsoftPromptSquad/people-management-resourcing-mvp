@@ -129,7 +129,7 @@ test.describe('Phase 2 - accessibility checks', () => {
     await page.goto(phase2Routes.dashboard)
     await page.goto(phase2Routes.subordinates)
     await page.getByRole('button', { name: phase2Baselines.profileTarget.fullName }).first().click()
-    await page.getByRole('button', { name: 'Back' }).click()
+    await page.getByRole('button', { name: 'Back', exact: true }).click()
 
     expect(consoleMonitor.errors).toEqual([])
     expect(consoleMonitor.warnings).toEqual([])

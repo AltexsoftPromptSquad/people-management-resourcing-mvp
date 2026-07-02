@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { queryKeys } from '@/lib/query/query-keys'
 import {
+  getActionItemsByAssignee,
   getPerson,
   getPersonActionItems,
   getPersonAssignmentHistory,
@@ -42,6 +43,13 @@ export const useEmployeeProfileDocumentsQuery = (personId: string | undefined) =
     enabled: Boolean(personId),
   })
 
+export const useEmployeeVisibleDocumentsQuery = (personId: string | undefined) =>
+  useQuery({
+    queryKey: queryKeys.documentsByVisibility(personId ?? 'unknown', 'Employee Visible'),
+    queryFn: () => getPersonDocuments(personId ?? '', 'Employee Visible'),
+    enabled: Boolean(personId),
+  })
+
 export const useEmployeeProfileIdpQuery = (personId: string | undefined) =>
   useQuery({
     queryKey: queryKeys.idp(personId ?? 'unknown'),
@@ -68,6 +76,13 @@ export const useEmployeeProfileActionItemsQuery = (personId: string | undefined)
     queryKey: queryKeys.actionItems(personId ?? 'unknown'),
     queryFn: () => getPersonActionItems(personId ?? ''),
     enabled: Boolean(personId),
+  })
+
+export const useEmployeeAssigneeActionItemsQuery = (assigneeId: string | undefined) =>
+  useQuery({
+    queryKey: queryKeys.actionItemsByAssignee(assigneeId ?? 'unknown'),
+    queryFn: () => getActionItemsByAssignee(assigneeId ?? ''),
+    enabled: Boolean(assigneeId),
   })
 
 export const useEmployeeProfileProjectHistoryQuery = (personId: string | undefined) =>

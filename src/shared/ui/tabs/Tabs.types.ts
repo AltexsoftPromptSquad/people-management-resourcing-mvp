@@ -17,10 +17,18 @@ export type TabsTriggerProps = HTMLAttributes<HTMLLIElement> & {
   id?: string
   panelId?: string
   tabIndex?: number
+  tabRef?: (node: HTMLLIElement | null) => void
+  focus?: boolean
+  selectedClassName?: string
+  disabledClassName?: string
 }
 
 export type TabsContentProps = HTMLAttributes<HTMLDivElement> & {
   value: string
   selected?: boolean
   tabId?: string
+  tabRef?: (node: HTMLDivElement | null) => void
+  focus?: boolean
+  forceRender?: boolean
+  selectedClassName?: string
 }

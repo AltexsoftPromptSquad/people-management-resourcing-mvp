@@ -65,7 +65,12 @@ export const phase3Baselines = {
   scheduledLeavesCount: scheduledLeaves.filter((item) => item.personId === employeePerson.id)
     .length,
   actionItemsCount: actionItems.filter((item) => item.personId === employeePerson.id).length,
+  actionItemsAssignedToEmployee: actionItems.filter((item) => item.assigneeId === employeePerson.id)
+    .length,
   documentsCount: documents.filter((item) => item.personId === employeePerson.id).length,
+  employeeVisibleDocumentsCount: documents.filter(
+    (item) => item.personId === employeePerson.id && item.visibility === 'Employee Visible',
+  ).length,
   idpRecord: ensure(
     idpRecords.find((item) => item.personId === employeePerson.id),
     'Missing employee IDP',

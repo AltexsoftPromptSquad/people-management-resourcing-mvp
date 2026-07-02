@@ -1,6 +1,7 @@
 export {
   useAddDocumentMutation,
   useAddFeedbackMutation,
+  useEmployeeAssigneeActionItemsQuery,
   useEmployeeProfileActionItemsQuery,
   useEmployeeProfileAssignmentHistoryQuery,
   useEmployeeProfileDocumentsQuery,
@@ -11,6 +12,7 @@ export {
   useEmployeeProfileRisksQuery,
   useEmployeeProfileScheduledLeavesQuery,
   useEmployeeProfileSkillsQuery,
+  useEmployeeVisibleDocumentsQuery,
   useUpdateIdpMutation,
   useUpdatePersonMutation,
 } from './use-employee-profile-hooks'

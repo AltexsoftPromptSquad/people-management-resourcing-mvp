@@ -62,4 +62,27 @@ const managerOwnActionItems: ActionItem[] = [
   }),
 ]
 
-export const actionItems: ActionItem[] = [...subordinateActionItems, ...managerOwnActionItems]
+const employeeSelfServiceActionItems: ActionItem[] = [
+  createActionItem({
+    index: 201,
+    personId: 'person-employee-001',
+    ownerId: managerId,
+    assigneeId: 'person-employee-001',
+    dueDate: new Date(baseDueDate + 4 * 24 * 60 * 60 * 1000).toISOString(),
+    status: 'Open',
+  }),
+  createActionItem({
+    index: 202,
+    personId: 'person-employee-001',
+    ownerId: managerId,
+    assigneeId: 'person-employee-001',
+    dueDate: new Date(baseDueDate + 10 * 24 * 60 * 60 * 1000).toISOString(),
+    status: 'In Progress',
+  }),
+]
+
+export const actionItems: ActionItem[] = [
+  ...subordinateActionItems,
+  ...managerOwnActionItems,
+  ...employeeSelfServiceActionItems,
+]
