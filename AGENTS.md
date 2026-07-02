@@ -90,7 +90,14 @@ npm run lint
 npm run format:check
 ```
 
-If tests are added or relevant, run `npm run test` when the script exists.
+If Playwright coverage is added or relevant, run:
+
+```bash
+npx playwright install chromium
+npm run test:e2e
+```
+
+Keep `npm run build` limited to TypeScript compile and Vite production build. Do not wire Playwright into the build script.
 
 For markdown-only instruction changes, do not run the full frontend verification suite unless explicitly requested.
 

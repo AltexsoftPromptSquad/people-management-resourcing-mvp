@@ -25,4 +25,18 @@ Validate manager dashboard and subordinates flow implementation against:
 
 ## Evidence
 
-Build/lint/format command output is recorded in the execution transcript for this implementation run.
+Validation evidence from the latest execution run (2026-07-01):
+
+| Check area                        | Command                                                                                              | Result  | Evidence summary                                                                                       |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------ |
+| Build gate                        | `npm run build`                                                                                      | ✅ Pass | `tsc -b` and Vite build succeeded                                                                      |
+| E2E automated validation gate     | `npm run test:e2e`                                                                                   | ✅ Pass | Playwright reported **68 passed / 0 failed** (Phase 1 + Phase 2)                                       |
+| Lint gate                         | `npm run lint`                                                                                       | ✅ Pass | 0 errors; 1 known non-blocking warning (`react-hooks/incompatible-library` in `SubordinatesTable.tsx`) |
+| Format gate                       | `npm run format:check`                                                                               | ✅ Pass | `All matched files use Prettier code style!`                                                           |
+| Phase 2 async-state accessibility | `npx playwright test tests/e2e/phase2/accessibility.spec.ts -g "P2-A05"`                             | ✅ Pass | Empty/loading/error semantic container assertions passed                                               |
+| Phase 2 sort + filter robustness  | `npx playwright test tests/e2e/phase2/subordinates.spec.ts -g "P2-S03/P2-S04\|P2-S05/P2-S06/P2-S07"` | ✅ Pass | Sort URL-state and filter narrowing checks passed after deterministic wait improvements                |
+
+Supporting test reports:
+
+- `tests/test_reports/phase2/phase-2-playwright-validation.md`
+- `tests/test_reports/phase2/phase-2-test-plan.md`

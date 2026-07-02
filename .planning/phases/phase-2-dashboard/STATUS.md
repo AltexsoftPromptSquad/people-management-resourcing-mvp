@@ -2,8 +2,8 @@
 
 ## Snapshot
 
-- Status: Implemented
-- Last updated: 2026-06-30
+- Status: Signed off
+- Last updated: 2026-07-01
 - Branch target: `feature/phase-2-dashboard`
 - Sources: `SRS.md`, `IMPLEMENTATION_PLAN.md`, BRD v1.1
 
@@ -17,8 +17,6 @@
 - Dashboard page composed with summary cards, quick links, action items, and async states.
 - Subordinates page composed with URL-driven filter/sort state, debounced search draft, table-only refresh overlay, and profile drilldown.
 - Shared primitives added for `data-table`, `page-header`, `status-pill`, `skeleton`.
+- QA validation completed, and test artifacts generated (test reports, playwright tests)
 
 ## Remaining
-
-- No functional scope items remain in the Phase 2 implementation plan.
-- QA owner sign-off remains before Phase 3 starts.
