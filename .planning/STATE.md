@@ -1,6 +1,6 @@
 # Current State
 
-**Last updated:** 2026-06-30
+**Last updated:** 2026-07-02
 
 ## Completed
 
@@ -22,31 +22,37 @@
 - [x] Phase 2 SRS created (`.planning/phases/phase-2-dashboard/SRS.md`)
 - [x] Phase 2 implementation plan created (`.planning/phases/phase-2-dashboard/IMPLEMENTATION_PLAN.md`)
 - [x] Phase 2 implemented (manager dashboard, subordinates flow, expanded mocks, query boundaries)
+- [x] Phase 2 validation passed (Ivan Zamikula, 2026-07-01) — checklist complete, Playwright 68/68, build/lint/format pass
+- [x] Phase 2 sign-off merged (PR #16, `test` → `main`, 2026-07-02)
+- [x] Phase 3 test plan drafted (`.planning/phases/phase-3-employee-profile/phase-3-test-plan.md`)
+- [x] Phase 3 plan created (`.planning/phases/phase-3-employee-profile/PLAN.md`)
+- [x] Phase 3 SRS created (`.planning/phases/phase-3-employee-profile/SRS.md`) — Carlos Nunes approved scope 2026-07-02
 
 ## In Progress
 
-- [ ] Phase 2 validation and final acceptance sign-off
+- [ ] Phase 3 implementation (employee profile managerial + personal views)
 
 ## Not Started
 
-- Phase 3+ feature depth: full employee profile, resourcing candidate workflows, custom lists, profile sharing, and later MVP screens
+- Phase 3 validation and sign-off
+- Phase 4+ (resourcing E2E, custom lists, profile sharing polish)
 
 ## Next Owner Actions
 
 ### Carlos (Product / BA / BRD)
 
-No pending actions. All decisions approved 2026-06-27.
+1. Phase 3 PLAN + SRS scope approved 2026-07-02.
+2. Review implementation against SRS before Phase 3 validation sign-off.
 
 ### Volodymyr (Development / JS implementation)
 
-1. Run Phase 2 validation checklist at `.planning/phases/phase-2-dashboard/VALIDATION.md`.
-2. Capture validation evidence and resolve any remaining QA findings.
-3. Start Phase 3 planning only after Phase 2 validation sign-off.
+1. Author `IMPLEMENTATION_PLAN.md` from Phase 3 SRS (next step).
+2. Implement Phase 3 on feature branch after implementation plan is ready.
 
 ### Ivan (QA / validation)
 
-1. Execute and sign off Phase 2 validation checklist in `.planning/phases/phase-2-dashboard/VALIDATION.md`.
-2. Prepare test case skeletons for Phases 3–5 based on updated BRD v1.1.
+1. Map `phase-3-test-plan.md` P3-* cases to `SRS-F3-*` / `SRS-UX3-*` IDs in traceability.
+2. Draft `VALIDATION.md` after implementation lands.
 
 ## Phase 1 Implementation Reference
 
