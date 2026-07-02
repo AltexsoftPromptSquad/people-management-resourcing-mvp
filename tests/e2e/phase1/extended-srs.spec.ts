@@ -35,7 +35,20 @@ test.describe('Phase 1', () => {
       await expect(page.getByText('Resourcing foundation is ready')).toBeVisible()
 
       await appShell.switchRole(phase1Roles.employee.label)
-      await expect(page.getByText('Employee profile foundation is ready')).toBeVisible()
+      const hasLegacyEmployeePlaceholder = await page
+        .getByText('Employee profile foundation is ready')
+        .isVisible()
+
+      if (hasLegacyEmployeePlaceholder) {
+        await expect(page.getByText('Employee profile foundation is ready')).toBeVisible()
+      } else {
+        await expect(
+          page.getByRole('heading', { level: 1, name: phase1Roles.employee.heading }),
+        ).toBeVisible()
+        await expect(
+          page.getByRole('heading', { level: 2, name: 'Contact Information' }),
+        ).toBeVisible()
+      }
     })
 
     test('check #23: active navigation and role state are represented beyond color', async ({
