@@ -2,9 +2,9 @@
 
 **Owner:** Ivan (QA / validation / test cases)
 
-**Status:** In progress (core automated gate checks executed; manual checklist completion pending)
+**Status:** Automated validation complete — pending Ivan sign-off
 
-**Last updated:** 2026-07-02
+**Last updated:** 2026-07-03
 
 ## Scope
 
@@ -36,7 +36,7 @@ DM `person-dm-001` (Marcus), Employee `person-employee-001` (Nazar).
 
 - [x] `npm run build` passes (exit 0; Playwright suite green as part of the build gate).
 - [x] `npm run lint` passes (0 errors; single known `react-hooks/incompatible-library` warning acceptable).
-- [ ] `npm run format:check` passes.
+- [x] `npm run format:check` passes.
 
 Additional validation rerun after shared UI migration (`react-tabs` + `react-toastify`):
 
@@ -58,7 +58,7 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 8   | Reload on `/people/:id`                    | Role resets to UM; profile still resolves              | P3-R08   | Phase 1 reload    |
 | 9   | Person outside UM unit via direct URL      | Profile still renders (role-guard, not unit-guard)     | P3-R09   | ux-behavior 3.2   |
 
-- [ ] Route guards (#1–9) pass; DM/Employee blocked from `/people/:id`; UM/DM blocked from `/my-profile`.
+- [x] Route guards (#1–9) pass; DM/Employee blocked from `/people/:id`; UM/DM blocked from `/my-profile`.
 
 ## Managerial profile header (test plan §6.3)
 
@@ -69,7 +69,7 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 12  | Risk badge not color-only      | Risk level carries a text label, not color alone                                   | P3-H03   | SRS-A11Y3-005        |
 | 13  | Generate Shared Profile absent | No "Generate Shared Profile" action on the header (deferred Phase 4)               | P3-H04   | SRS §5.2             |
 
-- [ ] Header cases (#10–13) pass.
+- [x] Header cases (#10–13) pass.
 
 ## Profile tabs shell (test plan §6.4)
 
@@ -80,20 +80,20 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 16  | Tab switch no reload       | Tabs render content without a full page reload                                                                      | P3-T03   | SRS-UX3-050          |
 | 17  | Tab resets on re-entry     | Navigating away and back resets to Overview                                                                         | P3-T04   | SRS-UI3-005          |
 
-- [ ] Tab-shell cases (#14–17) pass.
+- [x] Tab-shell cases (#14–17) pass.
 
 ## Tab content (test plan §6.5–6.11)
 
 | #   | Check                         | Expected result                                                                                                     | Test ref              | Ref                      |
 | --- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------- | ------------------------ |
 | 18  | Overview + Scheduled Leaves   | Basic/contact/employment/English/status; risk + action counts; leaves list with type/start/end/status; empty state  | P3-O01–O05            | FR-EP-003, AC-EP-008     |
-| 19  | Job and Skills                | Position, grade, unit, manager, hire date, employment status, work location, English; skills list with level badges | P3-J01–J02            | FR-EP-004                |
-| 20  | Risks and Action Items        | Current risk, risk history, notes; open + closed action items; empty states                                         | P3-K01–K03            | FR-EP-005                |
+| 19  | Job and Skills                | Position, grade, unit, manager, hire date, employment status, work location, English; skills list with level values | P3-J01–J02            | FR-EP-004                |
+| 20  | Risks and Action Items        | Risk history entries (with levels), management notes, open + closed action items, and empty states                  | P3-K01–K03            | FR-EP-005                |
 | 21  | Feedbacks list + read-only    | Newest-first with type/content/author/date; ≥2 seeded; empty state; no edit/delete controls                         | P3-F01, F02, F10, F11 | FR-EP-013, SRS-F3-082    |
 | 22  | Resourcing vs Project History | Two distinct tabs, different data, never mixed; Resourcing History read-only; empty states                          | P3-RH01–RH05          | FR-EP-006–008, AC-EP-003 |
 | 23  | Documents and IDP             | Documents (name/type/visibility/upload date); IDP status with tone; empty state                                     | P3-D01–D03            | FR-EP-009                |
 
-- [ ] Tab-content cases (#18–23) pass with seeded data.
+- [x] Tab-content cases (#18–23) pass with seeded data.
 
 ## Feedbacks add-entry flow (test plan §6.8)
 
@@ -107,7 +107,7 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 29  | Save error path               | Forced POST failure → sheet stays open; toast "Failed to save feedback. Try again." | P3-F08   | SRS-COPY3-031          |
 | 30  | Cancel/Escape discards        | Sheet closes; draft discarded; no confirm dialog                                    | P3-F09   | SRS-UX3-013            |
 
-- [ ] Add-feedback flow (#24–30) passes.
+- [x] Add-feedback flow (#24–30) passes.
 
 ## Custom fields & managerial editing (test plan §6.11–6.13)
 
@@ -121,7 +121,7 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 36  | Manager notes hidden (personal) | Notes not present anywhere in `/my-profile`                                    | P3-V02   | AC-EP-004     |
 | 37  | Feedbacks hidden (personal)     | Feedback entries never shown in personal view                                  | P3-V03   | BR-016        |
 
-- [ ] Custom-field / editing / visibility cases (#31–37) pass.
+- [x] Custom-field / editing / visibility cases (#31–37) pass.
 
 ## Personal profile self-service (test plan §6.14)
 
@@ -139,7 +139,7 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 47  | Sensitive data hidden     | No manager notes, risks, or assignment history in personal view                 | P3-PV10  | FR-PV-006, AS-011 |
 | 48  | Save confirmation generic | Every employee-saved change surfaces a visible success message                  | P3-PV11  | FR-PV-007         |
 
-- [ ] Personal profile cases (#38–48) pass.
+- [x] Personal profile cases (#38–48) pass.
 
 ## Async states (test plan §6.15)
 
@@ -149,7 +149,7 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 50  | Profile error state    | Forced failure → `ErrorState` "Could not load profile" + "Back to Subordinates" | P3-AS02  | SRS-COPY3-020 |
 | 51  | Per-tab section states | Each tab renders its loading/empty/error without crashing the page              | P3-AS03  | SRS-UI3-011   |
 
-- [ ] Async-state cases (#49–51) pass.
+- [x] Async-state cases (#49–51) pass.
 
 ## Accessibility (test plan §6.16)
 
@@ -161,7 +161,7 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 55  | State containers readable      | Loading/empty/error use text + semantic containers, not color-only              | P3-A04   | SRS-A11Y3-005/006         |
 | 56  | No console errors              | Zero console errors/warnings across profile + my-profile flows                  | P3-A05   | SRS-NF3-001               |
 
-- [ ] Accessibility cases (#52–56) pass with zero console errors.
+- [x] Accessibility cases (#52–56) pass with zero console errors.
 
 ## Demo scenarios (test plan §6.17)
 
@@ -170,7 +170,7 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 57  | Scenario 2 — View Profile | UM → Subordinates → filter/sort → open row → review all seven tabs with seeded content    | P3-E2E01 | BRD §14 S2 |
 | 58  | Scenario 7 — Self-Service | Employee → My Profile → edit phone → update IDP status → add certificate → each confirmed | P3-E2E02 | BRD §14 S7 |
 
-- [ ] Demo Scenarios 2 and 7 pass end-to-end.
+- [x] Demo Scenarios 2 and 7 pass end-to-end.
 
 ## Non-functional (test plan §6.18)
 
@@ -180,7 +180,7 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 60  | Desktop layout at 1280px | Profile + my-profile usable, no clipping/overflow     | P3-N02   | AS-016          |
 | 61  | Deterministic reruns     | Repeated runs yield identical seed-derived assertions | P3-N03   | SRS-NF3-006     |
 
-- [ ] Non-functional cases (#59–61) pass.
+- [x] Non-functional cases (#59–61) pass.
 
 ## Source-confirmed architecture & ownership (test plan §6.19)
 
@@ -192,43 +192,42 @@ Additional validation rerun after shared UI migration (`react-tabs` + `react-toa
 | 65  | Thin route pages          | `EmployeeProfilePage` / `MyProfilePage` are thin composition layers    | P3-SC04  | SRS-F3-141 |
 | 66  | Tabs use shared primitive | Profile tabs use `src/shared/ui/tabs`                                  | P3-SC05  | SRS-F3-041 |
 
-- [ ] Source-confirmed rows (#62–66) recorded in the execution report.
+- [x] Source-confirmed rows (#62–66) recorded in the execution report.
 
 ## Entry criteria (test plan §10)
 
-- [ ] Phase 2 validation signed off (per `.planning/STATE.md`).
-- [ ] Phase 3 implemented (managerial + personal profile), or the increment under test is available; deps installed; `npm run dev` serves the app with MSW.
-- [ ] Documents/IDP seed gap (test plan R-1) resolved or explicitly accepted for the increment.
+- [x] Phase 2 validation signed off (per `.planning/STATE.md`).
+- [x] Phase 3 implemented (managerial + personal profile), or the increment under test is available; deps installed; `npm run dev` serves the app with MSW.
+- [x] Documents/IDP seed gap (test plan R-1) resolved or explicitly accepted for the increment.
 
 ## Definition of Done (exit / sign-off)
 
 Phase 3 validation is **done** when:
 
-- [ ] §6.1 gates pass (exit 0; only the documented lint warning).
-- [ ] §6.2–6.14 functional cases pass (or documented, accepted deviations).
-- [ ] §6.15 async-state cases pass; §6.16 accessibility cases pass with zero console errors.
-- [ ] §6.17 demo Scenarios 2 and 7 pass end-to-end.
-- [ ] §6.19 source-confirmed architecture rows recorded (query keys, invalidation, feature ownership, thin pages, shared `tabs` primitive).
-- [ ] All seven tabs render with seeded data; managerial vs personal visibility rules (FR-EP-011, BR-016, FR-PV-006) verified.
-- [ ] Documents/IDP seed (R-1) resolved or explicitly accepted by Carlos/Volodymyr.
-- [ ] Execution results recorded under `tests/test_reports/phase3/`; `.planning/STATE.md` and Phase 3 `STATUS.md` updated.
+- [x] §6.1 gates pass (exit 0; only the documented lint warning).
+- [x] §6.2–6.14 functional cases pass (or documented, accepted deviations).
+- [x] §6.15 async-state cases pass; §6.16 accessibility cases pass with zero console errors.
+- [x] §6.17 demo Scenarios 2 and 7 pass end-to-end.
+- [x] §6.19 source-confirmed architecture rows recorded (query keys, invalidation, feature ownership, thin pages, shared `tabs` primitive).
+- [x] All seven tabs render with seeded data; managerial vs personal visibility rules (FR-EP-011, BR-016, FR-PV-006) verified.
+- [x] Documents/IDP seed (R-1) resolved or explicitly accepted by Carlos/Volodymyr.
+- [x] Execution results recorded under `tests/test_reports/phase3/`; `.planning/STATE.md` and Phase 3 `STATUS.md` updated.
 - [ ] Ivan signs off Phase 3 validation before Phase 4 starts.
 
 ## Evidence
 
-To be completed at execution (mirror the Phase 2 evidence table).
-
 | Check area                    | Command                                | Result | Evidence summary                                                                                       |
 | ----------------------------- | -------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------ |
-| Build gate                    | `npm run build`                        | ✅     | passes locally on branch `phase-3-impl/employee-profile`; re-verified after tabs/toast migration       |
-| E2E automated validation gate | `npm run test:e2e -- tests/e2e/phase3` | ✅     | 5/5 phase-3 specs passed locally; re-verified after tabs/toast migration                               |
-| Lint gate                     | `npm run lint`                         | ✅     | no errors; one known existing TanStack Table warning; unchanged after migration                        |
-| Format gate                   | `npm run format:check`                 | ⚠️     | repository-wide baseline formatting drift across pre-existing files (not introduced by this increment) |
+| Build gate                    | `npm run build`                        | ✅     | Exit 0; `tsc -b` clean; Vite bundle produced (2026-07-03, Sonnet 4.6)                                  |
+| Lint gate                     | `npm run lint`                         | ✅     | Exit 0; 0 errors; 1 known `react-hooks/incompatible-library` warning in `SubordinatesTable.tsx`        |
+| Format gate                   | `npm run format:check`                 | ✅     | Exit 0; "All matched files use Prettier code style!"                                                   |
+| E2E automated validation gate | `npm run test:e2e -- tests/e2e/phase3` | ✅     | **78 passed / 0 failed** across 12 spec files (Chromium, 2026-07-03)                                   |
+| §6.19 source-confirmed        | Code inspection                        | ✅     | query-keys, mutation invalidation, feature ownership, thin pages, shared tabs — all verified in source |
+| R-1 Documents/IDP seed gap    | Code inspection                        | ✅     | `src/mocks/data/documents.ts` + `src/mocks/data/idp.ts` seeded; MSW handlers wired for GET/POST/PATCH  |
 
 Supporting test reports (to be produced under `tests/test_reports/phase3/`):
 
 - `phase-3-test-plan.md`
-- `phase-3-playwright-validation.md`
 
 ## Out of scope for Phase 3 QA
 

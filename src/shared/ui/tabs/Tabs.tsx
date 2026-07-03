@@ -122,11 +122,12 @@ export const TabsTrigger: FC<TabsTriggerProps> = ({
       ref={tabRef}
       role="tab"
       data-value={value}
+      data-rttab="true"
       aria-selected={selected}
       aria-disabled={disabled}
-      aria-controls={panelId}
-      id={id}
-      tabIndex={tabIndex}
+      aria-controls={panelId ?? (id ? `panel-${id}` : undefined)}
+      id={id ? `tab-${id}` : undefined}
+      tabIndex={tabIndex ?? (selected ? 0 : -1)}
       className={cn(
         'inline-flex cursor-pointer whitespace-nowrap items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-slate-300',
         selected && 'bg-white text-slate-950 shadow-xs',
@@ -160,14 +161,15 @@ export const TabsContent: FC<TabsContentProps> = ({
 }) => {
   const { baseId } = useTabsContext()
   const fallbackPanelId = `${baseId}-${value}-panel`
-  const panelId = id ?? fallbackPanelId
+  const panelId = id ? `panel-${id}` : fallbackPanelId
+  const labelledBy = tabId ?? (id ? `tab-${id}` : undefined)
 
   return (
     <div
       ref={tabRef}
       id={panelId}
       role="tabpanel"
-      aria-labelledby={tabId}
+      aria-labelledby={labelledBy}
       hidden={!selected}
       className={cn('mt-4 outline-none', !selected && 'hidden', className)}
     >

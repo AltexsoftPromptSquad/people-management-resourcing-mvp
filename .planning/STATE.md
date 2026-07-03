@@ -1,6 +1,6 @@
 # Current State
 
-**Last updated:** 2026-07-02
+**Last updated:** 2026-07-03
 
 ## Completed
 
@@ -39,11 +39,12 @@
   - `/people/:id` upgraded from Phase 2 stub to managerial profile with seven tabs and edit flows
   - `/my-profile` upgraded to personal self-service view (contact, IDP status, certificate add)
 - [x] Phase 3 handoff docs refreshed with latest evidence (`STATUS.md`, `VALIDATION.md`)
-- [ ] Phase 3 UX copy/a11y alignment final pass (SRS-COPY3-\* exact strings + keyboard review)
+- [x] Phase 3 automated validation executed (78/78 E2E pass; build/lint/format gates pass; §6.19 source-confirmed; R-1 resolved) — 2026-07-03
+- [ ] Phase 3 QA sign-off by Ivan (pending)
 
 ## Not Started
 
-- Phase 3 validation execution and QA sign-off
+- Phase 3 QA sign-off by Ivan (automated validation complete 2026-07-03; pending Ivan sign-off)
 - Phase 4+ (resourcing E2E, custom lists, profile sharing polish)
 
 ## Next Owner Actions

@@ -12,6 +12,7 @@ import {
   getPersonRisks,
   getPersonScheduledLeaves,
   getPersonSkills,
+  getUnits,
   patchIdp,
   patchPerson,
   postDocument,
@@ -27,6 +28,12 @@ export const useEmployeeProfilePersonQuery = (personId: string | undefined) =>
     queryKey: queryKeys.person(personId ?? 'unknown'),
     queryFn: () => getPerson(personId ?? ''),
     enabled: Boolean(personId),
+  })
+
+export const useUnitsQuery = () =>
+  useQuery({
+    queryKey: queryKeys.units(),
+    queryFn: getUnits,
   })
 
 export const useEmployeeProfileFeedbacksQuery = (personId: string | undefined) =>

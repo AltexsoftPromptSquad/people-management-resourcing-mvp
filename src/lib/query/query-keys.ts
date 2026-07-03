@@ -2,6 +2,7 @@ import type { SubordinatesFilter, SubordinatesSort } from '@/types/subordinates-
 
 export const queryKeys = {
   personas: () => ['personas'] as const,
+  units: () => ['units'] as const,
   people: (managerId?: string) => ['people', { managerId }] as const,
   person: (id: string) => ['person', id] as const,
   feedbacks: (personId: string) => ['feedbacks', personId] as const,
