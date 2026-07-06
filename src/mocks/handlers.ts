@@ -17,6 +17,7 @@ import {
   getDashboardSummary,
   getFilteredSubordinates,
 } from './services/manager-data-service'
+import { resourcingHandlers } from './resourcing-handlers'
 import type { DocumentRecord } from '@/types/document'
 import type { Feedback } from '@/types/feedback'
 import type { IdpRecord } from '@/types/idp'
@@ -322,4 +323,5 @@ export const handlers = [
       getFilteredSubordinates(managerId, parseSubordinatesFilter(url), parseSubordinatesSort(url)),
     )
   }),
+  ...resourcingHandlers,
 ]

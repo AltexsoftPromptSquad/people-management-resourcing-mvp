@@ -3,6 +3,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   getDashboardPagePath,
   getMyProfilePagePath,
+  getResourcingIncomingPagePath,
   getResourcingRequestsPagePath,
   getSubordinatesPagePath,
 } from './routes'
@@ -18,6 +19,7 @@ export const navigationItemsByRole: Record<Role, NavigationItem[]> = {
   'unit-manager': [
     { label: 'Dashboard', to: getDashboardPagePath(), Icon: LayoutDashboard },
     { label: 'Subordinates', to: getSubordinatesPagePath(), Icon: Users },
+    { label: 'Incoming Requests', to: getResourcingIncomingPagePath(), Icon: BriefcaseBusiness },
   ],
   'delivery-manager': [
     { label: 'Resourcing Requests', to: getResourcingRequestsPagePath(), Icon: BriefcaseBusiness },

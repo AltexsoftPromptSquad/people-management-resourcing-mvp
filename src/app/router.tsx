@@ -11,6 +11,7 @@ import {
   getResourcingIncomingPagePath,
   getResourcingRequestsPagePath,
   getRisksPagePath,
+  getSharedProfilePagePath,
   getSubordinatesPagePath,
 } from './routes'
 import { CustomListsPage } from '@/pages/custom-lists-page'
@@ -19,10 +20,15 @@ import { EmployeeProfilePage } from '@/pages/employee-profile-page'
 import { MyProfilePage } from '@/pages/my-profile-page'
 import { ResourcingIncomingPage } from '@/pages/resourcing-incoming-page'
 import { ResourcingRequestsPage } from '@/pages/resourcing-requests-page'
+import { SharedProfilePage } from '@/pages/shared-profile-page'
 import { RisksPage } from '@/pages/risks-page'
 import { SubordinatesPage } from '@/pages/subordinates-page'
 
 export const router = createBrowserRouter([
+  {
+    path: getSharedProfilePagePath(':token'),
+    element: <SharedProfilePage />,
+  },
   {
     path: getHomePagePath(),
     element: <AppLayout />,

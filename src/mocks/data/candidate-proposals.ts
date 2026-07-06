@@ -1,0 +1,41 @@
+import type { CandidateProposal } from '@/types/candidate-proposal'
+
+export const candidateProposals: CandidateProposal[] = [
+  {
+    id: 'proposal-0001',
+    requestId: 'request-003',
+    candidateType: 'Internal',
+    employeeId: 'person-employee-001',
+    proposedById: 'person-um-001',
+    proposedAt: '2026-06-22T10:00:00.000Z',
+    status: 'Proposed',
+    fitSummary: 'Strong DevOps background with Terraform and AWS certifications.',
+    availabilityPercent: 60,
+    warnings: [],
+  },
+  {
+    id: 'proposal-0002',
+    requestId: 'request-003',
+    candidateType: 'Internal',
+    employeeId: 'person-generated-001',
+    proposedById: 'person-um-001',
+    proposedAt: '2026-06-22T10:05:00.000Z',
+    status: 'Proposed',
+    fitSummary: 'Experienced platform engineer with CI/CD pipeline ownership.',
+    availabilityPercent: 30,
+    warnings: ['allocation'],
+    sharedProfileId: 'shared-profile-0001',
+  },
+  {
+    id: 'proposal-0003',
+    requestId: 'request-003',
+    candidateType: 'External',
+    externalProfileUrl: 'https://example.com/candidates/devops-external',
+    proposedById: 'person-um-001',
+    proposedAt: '2026-06-22T10:10:00.000Z',
+    status: 'Proposed',
+    fitSummary: 'External senior DevOps consultant available for migration window.',
+    availabilityPercent: 100,
+    warnings: [],
+  },
+]

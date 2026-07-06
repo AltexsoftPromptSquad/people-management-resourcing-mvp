@@ -19,6 +19,9 @@ export const queryKeys = {
   idp: (personId: string) => ['idp', personId] as const,
   resourcingRequests: (filter: { createdById?: string; assignedManagerId?: string }) =>
     ['resourcing-requests', filter] as const,
+  resourcingRequest: (id: string) => ['resourcing-request', id] as const,
+  candidateProposals: (requestId: string) => ['candidate-proposals', requestId] as const,
+  sharedProfile: (token: string) => ['shared-profile', token] as const,
   dashboardSummary: (managerId: string) => ['dashboard', 'summary', managerId] as const,
   dashboardActionItems: (managerId: string) => ['dashboard', 'action-items', managerId] as const,
   subordinates: (managerId: string, filter: SubordinatesFilter, sort: SubordinatesSort) =>
