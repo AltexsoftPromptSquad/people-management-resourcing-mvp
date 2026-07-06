@@ -773,12 +773,35 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                       key={item.id}
                       className="rounded-md border border-slate-200 bg-white p-3 text-sm"
                     >
-                      <p>
-                        Request: {item.requestId} - Decision: {item.status}
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="font-medium text-slate-900">
+                          Request: {item.requestTitle ?? item.requestId}
+                        </p>
+                        <StatusPill
+                          tone={
+                            item.status === 'Approved'
+                              ? 'success'
+                              : item.status === 'Rejected'
+                                ? 'danger'
+                                : item.status === 'Withdrawn'
+                                  ? 'warning'
+                                  : 'info'
+                          }
+                        >
+                          {item.status}
+                        </StatusPill>
+                      </div>
+                      <p className="mt-1 text-xs text-slate-600">
+                        Proposed: {formatDate(item.proposedAt)} by {item.proposedById}
                       </p>
-                      <p className="text-xs text-slate-600">
-                        Proposed: {formatDate(item.proposedAt)}
-                      </p>
+                      {item.decisionAt ? (
+                        <p className="text-xs text-slate-600">
+                          Decision: {formatDate(item.decisionAt)} by {item.decisionById ?? '—'}
+                        </p>
+                      ) : null}
+                      {item.feedback ? (
+                        <p className="mt-1 text-xs text-slate-700">Feedback: {item.feedback}</p>
+                      ) : null}
                     </li>
                   ))}
                 </ul>

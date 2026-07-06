@@ -1,5 +1,7 @@
 import type { FC } from 'react'
 import { useMemo, useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import { RESOURCING_COPY } from '../constants/copy'
 import {
   useCandidateProposalsQuery,
@@ -8,8 +10,11 @@ import {
   usePatchResourcingRequestMutation,
   useResourcingRequestsQuery,
 } from '../hooks/use-resourcing-hooks'
+import { rejectCandidateSchema } from '../schemas/candidate-decision.schema'
+import { requestFormSchema, type RequestFormValues } from '../schemas/request-form.schema'
 import { useUnitsQuery } from '@/features/employee-profile/hooks'
 import { getSharedProfilePagePath } from '@/app/routes'
+import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
 import { ConfirmDialog } from '@/shared/ui/dialog'
 import { DataTable } from '@/shared/ui/data-table'
@@ -37,7 +42,25 @@ type ResourcingRequestsWorkspaceProps = {
   createdById: string
 }
 
-const emptyForm = {
+const englishLevelOptions = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const
+const compensationOptions = ['Junior', 'Middle', 'Senior', 'Lead'] as const
+const priorityOptions = ['Low', 'Medium', 'High', 'Urgent'] as const
+
+const formatDate = (isoDate: string) =>
+  new Date(isoDate).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  })
+
+const priorityTone: Record<(typeof priorityOptions)[number], 'neutral' | 'warning' | 'danger'> = {
+  Low: 'neutral',
+  Medium: 'neutral',
+  High: 'warning',
+  Urgent: 'danger',
+}
+
+const emptyForm: RequestFormValues = {
   title: '',
   projectName: '',
   clientName: '',
@@ -66,8 +89,15 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
 
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [isFormOpen, setFormOpen] = useState(false)
-  const [form, setForm] = useState(emptyForm)
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors: formErrors },
+  } = useForm<RequestFormValues>({
+    resolver: zodResolver(requestFormSchema),
+    defaultValues: emptyForm,
+  })
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false)
   const [approveProposalId, setApproveProposalId] = useState<string | null>(null)
   const [rejectProposalId, setRejectProposalId] = useState<string | null>(null)
@@ -86,27 +116,11 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
     [unitsQuery.data],
   )
 
-  const validateForm = () => {
-    const errors: Record<string, string> = {}
-    if (!form.title.trim()) errors.title = RESOURCING_COPY.validation.requestTitle
-    if (!form.requiredRole.trim()) errors.requiredRole = RESOURCING_COPY.validation.requiredRole
-    if (!form.gradeLevel.trim()) errors.gradeLevel = RESOURCING_COPY.validation.gradeLevel
-    if (!form.assignedUnitManagerId)
-      errors.assignedUnitManagerId = RESOURCING_COPY.validation.assignedUm
-    const workload = Number(form.workloadPercent)
-    if (!workload || workload < 1 || workload > 100)
-      errors.workloadPercent = RESOURCING_COPY.validation.workload
-    setFormErrors(errors)
-    return Object.keys(errors).length === 0
-  }
-
-  const handleSubmitRequest = async () => {
-    if (!validateForm()) return
-
+  const handleSubmitRequest = async (form: RequestFormValues) => {
     try {
-      await createMutation.mutateAsync({
+      const submittedRequest = await createMutation.mutateAsync({
         title: form.title.trim(),
-        projectName: form.projectName.trim() || form.title.trim(),
+        projectName: form.projectName.trim(),
         clientName: form.clientName.trim() || undefined,
         requiredRole: form.requiredRole.trim(),
         requiredSkills: form.requiredSkills
@@ -127,7 +141,8 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
       })
       toast.success(RESOURCING_COPY.requestSubmitted)
       setFormOpen(false)
-      setForm(emptyForm)
+      reset(emptyForm)
+      setSelectedId(submittedRequest.id)
     } catch {
       toast.error(RESOURCING_COPY.requestSubmitFailed)
     }
@@ -177,8 +192,13 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
 
   const handleReject = async () => {
     if (!rejectProposalId) return
-    if (!rejectReason.trim()) {
-      setRejectError(RESOURCING_COPY.validation.rejectionReason)
+
+    const rejectValidationResult = rejectCandidateSchema.safeParse({
+      rejectionReason: rejectReason,
+    })
+
+    if (!rejectValidationResult.success) {
+      setRejectError(rejectValidationResult.error.issues[0]?.message ?? '')
       return
     }
 
@@ -189,7 +209,7 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
         id: rejectProposalId,
         payload: {
           status: 'Rejected',
-          rejectionReason: rejectReason.trim(),
+          rejectionReason: rejectValidationResult.data.rejectionReason,
           reviewedById: createdById,
         },
       })
@@ -235,65 +255,63 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
             <div className="mt-4 space-y-3">
               <label className="block text-sm font-medium text-slate-700">
                 Request title *
-                <Input
-                  className="mt-1"
-                  value={form.title}
-                  onChange={(event) =>
-                    setForm((current) => ({ ...current, title: event.target.value }))
-                  }
-                />
-                {formErrors.title ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.title}</p>
+                <Input className="mt-1" {...register('title')} />
+                {formErrors.title?.message ? (
+                  <p className="mt-1 text-xs text-red-600">{formErrors.title.message}</p>
                 ) : null}
               </label>
               <label className="block text-sm font-medium text-slate-700">
-                Project name
-                <Input
-                  className="mt-1"
-                  value={form.projectName}
-                  onChange={(event) =>
-                    setForm((current) => ({ ...current, projectName: event.target.value }))
-                  }
-                />
+                Project name *
+                <Input className="mt-1" {...register('projectName')} />
+                {formErrors.projectName?.message ? (
+                  <p className="mt-1 text-xs text-red-600">{formErrors.projectName.message}</p>
+                ) : null}
               </label>
               <label className="block text-sm font-medium text-slate-700">
                 Required role *
-                <Input
-                  className="mt-1"
-                  value={form.requiredRole}
-                  onChange={(event) =>
-                    setForm((current) => ({ ...current, requiredRole: event.target.value }))
-                  }
-                />
-                {formErrors.requiredRole ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.requiredRole}</p>
+                <Input className="mt-1" {...register('requiredRole')} />
+                {formErrors.requiredRole?.message ? (
+                  <p className="mt-1 text-xs text-red-600">{formErrors.requiredRole.message}</p>
                 ) : null}
               </label>
               <label className="block text-sm font-medium text-slate-700">
                 Grade level *
-                <Input
-                  className="mt-1"
-                  value={form.gradeLevel}
-                  onChange={(event) =>
-                    setForm((current) => ({ ...current, gradeLevel: event.target.value }))
-                  }
-                />
-                {formErrors.gradeLevel ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.gradeLevel}</p>
+                <Input className="mt-1" {...register('gradeLevel')} />
+                {formErrors.gradeLevel?.message ? (
+                  <p className="mt-1 text-xs text-red-600">{formErrors.gradeLevel.message}</p>
+                ) : null}
+              </label>
+              <label className="block text-sm font-medium text-slate-700">
+                English level *
+                <Select className="mt-1" {...register('englishLevel')}>
+                  {englishLevelOptions.map((level) => (
+                    <option key={level} value={level}>
+                      {level}
+                    </option>
+                  ))}
+                </Select>
+                {formErrors.englishLevel?.message ? (
+                  <p className="mt-1 text-xs text-red-600">{formErrors.englishLevel.message}</p>
+                ) : null}
+              </label>
+              <label className="block text-sm font-medium text-slate-700">
+                Expected compensation level *
+                <Select className="mt-1" {...register('expectedCompensationLevel')}>
+                  {compensationOptions.map((level) => (
+                    <option key={level} value={level}>
+                      {level}
+                    </option>
+                  ))}
+                </Select>
+                {formErrors.expectedCompensationLevel?.message ? (
+                  <p className="mt-1 text-xs text-red-600">
+                    {formErrors.expectedCompensationLevel.message}
+                  </p>
                 ) : null}
               </label>
               <label className="block text-sm font-medium text-slate-700">
                 Assigned Unit Manager *
-                <Select
-                  className="mt-1"
-                  value={form.assignedUnitManagerId}
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      assignedUnitManagerId: event.target.value,
-                    }))
-                  }
-                >
+                <Select className="mt-1" {...register('assignedUnitManagerId')}>
                   <option value="">Select manager</option>
                   {unitManagers.map((manager) => (
                     <option key={manager.id} value={manager.id}>
@@ -301,8 +319,23 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                     </option>
                   ))}
                 </Select>
-                {formErrors.assignedUnitManagerId ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.assignedUnitManagerId}</p>
+                {formErrors.assignedUnitManagerId?.message ? (
+                  <p className="mt-1 text-xs text-red-600">
+                    {formErrors.assignedUnitManagerId.message}
+                  </p>
+                ) : null}
+              </label>
+              <label className="block text-sm font-medium text-slate-700">
+                Priority *
+                <Select className="mt-1" {...register('priority')}>
+                  {priorityOptions.map((priority) => (
+                    <option key={priority} value={priority}>
+                      {priority}
+                    </option>
+                  ))}
+                </Select>
+                {formErrors.priority?.message ? (
+                  <p className="mt-1 text-xs text-red-600">{formErrors.priority.message}</p>
                 ) : null}
               </label>
               <label className="block text-sm font-medium text-slate-700">
@@ -312,34 +345,44 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                   type="number"
                   min={1}
                   max={100}
-                  value={form.workloadPercent}
-                  onChange={(event) =>
-                    setForm((current) => ({ ...current, workloadPercent: event.target.value }))
-                  }
+                  {...register('workloadPercent')}
                 />
-                {formErrors.workloadPercent ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.workloadPercent}</p>
+                {formErrors.workloadPercent?.message ? (
+                  <p className="mt-1 text-xs text-red-600">{formErrors.workloadPercent.message}</p>
                 ) : null}
               </label>
               <label className="block text-sm font-medium text-slate-700">
-                Required skills (comma-separated)
-                <Input
-                  className="mt-1"
-                  value={form.requiredSkills}
-                  onChange={(event) =>
-                    setForm((current) => ({ ...current, requiredSkills: event.target.value }))
-                  }
-                />
+                Required skills (comma-separated) *
+                <Input className="mt-1" {...register('requiredSkills')} />
+                {formErrors.requiredSkills?.message ? (
+                  <p className="mt-1 text-xs text-red-600">{formErrors.requiredSkills.message}</p>
+                ) : null}
+              </label>
+              <label className="block text-sm font-medium text-slate-700">
+                Start date *
+                <Input className="mt-1" type="date" {...register('startDate')} />
+                {formErrors.startDate?.message ? (
+                  <p className="mt-1 text-xs text-red-600">{formErrors.startDate.message}</p>
+                ) : null}
+              </label>
+              <label className="block text-sm font-medium text-slate-700">
+                End date
+                <Input className="mt-1" type="date" {...register('endDate')} />
+              </label>
+              <label className="block text-sm font-medium text-slate-700">
+                Duration *
+                <Input className="mt-1" {...register('durationText')} />
+                {formErrors.durationText?.message ? (
+                  <p className="mt-1 text-xs text-red-600">{formErrors.durationText.message}</p>
+                ) : null}
+              </label>
+              <label className="block text-sm font-medium text-slate-700">
+                Client name
+                <Input className="mt-1" {...register('clientName')} />
               </label>
               <label className="block text-sm font-medium text-slate-700">
                 Business reason
-                <Textarea
-                  className="mt-1"
-                  value={form.businessReason}
-                  onChange={(event) =>
-                    setForm((current) => ({ ...current, businessReason: event.target.value }))
-                  }
-                />
+                <Textarea className="mt-1" {...register('businessReason')} />
               </label>
             </div>
             <SheetFooter>
@@ -352,7 +395,7 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                 type="button"
                 aria-busy={createMutation.isPending}
                 disabled={createMutation.isPending}
-                onClick={() => void handleSubmitRequest()}
+                onClick={() => void handleSubmit(handleSubmitRequest)()}
               >
                 Submit
               </Button>
@@ -361,7 +404,7 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
         </Sheet>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[55%_45%]">
+      <div className="grid gap-4 lg:grid-cols-[60%_40%]">
         <div>
           {requests.length === 0 ? (
             <EmptyState
@@ -369,12 +412,16 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
               description={RESOURCING_COPY.dmEmptyDescription}
             />
           ) : (
-            <DataTable>
+            <DataTable className="overflow-x-auto">
               <thead className="bg-slate-50 text-xs uppercase text-slate-500">
                 <tr>
-                  <th className="px-4 py-3">Code</th>
-                  <th className="px-4 py-3">Title</th>
-                  <th className="px-4 py-3">Status</th>
+                  <th className="whitespace-nowrap px-3 py-3">Code</th>
+                  <th className="whitespace-nowrap px-3 py-3">Title</th>
+                  <th className="whitespace-nowrap px-3 py-3">Project</th>
+                  <th className="whitespace-nowrap px-3 py-3">Priority</th>
+                  <th className="whitespace-nowrap px-3 py-3">Status</th>
+                  <th className="whitespace-nowrap px-3 py-3">Created</th>
+                  <th className="whitespace-nowrap px-3 py-3">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
@@ -391,10 +438,43 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                     }}
                     tabIndex={0}
                   >
-                    <td className="px-4 py-3 font-medium">{request.requestCode}</td>
-                    <td className="px-4 py-3">{request.title}</td>
-                    <td className="px-4 py-3">
+                    <td className="whitespace-nowrap px-3 py-3 font-medium">
+                      {request.requestCode}
+                    </td>
+                    <td className="max-w-[170px] px-3 py-3">
+                      <span className="block truncate" title={request.title}>
+                        {request.title}
+                      </span>
+                    </td>
+                    <td className="max-w-[180px] px-3 py-3">
+                      <span className="block truncate" title={request.projectName}>
+                        {request.projectName}
+                      </span>
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-3">
+                      <Badge tone={priorityTone[request.priority]}>{request.priority}</Badge>
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-3">
                       <StatusPill tone="info">{request.status}</StatusPill>
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-3">{formatDate(request.createdAt)}</td>
+                    <td className="whitespace-nowrap px-3 py-3">
+                      {request.status === 'Draft' || request.status === 'Submitted' ? (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            setSelectedId(request.id)
+                            setCancelDialogOpen(true)
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      ) : (
+                        <span className="text-xs text-slate-400">—</span>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -488,11 +568,12 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
             </Button>
             <Button
               type="button"
+              variant="destructive"
               aria-busy={patchProposalMutation.isPending}
               disabled={patchProposalMutation.isPending}
               onClick={() => void handleReject()}
             >
-              Reject
+              Reject Candidate
             </Button>
           </SheetFooter>
         </SheetContent>
@@ -558,6 +639,12 @@ const RequestDetailPanel: FC<RequestDetailPanelProps> = ({
               <p className="font-medium">
                 {proposal.candidateType === 'External' ? 'External candidate' : proposal.employeeId}
               </p>
+              <div className="mt-2 flex items-center gap-2">
+                <Badge tone={proposal.candidateType === 'External' ? 'info' : 'neutral'}>
+                  {proposal.candidateType}
+                </Badge>
+                <StatusPill tone="info">{proposal.status}</StatusPill>
+              </div>
               <p className="mt-1 text-slate-600">{proposal.fitSummary}</p>
               {proposal.sharedProfileToken ? (
                 <a
@@ -587,7 +674,7 @@ const RequestDetailPanel: FC<RequestDetailPanelProps> = ({
                   <Button
                     type="button"
                     size="sm"
-                    variant="outline"
+                    variant="destructive"
                     onClick={() => onReject(proposal.id)}
                   >
                     Reject

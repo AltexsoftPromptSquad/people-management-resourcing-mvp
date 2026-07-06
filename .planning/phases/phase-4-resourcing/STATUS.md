@@ -1,8 +1,8 @@
 # Phase 4 — Status
 
 **Phase:** Resourcing E2E Flow  
-**Branch:** `cursor/phase-4-resourcing-e2e`  
-**Last updated:** 2026-07-06
+**Branch:** `cursor/phase4-stepwise-implementation`  
+**Last updated:** 2026-07-06 (stepwise implementation updates)
 
 ## Overall Progress
 
@@ -10,6 +10,13 @@
 - ✅ PRE-BUILD-FINAL.md (non-regression rules)
 - ✅ VALIDATION.md
 - ✅ Implementation complete (Steps 1–11)
+- ✅ Stepwise hardening updates applied on current branch:
+  - shared primitives inventory + checkbox disabled-state polish
+  - query-key invalidation alignment
+  - DM/UM workspace UX fixes and component split for incoming flow
+  - Zod schemas introduced under feature `schemas/` and RHF+Zod rule documented
+  - shared profile token reopen stability across tabs
+  - assignment history detail rendering improved in profile
 - ✅ Carlos SRS scope approval — Carlos Nunes, 2026-07-06
 - ✅ Carlos product sign-off — Demo Scenarios 4, 5, 6 — Carlos Nunes, 2026-07-06
 - ⏸ Ivan Phase 3 / Phase 4 QA sign-off — pending
@@ -34,7 +41,8 @@
 
 - Phase 1–3 routes and guards unchanged (additive `/shared/:token` only)
 - UM nav: added **Incoming Requests** link (required for Phase 4 access)
-- `npm run build`, `npm run lint`, `npm run format:check` — pass
+- `npm run build`, `npm run lint` — pass
+- `npm run format:check` — currently reports pre-existing repository formatting drift outside Phase 4 scope
 
 ## Next Steps
 

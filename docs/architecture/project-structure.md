@@ -195,7 +195,7 @@ Examples:
 - `useCandidateDecisionMutation`
 - `useEmployeeProfileForm`
 
-Feature hooks can use TanStack Query, React Hook Form, Zod schemas, and feature API functions.
+Feature hooks can use TanStack Query, feature API functions, and form adapters based on React Hook Form + Zod.
 
 ### Feature `components/`
 
@@ -224,6 +224,19 @@ Examples:
 - Custom field schema.
 
 Keep schemas near the feature they validate.
+
+Rules:
+
+- Use `react-hook-form` for every form in the app (simple and complex).
+- Always connect form validation via `zodResolver` from `@hookform/resolvers/zod`.
+- Keep all form schemas in feature `schemas/` (or `src/lib/validation/` only when reused by multiple features).
+- Do not implement form validation with ad-hoc `useState` + manual `safeParse` inside components.
+- Keep submission payload normalization in form submit handlers/hooks, while validation constraints stay in Zod schemas.
+- Create schemas under `src/features/{feature}/schemas/` for feature-owned forms and payload validation.
+- Prefer one schema file per form/flow (`request-form.schema.ts`, `candidate-decision.schema.ts`).
+- Export both schema and inferred type (`z.infer`) from the same file when the form state is typed from schema.
+- If a schema is shared across multiple features, move it to `src/lib/validation/`.
+- Do not create a root-level `validation/` folder outside `src/`; validation must follow feature or shared-lib ownership.
 
 ### Feature `tables/`
 

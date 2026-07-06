@@ -6,6 +6,7 @@ import {
   SHARED_PROFILE_SECTION_LABELS,
 } from '../constants/sections'
 import { useCreateSharedProfileMutation } from '../hooks/use-shared-profile-hooks'
+import { generateSharedProfileSchema } from '../schemas/shared-profile.schema'
 import { RESOURCING_COPY } from '@/features/resourcing/constants/copy'
 import { Button } from '@/shared/ui/button'
 import { Checkbox } from '@/shared/ui/checkbox'
@@ -56,11 +57,22 @@ export const GenerateSharedProfileSheet: FC<GenerateSharedProfileSheetProps> = (
   }
 
   const handleGenerate = async () => {
+    const validationResult = generateSharedProfileSchema.safeParse({
+      personId,
+      createdById,
+      allowedSections: selectedSections,
+    })
+
+    if (!validationResult.success) {
+      toast.error(RESOURCING_COPY.generateLinkFailed)
+      return
+    }
+
     try {
       const profile = await createMutation.mutateAsync({
-        personId,
-        allowedSections: selectedSections,
-        createdById,
+        personId: validationResult.data.personId,
+        allowedSections: validationResult.data.allowedSections as SharedProfileSection[],
+        createdById: validationResult.data.createdById,
       })
       const link = `${window.location.origin}/shared/${profile.token}`
       setGeneratedLink(link)
