@@ -1,4 +1,4 @@
-export type AssignmentHistoryStatus = 'Approved' | 'Rejected' | 'Withdrawn'
+export type AssignmentHistoryStatus = 'Proposed' | 'Approved' | 'Rejected' | 'Withdrawn'
 
 export type AssignmentHistoryItem = {
   id: string
@@ -7,8 +7,10 @@ export type AssignmentHistoryItem = {
   proposalId: string
   status: AssignmentHistoryStatus
   proposedAt: string
-  decisionAt: string
-  decisionById: string
+  proposedById: string
+  decisionAt?: string
+  decisionById?: string
   feedback?: string
+  requestTitle?: string
   convertedToProject: boolean
 }

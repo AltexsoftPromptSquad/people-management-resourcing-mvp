@@ -21,6 +21,7 @@ import {
   useUpdateIdpMutation,
   useUpdatePersonMutation,
 } from '@/features/employee-profile'
+import { GenerateSharedProfileSheet } from '@/features/profile-sharing/components/GenerateSharedProfileSheet'
 import { Button } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { ErrorState } from '@/shared/ui/error-state'
@@ -77,6 +78,7 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
   const { activePersona } = useActivePersona()
   const [activeTab, setActiveTab] = useState('overview')
   const [isFeedbackSheetOpen, setFeedbackSheetOpen] = useState(false)
+  const [isSharedProfileSheetOpen, setSharedProfileSheetOpen] = useState(false)
   const [feedbackType, setFeedbackType] = useState('')
   const [feedbackContent, setFeedbackContent] = useState('')
   const [feedbackError, setFeedbackError] = useState<{ type?: string; content?: string }>({})
@@ -323,7 +325,27 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
               : undefined
           }
           unitName={unitsQuery.data?.find((unit) => unit.id === person.unitId)?.name}
+          headerActions={
+            activePersona?.role === 'unit-manager' ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setSharedProfileSheetOpen(true)}
+              >
+                Generate Shared Profile
+              </Button>
+            ) : undefined
+          }
         />
+
+        {activePersona?.role === 'unit-manager' && personId ? (
+          <GenerateSharedProfileSheet
+            personId={personId}
+            createdById={activePersona.personId}
+            open={isSharedProfileSheetOpen}
+            onOpenChange={setSharedProfileSheetOpen}
+          />
+        ) : null}
 
         <ProfileTabs
           value={activeTab}

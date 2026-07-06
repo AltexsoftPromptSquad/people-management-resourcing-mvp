@@ -14,6 +14,7 @@ export type CandidateProposal = {
   availabilityPercent: number
   warnings: string[]
   sharedProfileId?: string
+  sharedProfileToken?: string
   reviewedById?: string
   reviewedAt?: string
   rejectionReason?: string

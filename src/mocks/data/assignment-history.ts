@@ -12,6 +12,7 @@ export const assignmentHistory: AssignmentHistoryItem[] = people
     proposalId: `proposal-${String(index + 1).padStart(4, '0')}`,
     status: assignmentStatuses[index % assignmentStatuses.length],
     proposedAt: new Date(Date.UTC(2026, 3, (index % 28) + 1, 9, 0, 0)).toISOString(),
+    proposedById: 'person-um-001',
     decisionAt: new Date(Date.UTC(2026, 3, (index % 28) + 2, 10, 0, 0)).toISOString(),
     decisionById: 'person-dm-001',
     feedback:

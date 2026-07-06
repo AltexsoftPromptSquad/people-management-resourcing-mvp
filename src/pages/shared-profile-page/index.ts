@@ -1,0 +1,1 @@
+export { SharedProfilePage } from './SharedProfilePage'

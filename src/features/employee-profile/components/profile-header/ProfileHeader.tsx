@@ -18,7 +18,12 @@ const getRiskTone = (riskLevel: string) => {
   return 'neutral' as const
 }
 
-export const ProfileHeader: FC<ProfileHeaderProps> = ({ person, managerName, unitName }) => {
+export const ProfileHeader: FC<ProfileHeaderProps> = ({
+  person,
+  managerName,
+  unitName,
+  headerActions,
+}) => {
   const initials = `${person.firstName.charAt(0)}${person.lastName.charAt(0)}`.toUpperCase()
 
   return (
@@ -43,11 +48,14 @@ export const ProfileHeader: FC<ProfileHeaderProps> = ({ person, managerName, uni
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <StatusPill tone="neutral">{person.currentProjectStatus}</StatusPill>
-          <StatusPill
-            tone={getRiskTone(person.riskLevel)}
-          >{`Risk: ${person.riskLevel}`}</StatusPill>
+        <div className="flex flex-col items-end gap-2">
+          <div className="flex items-center gap-2">
+            <StatusPill tone="neutral">{person.currentProjectStatus}</StatusPill>
+            <StatusPill
+              tone={getRiskTone(person.riskLevel)}
+            >{`Risk: ${person.riskLevel}`}</StatusPill>
+          </div>
+          {headerActions}
         </div>
       </div>
     </header>

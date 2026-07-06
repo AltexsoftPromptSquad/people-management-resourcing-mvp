@@ -18,6 +18,8 @@ export const getResourcingIncomingPagePath = () => '/resourcing/incoming'
 
 export const getRisksPagePath = () => '/risks'
 
+export const getSharedProfilePagePath = (token: string) => `/shared/${token}`
+
 export const getFallbackRoutePath = () => '*'
 
 export const getRoleLandingPagePath = (role: Role) => {

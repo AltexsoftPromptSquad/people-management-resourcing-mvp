@@ -1,6 +1,6 @@
 # Current State
 
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-06 (Phase 4 planning docs added)
 
 ## Completed
 
@@ -31,14 +31,22 @@
 - [x] Phase 3 automated validation executed (78/78 E2E pass; build/lint/format gates pass; §6.19 source-confirmed; R-1 resolved) — 2026-07-03
 - [x] Phase 3 validation merged (PR #22, `test` → `main`, 2026-07-06)
 - [x] **Carlos Nunes product sign-off — Phase 3 implementation** (PR #22 review; Scenarios 2 and 7 verified) — 2026-07-06
+- [x] Phase 4 plan created (`.planning/phases/phase-4-resourcing/PLAN.md`)
+- [x] Phase 4 SRS created (`.planning/phases/phase-4-resourcing/SRS.md`) — pending Carlos approval
+- [x] Phase 4 test plan created (`.planning/phases/phase-4-resourcing/phase-4-test-plan.md`)
+- [x] Phase 4 implementation plan created (`.planning/phases/phase-4-resourcing/IMPLEMENTATION_PLAN.md`)
+- [x] Phase 4 UX-FLOW, PRE-BUILD-FINAL, VALIDATION docs created
+- [x] Phase 4 implemented (resourcing E2E, profile sharing, assignment history write) — 2026-07-06
 
 ## In Progress
 
 - [ ] Phase 3 QA sign-off by Ivan (automated validation complete; pending formal sign-off)
+- [ ] Phase 4 QA validation per `VALIDATION.md` (implementation complete; pending Ivan)
+- [ ] Phase 4 SRS — pending Carlos formal approval
 
 ## Not Started
 
-- Phase 4 (resourcing E2E, custom lists, profile sharing polish)
+- Phase 5 (custom lists, profile sharing polish, full QA regression)
 
 ## Next Owner Actions
 
@@ -46,17 +54,16 @@
 
 1. Phase 3 PLAN + SRS scope approved 2026-07-02.
 2. Phase 3 implementation product sign-off complete 2026-07-06 (PR #22).
-3. Review and approve Phase 4 scope from BRD / `.planning/ROADMAP.md` when team drafts Phase 4 SRS.
+3. **Review and approve Phase 4 SRS** (`.planning/phases/phase-4-resourcing/SRS.md`) — draft ready 2026-07-06.
 
 ### Volodymyr (Development / JS implementation)
 
-1. Support Ivan's final Phase 3 QA sign-off if any fixes are needed.
-2. Begin Phase 4 implementation after Carlos approves Phase 4 SRS.
+1. Support Ivan's Phase 3/4 QA validation if fixes are needed.
 
 ### Ivan (QA / validation)
 
 1. Publish formal Phase 3 QA sign-off in `VALIDATION.md` and update `STATE.md`.
-2. Draft Phase 4 test plan when Phase 4 SRS is approved.
+2. Run Phase 4 validation per `.planning/phases/phase-4-resourcing/VALIDATION.md` (include Phase 3 regression).
 
 ## Phase 1 Implementation Reference
 

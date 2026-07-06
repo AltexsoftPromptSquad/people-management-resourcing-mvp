@@ -1,0 +1,109 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  createResourcingRequest,
+  getCandidateProposals,
+  getResourcingRequest,
+  patchCandidateProposal,
+  patchResourcingRequest,
+  submitCandidateProposals,
+  type CreateResourcingRequestPayload,
+  type PatchCandidateProposalPayload,
+  type PatchResourcingRequestPayload,
+  type SubmitCandidateProposalsPayload,
+} from '../api/resourcing-api'
+import { getResourcingRequests } from '../api/get-resourcing-requests'
+import { queryKeys } from '@/lib/query/query-keys'
+
+type RequestFilter = {
+  createdById?: string
+  assignedManagerId?: string
+}
+
+export const useResourcingRequestsQuery = (filter: RequestFilter) =>
+  useQuery({
+    queryKey: queryKeys.resourcingRequests(filter),
+    queryFn: () => getResourcingRequests(filter),
+  })
+
+export const useResourcingRequestQuery = (id: string | undefined) =>
+  useQuery({
+    queryKey: queryKeys.resourcingRequest(id ?? 'unknown'),
+    queryFn: () => getResourcingRequest(id ?? ''),
+    enabled: Boolean(id),
+  })
+
+export const useCandidateProposalsQuery = (requestId: string | undefined) =>
+  useQuery({
+    queryKey: queryKeys.candidateProposals(requestId ?? 'unknown'),
+    queryFn: () => getCandidateProposals(requestId ?? ''),
+    enabled: Boolean(requestId),
+  })
+
+export const useCreateAndSubmitRequestMutation = (createdById: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (payload: CreateResourcingRequestPayload) => {
+      const created = await createResourcingRequest(payload)
+      return patchResourcingRequest(created.id, { status: 'Submitted' })
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.resourcingRequests({ createdById }),
+      })
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.resourcingRequests({ assignedManagerId: undefined }),
+      })
+    },
+  })
+}
+
+export const usePatchResourcingRequestMutation = (filter: RequestFilter) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: PatchResourcingRequestPayload }) =>
+      patchResourcingRequest(id, payload),
+    onSuccess: (data) => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.resourcingRequests(filter) })
+      void queryClient.invalidateQueries({ queryKey: queryKeys.resourcingRequest(data.id) })
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.resourcingRequests({ assignedManagerId: data.assignedUnitManagerId }),
+      })
+    },
+  })
+}
+
+export const useSubmitCandidateProposalsMutation = (requestId: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (payload: SubmitCandidateProposalsPayload) => submitCandidateProposals(payload),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.candidateProposals(requestId) })
+      void queryClient.invalidateQueries({ queryKey: queryKeys.resourcingRequest(requestId) })
+      void queryClient.invalidateQueries({ queryKey: ['resourcing-requests'] })
+    },
+  })
+}
+
+export const usePatchCandidateProposalMutation = (requestId: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: PatchCandidateProposalPayload }) =>
+      patchCandidateProposal(id, payload),
+    onSuccess: (data) => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.candidateProposals(requestId) })
+      void queryClient.invalidateQueries({ queryKey: queryKeys.resourcingRequest(requestId) })
+      void queryClient.invalidateQueries({ queryKey: ['resourcing-requests'] })
+      void queryClient.invalidateQueries({ queryKey: ['assignment-history'] })
+
+      if (data.employeeId) {
+        void queryClient.invalidateQueries({
+          queryKey: queryKeys.assignmentHistory(data.employeeId),
+        })
+      }
+    },
+  })
+}
