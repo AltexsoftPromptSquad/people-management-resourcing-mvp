@@ -20,7 +20,7 @@ const roleButtonLabels: Record<Role, string> = {
 
 const roleHeadings: Record<Role, string> = {
   'unit-manager': 'Manager Dashboard',
-  'delivery-manager': 'Resourcing Requests',
+  'delivery-manager': 'My Requests',
   employee: 'My Profile',
 }
 

@@ -22,6 +22,7 @@ import { EmptyState } from '@/shared/ui/empty-state'
 import { ErrorState } from '@/shared/ui/error-state'
 import { Input } from '@/shared/ui/input'
 import { LoadingState } from '@/shared/ui/loading-state'
+import { PageHeader } from '@/shared/ui/page-header'
 import { Select } from '@/shared/ui/select'
 import {
   Sheet,
@@ -40,6 +41,7 @@ import type { ResourcingRequest } from '@/types/resourcing-request'
 
 type ResourcingRequestsWorkspaceProps = {
   createdById: string
+  personaDisplayName?: string
 }
 
 const englishLevelOptions = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const
@@ -80,6 +82,7 @@ const emptyForm: RequestFormValues = {
 
 export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> = ({
   createdById,
+  personaDisplayName,
 }) => {
   const filter = useMemo(() => ({ createdById }), [createdById])
   const requestsQuery = useResourcingRequestsQuery(filter)
@@ -239,170 +242,175 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-semibold text-slate-950">My Requests</h1>
-        <Sheet open={isFormOpen} onOpenChange={setFormOpen}>
-          <SheetTrigger asChild>
-            <Button type="button">New Request</Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="max-w-lg overflow-y-auto">
-            <SheetHeader>
-              <SheetTitle>New Resourcing Request</SheetTitle>
-              <SheetDescription>
-                Fill in the request details and submit in one step.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="mt-4 space-y-3">
-              <label className="block text-sm font-medium text-slate-700">
-                Request title *
-                <Input className="mt-1" {...register('title')} />
-                {formErrors.title?.message ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.title.message}</p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Project name *
-                <Input className="mt-1" {...register('projectName')} />
-                {formErrors.projectName?.message ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.projectName.message}</p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Required role *
-                <Input className="mt-1" {...register('requiredRole')} />
-                {formErrors.requiredRole?.message ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.requiredRole.message}</p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Grade level *
-                <Input className="mt-1" {...register('gradeLevel')} />
-                {formErrors.gradeLevel?.message ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.gradeLevel.message}</p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                English level *
-                <Select className="mt-1" {...register('englishLevel')}>
-                  {englishLevelOptions.map((level) => (
-                    <option key={level} value={level}>
-                      {level}
-                    </option>
-                  ))}
-                </Select>
-                {formErrors.englishLevel?.message ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.englishLevel.message}</p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Expected compensation level *
-                <Select className="mt-1" {...register('expectedCompensationLevel')}>
-                  {compensationOptions.map((level) => (
-                    <option key={level} value={level}>
-                      {level}
-                    </option>
-                  ))}
-                </Select>
-                {formErrors.expectedCompensationLevel?.message ? (
-                  <p className="mt-1 text-xs text-red-600">
-                    {formErrors.expectedCompensationLevel.message}
-                  </p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Assigned Unit Manager *
-                <Select className="mt-1" {...register('assignedUnitManagerId')}>
-                  <option value="">Select manager</option>
-                  {unitManagers.map((manager) => (
-                    <option key={manager.id} value={manager.id}>
-                      {manager.label}
-                    </option>
-                  ))}
-                </Select>
-                {formErrors.assignedUnitManagerId?.message ? (
-                  <p className="mt-1 text-xs text-red-600">
-                    {formErrors.assignedUnitManagerId.message}
-                  </p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Priority *
-                <Select className="mt-1" {...register('priority')}>
-                  {priorityOptions.map((priority) => (
-                    <option key={priority} value={priority}>
-                      {priority}
-                    </option>
-                  ))}
-                </Select>
-                {formErrors.priority?.message ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.priority.message}</p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Workload % *
-                <Input
-                  className="mt-1"
-                  type="number"
-                  min={1}
-                  max={100}
-                  {...register('workloadPercent')}
-                />
-                {formErrors.workloadPercent?.message ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.workloadPercent.message}</p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Required skills (comma-separated) *
-                <Input className="mt-1" {...register('requiredSkills')} />
-                {formErrors.requiredSkills?.message ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.requiredSkills.message}</p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Start date *
-                <Input className="mt-1" type="date" {...register('startDate')} />
-                {formErrors.startDate?.message ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.startDate.message}</p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                End date
-                <Input className="mt-1" type="date" {...register('endDate')} />
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Duration *
-                <Input className="mt-1" {...register('durationText')} />
-                {formErrors.durationText?.message ? (
-                  <p className="mt-1 text-xs text-red-600">{formErrors.durationText.message}</p>
-                ) : null}
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Client name
-                <Input className="mt-1" {...register('clientName')} />
-              </label>
-              <label className="block text-sm font-medium text-slate-700">
-                Business reason
-                <Textarea className="mt-1" {...register('businessReason')} />
-              </label>
-            </div>
-            <SheetFooter>
-              <SheetClose asChild>
-                <Button type="button" variant="outline">
-                  Cancel
+      <PageHeader
+        eyebrow={personaDisplayName}
+        title="My Requests"
+        actions={
+          <Sheet open={isFormOpen} onOpenChange={setFormOpen}>
+            <SheetTrigger asChild>
+              <Button type="button">New Request</Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="max-w-lg overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle>New Resourcing Request</SheetTitle>
+                <SheetDescription>
+                  Fill in the request details and submit in one step.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="mt-4 space-y-3">
+                <label className="block text-sm font-medium text-slate-700">
+                  Request title *
+                  <Input className="mt-1" {...register('title')} />
+                  {formErrors.title?.message ? (
+                    <p className="mt-1 text-xs text-red-600">{formErrors.title.message}</p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Project name *
+                  <Input className="mt-1" {...register('projectName')} />
+                  {formErrors.projectName?.message ? (
+                    <p className="mt-1 text-xs text-red-600">{formErrors.projectName.message}</p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Required role *
+                  <Input className="mt-1" {...register('requiredRole')} />
+                  {formErrors.requiredRole?.message ? (
+                    <p className="mt-1 text-xs text-red-600">{formErrors.requiredRole.message}</p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Grade level *
+                  <Input className="mt-1" {...register('gradeLevel')} />
+                  {formErrors.gradeLevel?.message ? (
+                    <p className="mt-1 text-xs text-red-600">{formErrors.gradeLevel.message}</p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  English level *
+                  <Select className="mt-1" {...register('englishLevel')}>
+                    {englishLevelOptions.map((level) => (
+                      <option key={level} value={level}>
+                        {level}
+                      </option>
+                    ))}
+                  </Select>
+                  {formErrors.englishLevel?.message ? (
+                    <p className="mt-1 text-xs text-red-600">{formErrors.englishLevel.message}</p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Expected compensation level *
+                  <Select className="mt-1" {...register('expectedCompensationLevel')}>
+                    {compensationOptions.map((level) => (
+                      <option key={level} value={level}>
+                        {level}
+                      </option>
+                    ))}
+                  </Select>
+                  {formErrors.expectedCompensationLevel?.message ? (
+                    <p className="mt-1 text-xs text-red-600">
+                      {formErrors.expectedCompensationLevel.message}
+                    </p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Assigned Unit Manager *
+                  <Select className="mt-1" {...register('assignedUnitManagerId')}>
+                    <option value="">Select manager</option>
+                    {unitManagers.map((manager) => (
+                      <option key={manager.id} value={manager.id}>
+                        {manager.label}
+                      </option>
+                    ))}
+                  </Select>
+                  {formErrors.assignedUnitManagerId?.message ? (
+                    <p className="mt-1 text-xs text-red-600">
+                      {formErrors.assignedUnitManagerId.message}
+                    </p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Priority *
+                  <Select className="mt-1" {...register('priority')}>
+                    {priorityOptions.map((priority) => (
+                      <option key={priority} value={priority}>
+                        {priority}
+                      </option>
+                    ))}
+                  </Select>
+                  {formErrors.priority?.message ? (
+                    <p className="mt-1 text-xs text-red-600">{formErrors.priority.message}</p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Workload % *
+                  <Input
+                    className="mt-1"
+                    type="number"
+                    min={1}
+                    max={100}
+                    {...register('workloadPercent')}
+                  />
+                  {formErrors.workloadPercent?.message ? (
+                    <p className="mt-1 text-xs text-red-600">
+                      {formErrors.workloadPercent.message}
+                    </p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Required skills (comma-separated) *
+                  <Input className="mt-1" {...register('requiredSkills')} />
+                  {formErrors.requiredSkills?.message ? (
+                    <p className="mt-1 text-xs text-red-600">{formErrors.requiredSkills.message}</p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Start date *
+                  <Input className="mt-1" type="date" {...register('startDate')} />
+                  {formErrors.startDate?.message ? (
+                    <p className="mt-1 text-xs text-red-600">{formErrors.startDate.message}</p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  End date
+                  <Input className="mt-1" type="date" {...register('endDate')} />
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Duration *
+                  <Input className="mt-1" {...register('durationText')} />
+                  {formErrors.durationText?.message ? (
+                    <p className="mt-1 text-xs text-red-600">{formErrors.durationText.message}</p>
+                  ) : null}
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Client name
+                  <Input className="mt-1" {...register('clientName')} />
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  Business reason
+                  <Textarea className="mt-1" {...register('businessReason')} />
+                </label>
+              </div>
+              <SheetFooter>
+                <SheetClose asChild>
+                  <Button type="button" variant="outline">
+                    Cancel
+                  </Button>
+                </SheetClose>
+                <Button
+                  type="button"
+                  aria-busy={createMutation.isPending}
+                  disabled={createMutation.isPending}
+                  onClick={() => void handleSubmit(handleSubmitRequest)()}
+                >
+                  Submit
                 </Button>
-              </SheetClose>
-              <Button
-                type="button"
-                aria-busy={createMutation.isPending}
-                disabled={createMutation.isPending}
-                onClick={() => void handleSubmit(handleSubmitRequest)()}
-              >
-                Submit
-              </Button>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
-      </div>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
+        }
+      />
 
       <div className="grid gap-4 lg:grid-cols-[60%_40%]">
         <div>

@@ -19,6 +19,7 @@ import { ConfirmDialog } from '@/shared/ui/dialog'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { ErrorState } from '@/shared/ui/error-state'
 import { LoadingState } from '@/shared/ui/loading-state'
+import { PageHeader } from '@/shared/ui/page-header'
 import { toast } from '@/shared/ui/toast'
 import type { Person } from '@/types/person'
 import type { ScheduledLeave } from '@/types/scheduled-leave'
@@ -26,11 +27,13 @@ import type { ScheduledLeave } from '@/types/scheduled-leave'
 type ResourcingIncomingWorkspaceProps = {
   managerId: string
   unitId: string
+  personaDisplayName?: string
 }
 
 export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> = ({
   managerId,
   unitId,
+  personaDisplayName,
 }) => {
   const filter = useMemo(() => ({ assignedManagerId: managerId }), [managerId])
   const requestsQuery = useResourcingRequestsQuery(filter)
@@ -169,7 +172,7 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-3xl font-semibold text-slate-950">Incoming Requests</h1>
+      <PageHeader eyebrow={personaDisplayName} title="Incoming Requests" />
 
       <div className="grid gap-4 lg:grid-cols-[40%_60%]">
         <div>

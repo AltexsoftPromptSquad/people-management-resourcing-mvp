@@ -78,7 +78,7 @@ export const phase3Roles = {
   deliveryManager: {
     label: 'Sales / Delivery Manager',
     route: phase3Routes.dmLanding,
-    heading: 'Resourcing Requests',
+    heading: 'My Requests',
     personaName: deliveryManagerPersona.displayName,
     navLabel: 'Resourcing Requests',
   },
