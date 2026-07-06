@@ -66,13 +66,19 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
       return
     }
 
+    // Optimistic update: mark as selected immediately so the controlled checkbox reflects
+    // the checked state before the async API call resolves. Warnings are filled in after.
+    setSelectedCandidates((current) => [
+      ...current.filter((item) => item.person.id !== person.id),
+      { person, fitSummary: '', warnings: [] },
+    ])
+
     const leaves = await apiGet<ScheduledLeave[]>(`/api/people/${person.id}/scheduled-leaves`)
     const warnings = getCandidateWarnings(person, selectedRequest, leaves)
 
-    setSelectedCandidates((current) => [
-      ...current.filter((item) => item.person.id !== person.id),
-      { person, fitSummary: '', warnings },
-    ])
+    setSelectedCandidates((current) =>
+      current.map((item) => (item.person.id === person.id ? { ...item, warnings } : item)),
+    )
   }
 
   const handleAddExternal = () => {
@@ -223,7 +229,16 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
                 )
               }
               onOpenSharedProfile={(personId) => setSharedProfilePersonId(personId)}
-              onSubmit={() => setSubmitDialogOpen(true)}
+              onSubmit={() => {
+                const hasInternal = selectedCandidates.length > 0
+                const hasExternal = Boolean(externalCandidate)
+                if (!hasInternal && !hasExternal) {
+                  setCandidateError(RESOURCING_COPY.validation.noCandidates)
+                  return
+                }
+                setCandidateError('')
+                setSubmitDialogOpen(true)
+              }}
               onWithdraw={(proposalId) => setWithdrawProposalId(proposalId)}
             />
           )}
