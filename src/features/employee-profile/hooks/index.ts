@@ -13,6 +13,7 @@ export {
   useEmployeeProfileScheduledLeavesQuery,
   useEmployeeProfileSkillsQuery,
   useEmployeeVisibleDocumentsQuery,
+  useUnitsQuery,
   useUpdateIdpMutation,
   useUpdatePersonMutation,
 } from './use-employee-profile-hooks'

@@ -17,6 +17,7 @@ import {
   useEmployeeProfileRisksQuery,
   useEmployeeProfileScheduledLeavesQuery,
   useEmployeeProfileSkillsQuery,
+  useUnitsQuery,
   useUpdateIdpMutation,
   useUpdatePersonMutation,
 } from '@/features/employee-profile'
@@ -92,6 +93,7 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
 
   const personQuery = useEmployeeProfilePersonQuery(personId)
   const managerQuery = useEmployeeProfilePersonQuery(personQuery.data?.managerId)
+  const unitsQuery = useUnitsQuery()
   const feedbacksQuery = useEmployeeProfileFeedbacksQuery(
     activeTab === 'feedbacks' ? personId : undefined,
   )
@@ -271,7 +273,9 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                     <option value="General">General</option>
                   </Select>
                   {feedbackError.type ? (
-                    <p className="mt-1 text-sm text-red-700">{feedbackError.type}</p>
+                    <p role="alert" aria-live="assertive" className="mt-1 text-sm text-red-700">
+                      {feedbackError.type}
+                    </p>
                   ) : null}
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
@@ -286,7 +290,9 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                     }}
                   />
                   {feedbackError.content ? (
-                    <p className="mt-1 text-sm text-red-700">{feedbackError.content}</p>
+                    <p role="alert" aria-live="assertive" className="mt-1 text-sm text-red-700">
+                      {feedbackError.content}
+                    </p>
                   ) : null}
                 </label>
               </div>
@@ -316,6 +322,7 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
               ? `${managerQuery.data.firstName} ${managerQuery.data.lastName}`
               : undefined
           }
+          unitName={unitsQuery.data?.find((unit) => unit.id === person.unitId)?.name}
         />
 
         <ProfileTabs
@@ -417,6 +424,7 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                           {editingCustomFieldKey === fieldKey ? (
                             <Input
                               className="mt-2"
+                              autoFocus
                               value={customFieldDraft}
                               onChange={(event) => setCustomFieldDraft(event.target.value)}
                               onKeyDown={(event) => {
@@ -447,6 +455,27 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
               label: 'Job and Skills',
               content: (
                 <div className="space-y-4">
+                  <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
+                    <h2 className="text-lg font-semibold text-slate-950">Employment Details</h2>
+                    <div className="mt-3 grid gap-2 text-sm text-slate-700 md:grid-cols-2">
+                      <p>Position: {person.position}</p>
+                      <p>Grade: {person.grade}</p>
+                      <p>
+                        Unit:{' '}
+                        {unitsQuery.data?.find((unit) => unit.id === person.unitId)?.name ??
+                          person.unitId}
+                      </p>
+                      <p>
+                        Manager:{' '}
+                        {managerQuery.data
+                          ? `${managerQuery.data.firstName} ${managerQuery.data.lastName}`
+                          : 'N/A'}
+                      </p>
+                      <p>Hire date: {formatDate(person.hireDate)}</p>
+                      <p>Employment status: {person.employmentStatus}</p>
+                      <p>Work location: {person.workLocation}</p>
+                    </div>
+                  </section>
                   <EditableSection
                     title="English Level"
                     isEditing={isEditingEnglish}

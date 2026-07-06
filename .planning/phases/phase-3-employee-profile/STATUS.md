@@ -2,7 +2,7 @@
 
 **Phase:** Employee Profile (managerial + personal)  
 **Branch:** `phase-3-impl/employee-profile`  
-**Last updated:** 2026-07-02
+**Last updated:** 2026-07-03
 
 ## Overall Progress
 
@@ -12,8 +12,8 @@
 - ✅ `src/features/employee-profile/` module scaffolded (API wrappers, hooks, components)
 - ✅ `/people/:id` upgraded from stub to tabbed managerial profile
 - ✅ `/my-profile` upgraded to personal self-service profile
-- 🔄 UX/copy/a11y final alignment in progress
-- ⏳ QA validation execution pending
+- ✅ UX/copy/a11y validated — 78/78 E2E tests pass (Chromium, 2026-07-03)
+- ✅ QA automated validation complete — pending Ivan sign-off
 
 ## Implemented In This Iteration
 
@@ -45,16 +45,20 @@
 
 ## Quality Gates (Current)
 
-| Check               | Command                                | Status               | Notes                                                                    |
-| ------------------- | -------------------------------------- | -------------------- | ------------------------------------------------------------------------ |
-| Build               | `npm run build`                        | ✅ Pass              | TypeScript + Vite build succeed                                          |
-| E2E (Phase 3 scope) | `npm run test:e2e -- tests/e2e/phase3` | ✅ Pass              | 5/5 tests passed locally                                                 |
-| Lint                | `npm run lint`                         | ✅ Pass with warning | Existing TanStack Table warning in `SubordinatesTable`                   |
-| Format              | `npm run format:check`                 | ⚠️ Fails             | Repository-wide baseline formatting drift across many pre-existing files |
+| Check               | Command                                | Status               | Notes                                                            |
+| ------------------- | -------------------------------------- | -------------------- | ---------------------------------------------------------------- |
+| Build               | `npm run build`                        | ✅ Pass              | TypeScript + Vite build succeed                                  |
+| E2E (Phase 3 scope) | `npm run test:e2e -- tests/e2e/phase3` | ✅ Pass              | **78/78 passed** across 12 spec files (Chromium, 2026-07-03)     |
+| Lint                | `npm run lint`                         | ✅ Pass with warning | Existing TanStack Table warning in `SubordinatesTable`; 0 errors |
+| Format              | `npm run format:check`                 | ✅ Pass              | All matched files use Prettier code style (2026-07-03)           |
 
-## Known Follow-Ups Before QA Sign-Off
+## Remaining Before Final Sign-Off
 
-1. Complete final SRS copy audit (`SRS-COPY3-*`) and a11y keyboard pass.
-2. Decide formatting baseline strategy (apply broader formatting sweep vs scoped exceptions).
-3. Publish Phase 3 execution evidence under `tests/test_reports/phase3/` and attach links in validation notes.
-4. Update `VALIDATION.md` remaining checklist items and obtain Ivan QA sign-off.
+1. Ivan executes QA sign-off and updates `.planning/STATE.md` + `VALIDATION.md` final checkbox.
+
+## Completed Follow-Ups (2026-07-03)
+
+- SRS copy / a11y keyboard validated — 78/78 E2E pass including `accessibility.spec.ts`.
+- Prettier formatting resolved — `npm run format:check` exits 0.
+- Phase 3 execution evidence published: `tests/test_reports/phase3/phase-3-playwright-validation.md`.
+- `VALIDATION.md`, `STATUS.md`, and `STATE.md` updated with final evidence.

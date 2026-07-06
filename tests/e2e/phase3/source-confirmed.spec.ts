@@ -51,4 +51,26 @@ test.describe('Phase 3 - source-confirmed checks', () => {
     expect(textareaPrimitive).toContain('Textarea')
     expect(toastPrimitive).toContain('ToastProvider')
   })
+
+  test('P3-SC04: route pages stay thin composition layers; routing stays centralized', async () => {
+    const [employeeProfilePage, myProfilePage, routes, router] = await Promise.all([
+      readRepoFile('src/pages/employee-profile-page/EmployeeProfilePage.tsx'),
+      readRepoFile('src/pages/my-profile-page/MyProfilePage.tsx'),
+      readRepoFile('src/app/routes.ts'),
+      readRepoFile('src/app/router.tsx'),
+    ])
+
+    for (const pageSource of [employeeProfilePage, myProfilePage]) {
+      expect(pageSource).not.toContain("from '@tanstack/react-query'")
+      expect(pageSource).not.toContain("from '@/lib/api/api-client'")
+      expect(pageSource).not.toMatch(/\bapiGet\(|\bapiPost\(|\bapiPatch\(/)
+    }
+
+    expect(routes).toContain('getEmployeeProfilePagePath')
+    expect(routes).toContain('getMyProfilePagePath')
+    expect(router).toContain('allowedRole="unit-manager"')
+    expect(router).toContain('<EmployeeProfilePage />')
+    expect(router).toContain('allowedRole="employee"')
+    expect(router).toContain('<MyProfilePage />')
+  })
 })
