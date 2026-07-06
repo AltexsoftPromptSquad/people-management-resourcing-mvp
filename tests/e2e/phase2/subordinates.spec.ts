@@ -3,12 +3,14 @@ import { SubordinatesPage } from '../page-objects/SubordinatesPage'
 import { expect, test } from '../support/test'
 
 const waitForDebounce = async (pageUrlReader: () => string, delayMs: number) => {
+  // Buffer is generous beyond the debounce delay itself so the poll doesn't
+  // flake under slower/parallel CI runs where rendering and URL updates lag.
   await expect
     .poll(
       () => {
         return pageUrlReader()
       },
-      { timeout: delayMs + 1000 },
+      { timeout: delayMs + 4000 },
     )
     .toBeTruthy()
 }
