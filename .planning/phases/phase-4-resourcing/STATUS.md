@@ -1,7 +1,7 @@
 # Phase 4 — Status
 
 **Phase:** Resourcing E2E Flow  
-**Branch:** `main`  
+**Branch:** `cursor/phase-4-resourcing-e2e`  
 **Last updated:** 2026-07-06
 
 ## Overall Progress
@@ -10,7 +10,8 @@
 - ✅ PRE-BUILD-FINAL.md (non-regression rules)
 - ✅ VALIDATION.md
 - ✅ Implementation complete (Steps 1–11)
-- ⏸ Carlos SRS formal approval — pending
+- ✅ Carlos SRS scope approval — Carlos Nunes, 2026-07-06
+- ✅ Carlos product sign-off — Demo Scenarios 4, 5, 6 — Carlos Nunes, 2026-07-06
 - ⏸ Ivan Phase 3 / Phase 4 QA sign-off — pending
 
 ## Implementation Summary
@@ -38,5 +39,4 @@
 ## Next Steps
 
 1. Ivan runs full validation per `VALIDATION.md` (Phase 3 regression + Phase 4 E2E).
-2. Carlos approves SRS scope.
-3. Demo Scenarios 4, 5, 6 walkthrough for product sign-off.
+2. PR review and merge to `main`.

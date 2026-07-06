@@ -7,7 +7,7 @@
 | Product          | People Management & Resourcing MVP                                                             |
 | Phase            | Phase 4 — Resourcing E2E Flow                                                                  |
 | Document type    | Test plan (QA design, pre-execution)                                                           |
-| Status           | Ready for execution (SRS linked; pending Carlos SRS approval)                                  |
+| Status           | Ready for execution (SRS approved — Carlos Nunes, 2026-07-06)                                  |
 | QA owner         | Ivan                                                                                           |
 | Dev owner        | Volodymyr                                                                                      |
 | Product / BA     | Carlos                                                                                         |
@@ -214,7 +214,7 @@ Every case is traceable to a BRD requirement, SRS ID, or ux-behavior flow.
 
 | ID  | Risk                                | Mitigation                                            |
 | --- | ----------------------------------- | ----------------------------------------------------- |
-| R-1 | Carlos SRS not yet approved         | Test plan aligned to draft SRS; update on approval    |
+| R-1 | Carlos SRS approved 2026-07-06      | Test plan aligned to approved SRS                     |
 | R-2 | Phase 3 Ivan sign-off pending       | Phase 4 E2E assumes profile tab exists (Phase 3 done) |
 | R-3 | Assignment history type drift       | PLAN §0 type alignment before implementation          |
 | R-4 | Warning demo seed not deterministic | Document demo person IDs in `phase4-data.ts` fixture  |
@@ -229,7 +229,7 @@ Phase 4 validation is **done** when:
 - [ ] Demo Scenarios 4, 5, 6 pass end-to-end.
 - [ ] Execution results recorded under `tests/test_reports/phase4/`.
 - [ ] `.planning/STATE.md` and Phase 4 `STATUS.md` updated.
-- [ ] Carlos signs off product review against SRS.
+- [x] Carlos signs off product review against SRS — Carlos Nunes, 2026-07-06.
 - [ ] Ivan signs off Phase 4 validation before Phase 5 starts.
 
 ## 10. Out of Scope for Phase 4 QA

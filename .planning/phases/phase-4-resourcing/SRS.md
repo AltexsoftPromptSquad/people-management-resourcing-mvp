@@ -9,7 +9,7 @@
 | Product              | People Management & Resourcing MVP                             |
 | Phase                | Phase 4 - Resourcing E2E Flow                                  |
 | Document type        | Software Requirements Specification                            |
-| Status               | Draft for implementation — pending Carlos Nunes approval       |
+| Status               | Approved for implementation — Carlos Nunes, 2026-07-06         |
 | Implementation owner | Volodymyr                                                      |
 | QA owner             | Ivan                                                           |
 | Product / BA owner   | Carlos                                                         |
@@ -17,7 +17,7 @@
 | Phase plan           | `.planning/phases/phase-4-resourcing/PLAN.md`                  |
 | Phase test plan      | `.planning/phases/phase-4-resourcing/phase-4-test-plan.md`     |
 | Phase UX flow        | `.planning/phases/phase-4-resourcing/UX-FLOW.md`               |
-| Phase validation     | `.planning/phases/phase-4-resourcing/VALIDATION.md` (TBD)      |
+| Phase validation     | `.planning/phases/phase-4-resourcing/VALIDATION.md`            |
 
 ## 2. Purpose
 

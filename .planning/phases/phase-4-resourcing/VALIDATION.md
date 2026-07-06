@@ -66,3 +66,9 @@ Map each check to `phase-4-test-plan.md` P4-_ cases and SRS-F4-_ IDs.
 - Custom list builder (Phase 5)
 - UM Assignments section FR-AH-004 (Phase 5)
 - Backend / database / auth
+
+## Sign-off
+
+- [ ] Ivan — Phase 3 formal QA sign-off + Phase 4 automated validation complete
+- [x] Carlos — SRS scope approved — Carlos Nunes, 2026-07-06
+- [x] Carlos — Product sign-off (Demo Scenarios 4, 5, 6) — Carlos Nunes, 2026-07-06
