@@ -2,8 +2,12 @@ import { phase4Baselines, phase4Routes } from '../fixtures/phase4-data'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 4 - Resourcing E2E', () => {
-  test('P4-E2E01: DM sees requests table and request-003 candidates proposed', async ({ page }) => {
+  test('P4-E2E01: DM sees requests table and request-003 candidates proposed', async ({
+    page,
+    appShell,
+  }) => {
     await page.goto(phase4Routes.dmRequests)
+    await appShell.switchRole('Sales / Delivery Manager')
     await expect(page.getByRole('heading', { name: 'My Requests' })).toBeVisible()
     await expect(
       page.getByText(phase4Baselines.candidatesProposedRequest.requestCode),

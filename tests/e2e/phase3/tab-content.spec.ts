@@ -269,10 +269,13 @@ test.describe('Phase 3 - Resourcing History and Project History tabs', () => {
 
     const panel = profile.tabPanel()
     for (const item of assignmentHistoryForEmployee) {
-      await expect(
-        panel.getByText(`Request: ${item.requestId} - Decision: ${item.status}`),
-      ).toBeVisible()
-      await expect(panel.getByText(`Proposed: ${formatDate(item.proposedAt)}`)).toBeVisible()
+      const row = panel.getByRole('listitem').filter({
+        hasText: `Request: ${item.requestTitle ?? item.requestId}`,
+      })
+      await expect(row).toBeVisible()
+      await expect(row.getByText(item.status)).toBeVisible()
+      await expect(row.getByText(`Proposed: ${formatDate(item.proposedAt)}`)).toBeVisible()
+      await expect(row.getByText(item.proposedById)).toBeVisible()
     }
 
     for (const item of projectHistoryForEmployee) {

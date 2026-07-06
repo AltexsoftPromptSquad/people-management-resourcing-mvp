@@ -107,6 +107,36 @@ export const SharedProfileSections: FC<SharedProfileSectionsProps> = ({ profile 
           </ul>
         </section>
       ) : null}
+
+      {profile.allowedSections.includes('documents') && profile.documents ? (
+        <section>
+          <h2 className="text-lg font-semibold text-slate-950">
+            {SHARED_PROFILE_SECTION_LABELS.documents}
+          </h2>
+          <ul className="mt-2 space-y-1 text-sm text-slate-700">
+            {profile.documents.map((document) => (
+              <li key={`${document.name}-${document.type}`}>
+                {document.name} ({document.type})
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {profile.allowedSections.includes('custom-fields') && profile.customFields ? (
+        <section>
+          <h2 className="text-lg font-semibold text-slate-950">
+            {SHARED_PROFILE_SECTION_LABELS['custom-fields']}
+          </h2>
+          <ul className="mt-2 space-y-1 text-sm text-slate-700">
+            {Object.entries(profile.customFields).map(([fieldName, fieldValue]) => (
+              <li key={fieldName}>
+                {fieldName}: {String(fieldValue ?? '—')}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </div>
   )
 }

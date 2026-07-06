@@ -32,6 +32,9 @@ export const SubordinatesTable: FC<SubordinatesTableProps> = ({
 }) => {
   const columns = useMemo(() => buildSubordinatesColumns({ onOpenProfile }), [onOpenProfile])
 
+  // TanStack Table returns unstable function references by design.
+  // The compiler warning is expected here; this hook remains safe in this component.
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: subordinates,
     columns,

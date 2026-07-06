@@ -32,7 +32,15 @@ test.describe('Phase 1', () => {
       }
 
       await appShell.switchRole(phase1Roles.deliveryManager.label)
-      await expect(page.getByText('Resourcing foundation is ready')).toBeVisible()
+      const hasLegacyResourcingPlaceholder = await page
+        .getByText('Resourcing foundation is ready')
+        .isVisible()
+
+      if (hasLegacyResourcingPlaceholder) {
+        await expect(page.getByText('Resourcing foundation is ready')).toBeVisible()
+      } else {
+        await expect(page.getByRole('heading', { level: 1, name: 'My Requests' })).toBeVisible()
+      }
 
       await appShell.switchRole(phase1Roles.employee.label)
       const hasLegacyEmployeePlaceholder = await page

@@ -1,6 +1,9 @@
+import { faker } from '@faker-js/faker'
 import { createActionItem } from '../factories/action-item-factory'
 import { people } from './people'
 import type { ActionItem } from '@/types/action-item'
+
+faker.seed(20260625)
 
 const managerId = 'person-um-001'
 const platformPeople = people.filter(
