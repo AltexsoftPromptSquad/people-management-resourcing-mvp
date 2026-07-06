@@ -4,7 +4,7 @@
 
 **Status:** Automated validation complete — pending Ivan sign-off
 
-**Last updated:** 2026-07-03
+**Last updated:** 2026-07-06
 
 ## Scope
 
@@ -212,6 +212,7 @@ Phase 3 validation is **done** when:
 - [x] All seven tabs render with seeded data; managerial vs personal visibility rules (FR-EP-011, BR-016, FR-PV-006) verified.
 - [x] Documents/IDP seed (R-1) resolved or explicitly accepted by Carlos/Volodymyr.
 - [x] Execution results recorded under `tests/test_reports/phase3/`; `.planning/STATE.md` and Phase 3 `STATUS.md` updated.
+- [x] Carlos signs off product review against SRS (PR #22) — Carlos Nunes, 2026-07-06.
 - [ ] Ivan signs off Phase 3 validation before Phase 4 starts.
 
 ## Evidence
