@@ -1,8 +1,8 @@
 # Phase 3 — Status
 
 **Phase:** Employee Profile (managerial + personal)  
-**Branch:** `phase-3-impl/employee-profile`  
-**Last updated:** 2026-07-03
+**Branch:** merged to `main` (PR #21 implementation, PR #22 validation)  
+**Last updated:** 2026-07-06
 
 ## Overall Progress
 
@@ -14,6 +14,7 @@
 - ✅ `/my-profile` upgraded to personal self-service profile
 - ✅ UX/copy/a11y validated — 78/78 E2E tests pass (Chromium, 2026-07-03)
 - ✅ QA automated validation complete — pending Ivan sign-off
+- ✅ Product sign-off — Carlos Nunes, 2026-07-06 (PR #22 review)
 
 ## Implemented In This Iteration
 
@@ -54,7 +55,7 @@
 
 ## Remaining Before Final Sign-Off
 
-1. Ivan executes QA sign-off and updates `.planning/STATE.md` + `VALIDATION.md` final checkbox.
+1. Ivan executes formal QA sign-off and updates `.planning/STATE.md` + `VALIDATION.md` final checkbox.
 
 ## Completed Follow-Ups (2026-07-03)
 

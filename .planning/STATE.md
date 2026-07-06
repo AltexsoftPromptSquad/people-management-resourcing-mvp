@@ -1,6 +1,6 @@
 # Current State
 
-**Last updated:** 2026-07-03
+**Last updated:** 2026-07-06
 
 ## Completed
 
@@ -27,43 +27,36 @@
 - [x] Phase 3 test plan drafted (`.planning/phases/phase-3-employee-profile/phase-3-test-plan.md`)
 - [x] Phase 3 plan created (`.planning/phases/phase-3-employee-profile/PLAN.md`)
 - [x] Phase 3 SRS created (`.planning/phases/phase-3-employee-profile/SRS.md`) — Carlos Nunes approved scope 2026-07-02
+- [x] Phase 3 implemented (managerial + personal profile) and merged (PR #21, `phase-3-impl/employee-profile` → `main`)
+- [x] Phase 3 automated validation executed (78/78 E2E pass; build/lint/format gates pass; §6.19 source-confirmed; R-1 resolved) — 2026-07-03
+- [x] Phase 3 validation merged (PR #22, `test` → `main`, 2026-07-06)
+- [x] **Carlos Nunes product sign-off — Phase 3 implementation** (PR #22 review; Scenarios 2 and 7 verified) — 2026-07-06
 
 ## In Progress
 
-- [x] Phase 3 implementation started on `phase-3-impl/employee-profile`:
-  - shared primitives added: `tabs`, `sheet`, `textarea`, `toast`
-  - shared primitives `tabs`/`toast` migrated to `react-tabs` + `react-toastify` via `src/shared/ui` wrappers (consumer API preserved)
-  - API/query foundation expanded for mutations (`POST`/`PATCH`, `documents`, `idp`, `skills` keys)
-  - mock seed + handlers added for documents, IDP, and `PATCH /api/people/:id`
-  - `src/features/employee-profile/` scaffolded with API/hooks/components
-  - `/people/:id` upgraded from Phase 2 stub to managerial profile with seven tabs and edit flows
-  - `/my-profile` upgraded to personal self-service view (contact, IDP status, certificate add)
-- [x] Phase 3 handoff docs refreshed with latest evidence (`STATUS.md`, `VALIDATION.md`)
-- [x] Phase 3 automated validation executed (78/78 E2E pass; build/lint/format gates pass; §6.19 source-confirmed; R-1 resolved) — 2026-07-03
-- [ ] Phase 3 QA sign-off by Ivan (pending)
+- [ ] Phase 3 QA sign-off by Ivan (automated validation complete; pending formal sign-off)
 
 ## Not Started
 
-- Phase 3 QA sign-off by Ivan (automated validation complete 2026-07-03; pending Ivan sign-off)
-- Phase 4+ (resourcing E2E, custom lists, profile sharing polish)
+- Phase 4 (resourcing E2E, custom lists, profile sharing polish)
 
 ## Next Owner Actions
 
 ### Carlos (Product / BA / BRD)
 
 1. Phase 3 PLAN + SRS scope approved 2026-07-02.
-2. Review implementation against SRS before Phase 3 validation sign-off.
+2. Phase 3 implementation product sign-off complete 2026-07-06 (PR #22).
+3. Review and approve Phase 4 scope from BRD / `.planning/ROADMAP.md` when team drafts Phase 4 SRS.
 
 ### Volodymyr (Development / JS implementation)
 
-1. Complete final Phase 3 UX/copy/a11y alignment and verify against SRS + ux-behavior.
-2. Resolve/acknowledge `npm run format:check` repository-wide baseline drift before QA gate.
-3. Support Ivan QA run and close remaining checklist rows in Phase 3 `VALIDATION.md`.
+1. Support Ivan's final Phase 3 QA sign-off if any fixes are needed.
+2. Begin Phase 4 implementation after Carlos approves Phase 4 SRS.
 
 ### Ivan (QA / validation)
 
-1. Execute `phase-3-test-plan.md` P3-\* suite after dev marks implementation complete.
-2. Record pass/fail evidence in `VALIDATION.md` and publish sign-off decision.
+1. Publish formal Phase 3 QA sign-off in `VALIDATION.md` and update `STATE.md`.
+2. Draft Phase 4 test plan when Phase 4 SRS is approved.
 
 ## Phase 1 Implementation Reference
 
