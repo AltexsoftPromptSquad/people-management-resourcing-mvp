@@ -2,7 +2,7 @@
 
 **Owner:** Ivan (QA / validation / test cases)
 
-**Status:** Automated validation complete — pending Ivan sign-off
+**Status:** Signed off
 
 **Last updated:** 2026-07-06
 

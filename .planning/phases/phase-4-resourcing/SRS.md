@@ -217,7 +217,7 @@ Each row: Trigger | Component | API | Success | Failure
 | ID          | Trigger                             | Component             | API                         | Success                                                                  | Failure                                     |
 | ----------- | ----------------------------------- | --------------------- | --------------------------- | ------------------------------------------------------------------------ | ------------------------------------------- |
 | SRS-UX4-001 | User clicks Generate Shared Profile | `Sheet`               | none                        | Sheet opens with section checklist; name/position/grade disabled checked | —                                           |
-| SRS-UX4-002 | User clicks Generate Link           | Button inline loading | `POST /api/shared-profiles` | Link shown; Copy Link + Done; info toast SRS-COPY4-010 on copy           | error toast SRS-COPY4-011; sheet stays open |
+| SRS-UX4-002 | User clicks Generate Link           | Button inline loading | `POST /api/shared-profiles` | Link shown; Copy Link + Done; info toast SRS-COPY4-011 on copy           | error toast SRS-COPY4-012; sheet stays open |
 | SRS-UX4-003 | User closes sheet before copy       | `Sheet`               | none                        | Link stored; re-open shows existing active link if present               | —                                           |
 
 ### 8.2 Submit Candidate Proposal (`ux-behavior` §3.6)
@@ -469,15 +469,15 @@ Allocation calculation: `currentAllocation = 100 - person.availabilityPercent`; 
 
 ## 16. Traceability Matrix
 
-| SRS area           | BRD / plan                   | ux-behavior | P4 tests     |
-| ------------------ | ---------------------------- | ----------- | ------------ |
-| DM request create  | FR-RR-001–007, AC-RR-001–004 | §3.9        | P4-RR01–RR06 |
-| UM proposal        | FR-CP-001–012, AC-CP-001–004 | §3.6, §3.10 | P4-CP01–CP06 |
-| Warnings           | FR-CP-006–009, BR-012–014    | §3.6, §5.6  | P4-W01–W04   |
-| Shared profile     | FR-PS-001–007, AC-PS-001–004 | §3.5        | P4-PS01–PS05 |
-| DM review          | FR-CD-001–009, AC-CD-001–004 | §3.7–3.8    | P4-CD01–CD05 |
-| Assignment history | FR-AH-001–003, AC-AH-001–004 | —           | P4-AH01–AH03 |
-| Demo scenarios     | BRD §14 Scenarios 4–6        | —           | P4-D04–D06   |
+| SRS area           | BRD / plan                   | ux-behavior | P4 tests                 |
+| ------------------ | ---------------------------- | ----------- | ------------------------ |
+| DM request create  | FR-RR-001–007, AC-RR-001–004 | §3.9        | P4-RR01–RR06             |
+| UM proposal        | FR-CP-001–012, AC-CP-001–004 | §3.6, §3.10 | P4-CP01–CP09, P4-W01–W04 |
+| Warnings           | FR-CP-006–009, BR-012–014    | §3.6, §5.6  | P4-W01–W04               |
+| Shared profile     | FR-PS-001–007, AC-PS-001–004 | §3.5        | P4-PS01–PS05             |
+| DM review          | FR-CD-001–009, AC-CD-001–004 | §3.7–3.8    | P4-CD01–CD05             |
+| Assignment history | FR-AH-001–003, AC-AH-001–004 | —           | P4-AH01–AH03             |
+| Demo scenarios     | BRD §14 Scenarios 4–6        | —           | P4-D04–D06               |
 
 ## 17. Acceptance Criteria
 
