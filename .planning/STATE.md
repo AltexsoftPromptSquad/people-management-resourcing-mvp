@@ -32,17 +32,18 @@
 - [x] Phase 3 validation merged (PR #22, `test` → `main`, 2026-07-06)
 - [x] **Carlos Nunes product sign-off — Phase 3 implementation** (PR #22 review; Scenarios 2 and 7 verified) — 2026-07-06
 - [x] Phase 4 plan created (`.planning/phases/phase-4-resourcing/PLAN.md`)
-- [x] Phase 4 SRS created (`.planning/phases/phase-4-resourcing/SRS.md`) — pending Carlos approval
+- [x] Phase 4 SRS created (`.planning/phases/phase-4-resourcing/SRS.md`) — Carlos Nunes approved scope 2026-07-06
 - [x] Phase 4 test plan created (`.planning/phases/phase-4-resourcing/phase-4-test-plan.md`)
 - [x] Phase 4 implementation plan created (`.planning/phases/phase-4-resourcing/IMPLEMENTATION_PLAN.md`)
 - [x] Phase 4 UX-FLOW, PRE-BUILD-FINAL, VALIDATION docs created
 - [x] Phase 4 implemented (resourcing E2E, profile sharing, assignment history write) — 2026-07-06
+- [x] **Carlos Nunes product sign-off — Phase 4** (SRS scope + Demo Scenarios 4, 5, 6) — 2026-07-06
 
 ## In Progress
 
 - [ ] Phase 3 QA sign-off by Ivan (automated validation complete; pending formal sign-off)
 - [ ] Phase 4 QA validation per `VALIDATION.md` (implementation complete; pending Ivan)
-- [ ] Phase 4 SRS — pending Carlos formal approval
+- [ ] PR review and merge (`cursor/phase-4-resourcing-e2e` → `main`)
 
 ## Not Started
 
@@ -54,7 +55,8 @@
 
 1. Phase 3 PLAN + SRS scope approved 2026-07-02.
 2. Phase 3 implementation product sign-off complete 2026-07-06 (PR #22).
-3. **Review and approve Phase 4 SRS** (`.planning/phases/phase-4-resourcing/SRS.md`) — draft ready 2026-07-06.
+3. Phase 4 SRS scope approved 2026-07-06.
+4. Phase 4 product sign-off complete 2026-07-06 (Demo Scenarios 4, 5, 6).
 
 ### Volodymyr (Development / JS implementation)
 

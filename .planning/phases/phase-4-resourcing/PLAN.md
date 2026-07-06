@@ -8,7 +8,7 @@
 **Test plan:** `.planning/phases/phase-4-resourcing/phase-4-test-plan.md`  
 **SRS:** `.planning/phases/phase-4-resourcing/SRS.md`  
 **UX flow:** `.planning/phases/phase-4-resourcing/UX-FLOW.md`  
-**Product approval:** Pending Carlos Nunes
+**Product approval:** Carlos Nunes, 2026-07-06 (SRS scope + Demo Scenarios 4–6)
 
 ---
 
@@ -325,16 +325,16 @@ getSharedProfilePagePath(token: string) => `/shared/${token}`
 
 ## Dependencies
 
-| Dependency                             | Status           |
-| -------------------------------------- | ---------------- |
-| Phase 3 complete on `main`             | Done             |
-| Phase 3 Ivan formal sign-off           | Pending          |
-| Phase 4 SRS (Carlos approval)          | Pending          |
-| `docs/architecture/ux-behavior.md`     | Done             |
-| `docs/architecture/ux-requirements.md` | Done             |
-| `docs/architecture/data-models.md`     | Done             |
-| `docs/architecture/feature-rules.md`   | Done             |
-| Resourcing History tab (Phase 3)       | Done (read-only) |
+| Dependency                             | Status            |
+| -------------------------------------- | ----------------- |
+| Phase 3 complete on `main`             | Done              |
+| Phase 3 Ivan formal sign-off           | Pending           |
+| Phase 4 SRS (Carlos approval)          | Done (2026-07-06) |
+| `docs/architecture/ux-behavior.md`     | Done              |
+| `docs/architecture/ux-requirements.md` | Done              |
+| `docs/architecture/data-models.md`     | Done              |
+| `docs/architecture/feature-rules.md`   | Done              |
+| Resourcing History tab (Phase 3)       | Done (read-only)  |
 
 ---
 
