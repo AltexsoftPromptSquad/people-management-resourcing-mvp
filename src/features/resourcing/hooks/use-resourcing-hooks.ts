@@ -47,12 +47,13 @@ export const useCreateAndSubmitRequestMutation = (createdById: string) => {
       const created = await createResourcingRequest(payload)
       return patchResourcingRequest(created.id, { status: 'Submitted' })
     },
-    onSuccess: () => {
+    onSuccess: (submittedRequest) => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.resourcingRequestsRoot() })
       void queryClient.invalidateQueries({
         queryKey: queryKeys.resourcingRequests({ createdById }),
       })
       void queryClient.invalidateQueries({
-        queryKey: queryKeys.resourcingRequests({ assignedManagerId: undefined }),
+        queryKey: queryKeys.resourcingRequest(submittedRequest.id),
       })
     },
   })
@@ -82,7 +83,7 @@ export const useSubmitCandidateProposalsMutation = (requestId: string) => {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: queryKeys.candidateProposals(requestId) })
       void queryClient.invalidateQueries({ queryKey: queryKeys.resourcingRequest(requestId) })
-      void queryClient.invalidateQueries({ queryKey: ['resourcing-requests'] })
+      void queryClient.invalidateQueries({ queryKey: queryKeys.resourcingRequestsRoot() })
     },
   })
 }
@@ -96,8 +97,8 @@ export const usePatchCandidateProposalMutation = (requestId: string) => {
     onSuccess: (data) => {
       void queryClient.invalidateQueries({ queryKey: queryKeys.candidateProposals(requestId) })
       void queryClient.invalidateQueries({ queryKey: queryKeys.resourcingRequest(requestId) })
-      void queryClient.invalidateQueries({ queryKey: ['resourcing-requests'] })
-      void queryClient.invalidateQueries({ queryKey: ['assignment-history'] })
+      void queryClient.invalidateQueries({ queryKey: queryKeys.resourcingRequestsRoot() })
+      void queryClient.invalidateQueries({ queryKey: queryKeys.assignmentHistoryRoot() })
 
       if (data.employeeId) {
         void queryClient.invalidateQueries({

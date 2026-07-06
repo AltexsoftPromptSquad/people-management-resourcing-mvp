@@ -19,9 +19,10 @@ test.describe('Phase 2 - routing and role guards', () => {
     await page.goto(phase2Routes.dashboard)
     await appShell.expectRoleView(phase2Roles.unitManager)
 
-    await expect(appShell.primaryNavigation().getByRole('link')).toHaveCount(2)
+    await expect(appShell.primaryNavigation().getByRole('link')).toHaveCount(3)
     await expect(appShell.navLink('Dashboard')).toBeVisible()
     await expect(appShell.navLink('Subordinates')).toBeVisible()
+    await expect(appShell.navLink('Incoming Requests')).toBeVisible()
 
     await appShell.navLink('Subordinates').click()
     await expect(page).toHaveURL(new RegExp(`${phase2Routes.subordinates}$`))
@@ -68,9 +69,7 @@ test.describe('Phase 2 - routing and role guards', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'Custom Lists' })).toBeVisible()
 
     await page.goto(phase2Routes.resourcingIncoming)
-    await expect(
-      page.getByRole('heading', { level: 1, name: 'Incoming Resourcing Requests' }),
-    ).toBeVisible()
+    await expect(page.getByRole('heading', { level: 1, name: 'Incoming Requests' })).toBeVisible()
 
     await page.goto(phase2Routes.risks)
     await expect(page.getByRole('heading', { level: 1, name: 'Risks' })).toBeVisible()

@@ -8,51 +8,32 @@ import {
   useResourcingRequestsQuery,
   useSubmitCandidateProposalsMutation,
 } from '../hooks/use-resourcing-hooks'
+import { externalCandidateUrlSchema } from '../schemas/candidate-decision.schema'
 import { getCandidateWarnings } from '../utils/candidate-warnings'
-import type { CandidateWarning } from '../constants/copy'
+import { CandidateProposalPanel } from './CandidateProposalPanel'
+import { IncomingQueueTable } from './IncomingQueueTable'
+import type { ExternalCandidate, SelectedCandidate } from './ResourcingIncomingWorkspace.types'
 import { GenerateSharedProfileSheet } from '@/features/profile-sharing/components/GenerateSharedProfileSheet'
 import { apiGet } from '@/lib/api/api-client'
-import { Button } from '@/shared/ui/button'
-import { Checkbox } from '@/shared/ui/checkbox'
 import { ConfirmDialog } from '@/shared/ui/dialog'
-import { DataTable } from '@/shared/ui/data-table'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { ErrorState } from '@/shared/ui/error-state'
-import { Input } from '@/shared/ui/input'
 import { LoadingState } from '@/shared/ui/loading-state'
-import { StatusPill } from '@/shared/ui/status-pill'
-import { Textarea } from '@/shared/ui/textarea'
-import { WarningBadge } from '@/shared/ui/warning-badge'
+import { PageHeader } from '@/shared/ui/page-header'
 import { toast } from '@/shared/ui/toast'
 import type { Person } from '@/types/person'
-import type { ResourcingRequest } from '@/types/resourcing-request'
 import type { ScheduledLeave } from '@/types/scheduled-leave'
-
-type SelectedCandidate = {
-  person: Person
-  fitSummary: string
-  warnings: CandidateWarning[]
-  sharedProfileId?: string
-  sharedProfileToken?: string
-}
 
 type ResourcingIncomingWorkspaceProps = {
   managerId: string
   unitId: string
-}
-
-const isValidUrl = (value: string) => {
-  try {
-    const url = new URL(value)
-    return url.protocol === 'http:' || url.protocol === 'https:'
-  } catch {
-    return false
-  }
+  personaDisplayName?: string
 }
 
 export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> = ({
   managerId,
   unitId,
+  personaDisplayName,
 }) => {
   const filter = useMemo(() => ({ assignedManagerId: managerId }), [managerId])
   const requestsQuery = useResourcingRequestsQuery(filter)
@@ -71,10 +52,7 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
   const [selectedCandidates, setSelectedCandidates] = useState<SelectedCandidate[]>([])
   const [externalUrl, setExternalUrl] = useState('')
   const [externalUrlError, setExternalUrlError] = useState('')
-  const [externalCandidate, setExternalCandidate] = useState<{
-    url: string
-    fitSummary: string
-  } | null>(null)
+  const [externalCandidate, setExternalCandidate] = useState<ExternalCandidate | null>(null)
   const [submitDialogOpen, setSubmitDialogOpen] = useState(false)
   const [candidateError, setCandidateError] = useState('')
   const [sharedProfilePersonId, setSharedProfilePersonId] = useState<string | null>(null)
@@ -98,13 +76,17 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
   }
 
   const handleAddExternal = () => {
-    if (!isValidUrl(externalUrl.trim())) {
-      setExternalUrlError(RESOURCING_COPY.validation.externalUrl)
+    const result = externalCandidateUrlSchema.safeParse({
+      externalProfileUrl: externalUrl,
+    })
+
+    if (!result.success) {
+      setExternalUrlError(result.error.issues[0]?.message ?? RESOURCING_COPY.validation.externalUrl)
       return
     }
 
     setExternalUrlError('')
-    setExternalCandidate({ url: externalUrl.trim(), fitSummary: '' })
+    setExternalCandidate({ url: result.data.externalProfileUrl, fitSummary: '' })
     setExternalUrl('')
   }
 
@@ -190,52 +172,19 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-3xl font-semibold text-slate-950">Incoming Requests</h1>
+      <PageHeader eyebrow={personaDisplayName} title="Incoming Requests" />
 
       <div className="grid gap-4 lg:grid-cols-[40%_60%]">
         <div>
-          {requests.length === 0 ? (
-            <EmptyState
-              title={RESOURCING_COPY.umEmptyTitle}
-              description={RESOURCING_COPY.umEmptyDescription}
-            />
-          ) : (
-            <DataTable>
-              <thead className="bg-slate-50 text-xs uppercase text-slate-500">
-                <tr>
-                  <th className="px-4 py-3">Code</th>
-                  <th className="px-4 py-3">Title</th>
-                  <th className="px-4 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200">
-                {requests.map((request) => (
-                  <tr
-                    key={request.id}
-                    className={`cursor-pointer hover:bg-slate-50 ${selectedRequestId === request.id ? 'bg-slate-50' : ''}`}
-                    onClick={() => {
-                      setSelectedRequestId(request.id)
-                      setSelectedCandidates([])
-                      setExternalCandidate(null)
-                    }}
-                    tabIndex={0}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault()
-                        setSelectedRequestId(request.id)
-                      }
-                    }}
-                  >
-                    <td className="px-4 py-3 font-medium">{request.requestCode}</td>
-                    <td className="px-4 py-3">{request.title}</td>
-                    <td className="px-4 py-3">
-                      <StatusPill tone="info">{request.status}</StatusPill>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </DataTable>
-          )}
+          <IncomingQueueTable
+            requests={requests}
+            selectedRequestId={selectedRequestId}
+            onSelectRequest={(requestId) => {
+              setSelectedRequestId(requestId)
+              setSelectedCandidates([])
+              setExternalCandidate(null)
+            }}
+          />
         </div>
 
         <div className="rounded-xl border border-slate-200 bg-white p-4">
@@ -245,7 +194,7 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
               description={RESOURCING_COPY.selectRequestDescription}
             />
           ) : (
-            <IncomingProposalPanel
+            <CandidateProposalPanel
               request={selectedRequest}
               unitPeople={unitPeopleQuery.data ?? []}
               unitPeopleLoading={unitPeopleQuery.isPending}
@@ -323,177 +272,3 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
     </div>
   )
 }
-
-type IncomingProposalPanelProps = {
-  request: ResourcingRequest
-  unitPeople: Person[]
-  unitPeopleLoading: boolean
-  selectedCandidates: SelectedCandidate[]
-  externalCandidate: { url: string; fitSummary: string } | null
-  externalUrl: string
-  externalUrlError: string
-  candidateError: string
-  isProposalMode: boolean
-  isReadOnlyProposed: boolean
-  proposals: import('@/types/candidate-proposal').CandidateProposal[]
-  proposalsLoading: boolean
-  onToggleEmployee: (person: Person, checked: boolean) => void
-  onFitSummaryChange: (personId: string, value: string) => void
-  onExternalUrlChange: (value: string) => void
-  onAddExternal: () => void
-  onExternalFitSummaryChange: (value: string) => void
-  onOpenSharedProfile: (personId: string) => void
-  onSubmit: () => void
-  onWithdraw: (proposalId: string) => void
-}
-
-const IncomingProposalPanel: FC<IncomingProposalPanelProps> = ({
-  request,
-  unitPeople,
-  unitPeopleLoading,
-  selectedCandidates,
-  externalCandidate,
-  externalUrl,
-  externalUrlError,
-  candidateError,
-  isProposalMode,
-  isReadOnlyProposed,
-  proposals,
-  proposalsLoading,
-  onToggleEmployee,
-  onFitSummaryChange,
-  onExternalUrlChange,
-  onAddExternal,
-  onExternalFitSummaryChange,
-  onOpenSharedProfile,
-  onSubmit,
-  onWithdraw,
-}) => (
-  <div className="space-y-4">
-    <div>
-      <h2 className="text-xl font-semibold text-slate-950">{request.title}</h2>
-      <p className="mt-1 text-sm text-slate-600">
-        {request.requiredRole} · {request.workloadPercent}%
-      </p>
-    </div>
-
-    {isReadOnlyProposed ? (
-      <div className="space-y-3">
-        <h3 className="font-medium text-slate-900">Submitted candidates</h3>
-        {proposalsLoading ? <LoadingState label="Loading candidates…" /> : null}
-        {proposals.map((proposal) => (
-          <div key={proposal.id} className="rounded-md border border-slate-200 p-3 text-sm">
-            <p className="font-medium">
-              {proposal.candidateType === 'External'
-                ? proposal.externalProfileUrl
-                : proposal.employeeId}
-            </p>
-            <p className="mt-1 text-slate-600">{proposal.fitSummary}</p>
-            {proposal.status === 'Proposed' ? (
-              <Button
-                type="button"
-                className="mt-2"
-                variant="outline"
-                onClick={() => onWithdraw(proposal.id)}
-              >
-                Withdraw
-              </Button>
-            ) : (
-              <p className="mt-2 text-xs text-slate-500">Status: {proposal.status}</p>
-            )}
-          </div>
-        ))}
-      </div>
-    ) : null}
-
-    {isProposalMode ? (
-      <>
-        <div>
-          <h3 className="font-medium text-slate-900">Unit employees</h3>
-          {unitPeopleLoading ? (
-            <LoadingState label="Loading employees…" className="mt-2" />
-          ) : (
-            <ul className="mt-2 max-h-48 space-y-2 overflow-y-auto">
-              {unitPeople.map((person) => (
-                <li key={person.id} className="flex items-center justify-between gap-2 text-sm">
-                  <Checkbox
-                    checked={selectedCandidates.some((item) => item.person.id === person.id)}
-                    label={`${person.firstName} ${person.lastName} · ${person.availabilityPercent}% · ${person.riskLevel}`}
-                    onChange={(event) => onToggleEmployee(person, event.target.checked)}
-                  />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div className="space-y-3">
-          <h3 className="font-medium text-slate-900">Selected candidates</h3>
-          {selectedCandidates.map((candidate) => (
-            <div key={candidate.person.id} className="rounded-md border border-slate-200 p-3">
-              <p className="font-medium text-sm">
-                {candidate.person.firstName} {candidate.person.lastName}
-              </p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {candidate.warnings.map((warning) => (
-                  <WarningBadge key={warning.message} tone={warning.tone}>
-                    {warning.message}
-                  </WarningBadge>
-                ))}
-              </div>
-              <Textarea
-                className="mt-2"
-                aria-label={`Fit summary for ${candidate.person.firstName}`}
-                placeholder="Fit summary"
-                value={candidate.fitSummary}
-                onChange={(event) => onFitSummaryChange(candidate.person.id, event.target.value)}
-              />
-              <Button
-                type="button"
-                className="mt-2"
-                variant="outline"
-                onClick={() => onOpenSharedProfile(candidate.person.id)}
-              >
-                Generate Shared Profile
-              </Button>
-              {candidate.sharedProfileToken ? (
-                <p className="mt-1 text-xs text-teal-700">Profile link ready</p>
-              ) : null}
-            </div>
-          ))}
-
-          {externalCandidate ? (
-            <div className="rounded-md border border-slate-200 p-3">
-              <p className="font-medium text-sm">External: {externalCandidate.url}</p>
-              <Textarea
-                className="mt-2"
-                aria-label="External candidate fit summary"
-                placeholder="Fit summary"
-                value={externalCandidate.fitSummary}
-                onChange={(event) => onExternalFitSummaryChange(event.target.value)}
-              />
-            </div>
-          ) : null}
-
-          <div className="flex gap-2">
-            <Input
-              aria-label="External profile URL"
-              placeholder="https://example.com/profile"
-              value={externalUrl}
-              onChange={(event) => onExternalUrlChange(event.target.value)}
-            />
-            <Button type="button" variant="outline" onClick={onAddExternal}>
-              Add
-            </Button>
-          </div>
-          {externalUrlError ? <p className="text-xs text-red-600">{externalUrlError}</p> : null}
-          {candidateError ? <p className="text-xs text-red-600">{candidateError}</p> : null}
-        </div>
-
-        <Button type="button" onClick={onSubmit}>
-          Submit Candidates
-        </Button>
-      </>
-    ) : null}
-  </div>
-)

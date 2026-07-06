@@ -1,6 +1,6 @@
 # Current State
 
-**Last updated:** 2026-07-06 (Phase 4 planning docs added)
+**Last updated:** 2026-07-06 (Phase 4 stepwise implementation updates)
 
 ## Completed
 
@@ -38,12 +38,13 @@
 - [x] Phase 4 UX-FLOW, PRE-BUILD-FINAL, VALIDATION docs created
 - [x] Phase 4 implemented (resourcing E2E, profile sharing, assignment history write) — 2026-07-06
 - [x] **Carlos Nunes product sign-off — Phase 4** (SRS scope + Demo Scenarios 4, 5, 6) — 2026-07-06
+- [x] Phase 4 stepwise implementation hardening on `cursor/phase4-stepwise-implementation` (shared profile cross-tab token fallback, RHF+Zod schema adoption for DM request form, incoming flow component split, assignment history detail rendering) — 2026-07-06
 
 ## In Progress
 
 - [ ] Phase 3 QA sign-off by Ivan (automated validation complete; pending formal sign-off)
 - [ ] Phase 4 QA validation per `VALIDATION.md` (implementation complete; pending Ivan)
-- [ ] PR review and merge (`cursor/phase-4-resourcing-e2e` → `main`)
+- [ ] PR review and merge (`cursor/phase4-stepwise-implementation` → `main`)
 
 ## Not Started
 

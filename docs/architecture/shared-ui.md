@@ -185,35 +185,36 @@ Do not patch generic primitive behavior only at the feature level:
 
 Update this table when adding or removing shared primitives.
 
-| Component      | Path                           | Status    | Notes                         |
-| -------------- | ------------------------------ | --------- | ----------------------------- |
-| Button         | `src/shared/ui/button`         | Available | CVA variants; primary actions |
-| Badge          | `src/shared/ui/badge`          | Available | Semantic `tone` prop          |
-| ShadcnBadge    | `src/shared/ui/shadcn-badge`   | Available | shadcn-style badge wrapper    |
-| Select         | `src/shared/ui/select`         | Available | Shared native select wrapper  |
-| Input          | `src/shared/ui/input`          | Available | Forms, filters, search        |
-| Textarea       | `src/shared/ui/textarea`       | Available | Long text fields              |
-| Checkbox       | `src/shared/ui/checkbox`       | Planned   | Boolean form fields           |
-| Radio group    | `src/shared/ui/radio-group`    | Planned   | Single choice lists           |
-| Switch         | `src/shared/ui/switch`         | Planned   | Toggle settings               |
-| Tabs           | `src/shared/ui/tabs`           | Available | Section navigation            |
-| Sheet          | `src/shared/ui/sheet`          | Available | Side panel forms and details  |
-| Dialog         | `src/shared/ui/dialog`         | Planned   | Confirmations, modals         |
-| Dropdown menu  | `src/shared/ui/dropdown-menu`  | Planned   | Action menus                  |
-| Table          | `src/shared/ui/table`          | Planned   | TanStack Table layouts        |
-| Data table     | `src/shared/ui/data-table`     | Available | Shared table container chrome |
-| Page header    | `src/shared/ui/page-header`    | Available | Reusable page intro/header    |
-| Status pill    | `src/shared/ui/status-pill`    | Available | Badge-based status display    |
-| Skeleton       | `src/shared/ui/skeleton`       | Available | Shared pulse placeholders     |
-| Search input   | `src/shared/ui/search-input`   | Planned   | Debounced page/search filters |
-| Filter bar     | `src/shared/ui/filter-bar`     | Planned   | Reusable filter composition   |
-| Active filters | `src/shared/ui/active-filters` | Planned   | Applied filter chips/actions  |
-| Pagination     | `src/shared/ui/pagination`     | Planned   | Table/list pagination         |
-| Table toolbar  | `src/shared/ui/table-toolbar`  | Planned   | Search/filter/table actions   |
-| Empty state    | `src/shared/ui/empty-state`    | Available | List/table empty views        |
-| Error state    | `src/shared/ui/error-state`    | Available | Query error fallback          |
-| Loading state  | `src/shared/ui/loading-state`  | Available | Skeletons/spinners            |
-| Toast          | `src/shared/ui/toast`          | Available | Global mutation notifications |
+| Component      | Path                           | Status    | Notes                                              |
+| -------------- | ------------------------------ | --------- | -------------------------------------------------- |
+| Button         | `src/shared/ui/button`         | Available | CVA variants; primary actions                      |
+| Badge          | `src/shared/ui/badge`          | Available | Semantic `tone` prop                               |
+| ShadcnBadge    | `src/shared/ui/shadcn-badge`   | Available | shadcn-style badge wrapper                         |
+| Select         | `src/shared/ui/select`         | Available | Shared native select wrapper                       |
+| Input          | `src/shared/ui/input`          | Available | Forms, filters, search                             |
+| Textarea       | `src/shared/ui/textarea`       | Available | Long text fields                                   |
+| Checkbox       | `src/shared/ui/checkbox`       | Available | Boolean fields; optional label; keyboard focus     |
+| Radio group    | `src/shared/ui/radio-group`    | Planned   | Single choice lists                                |
+| Switch         | `src/shared/ui/switch`         | Planned   | Toggle settings                                    |
+| Tabs           | `src/shared/ui/tabs`           | Available | Section navigation                                 |
+| Sheet          | `src/shared/ui/sheet`          | Available | Side panel forms and details                       |
+| Dialog         | `src/shared/ui/dialog`         | Available | Modal shell + `ConfirmDialog` for destructive flow |
+| Warning badge  | `src/shared/ui/warning-badge`  | Available | Inline warning/danger labels (e.g. candidate rows) |
+| Dropdown menu  | `src/shared/ui/dropdown-menu`  | Planned   | Action menus                                       |
+| Table          | `src/shared/ui/table`          | Planned   | TanStack Table layouts                             |
+| Data table     | `src/shared/ui/data-table`     | Available | Shared table container chrome                      |
+| Page header    | `src/shared/ui/page-header`    | Available | Reusable page intro/header                         |
+| Status pill    | `src/shared/ui/status-pill`    | Available | Badge-based status display                         |
+| Skeleton       | `src/shared/ui/skeleton`       | Available | Shared pulse placeholders                          |
+| Search input   | `src/shared/ui/search-input`   | Planned   | Debounced page/search filters                      |
+| Filter bar     | `src/shared/ui/filter-bar`     | Planned   | Reusable filter composition                        |
+| Active filters | `src/shared/ui/active-filters` | Planned   | Applied filter chips/actions                       |
+| Pagination     | `src/shared/ui/pagination`     | Planned   | Table/list pagination                              |
+| Table toolbar  | `src/shared/ui/table-toolbar`  | Planned   | Search/filter/table actions                        |
+| Empty state    | `src/shared/ui/empty-state`    | Available | List/table empty views                             |
+| Error state    | `src/shared/ui/error-state`    | Available | Query error fallback                               |
+| Loading state  | `src/shared/ui/loading-state`  | Available | Skeletons/spinners                                 |
+| Toast          | `src/shared/ui/toast`          | Available | Global mutation notifications                      |
 
 When you implement a planned primitive, change its status to **Available** and remove duplicate inline styling from features that should use it.
 

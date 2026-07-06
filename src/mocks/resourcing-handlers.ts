@@ -52,6 +52,65 @@ type CreateSharedProfileBody = {
   createdById: string
 }
 
+const validSharedProfileSections: SharedProfileSection[] = [
+  'basic-info',
+  'job-and-skills',
+  'availability',
+  'project-history',
+  'feedbacks',
+  'scheduled-leaves',
+  'risks',
+  'documents',
+  'custom-fields',
+]
+
+const defaultSharedProfileSections: SharedProfileSection[] = [
+  'basic-info',
+  'job-and-skills',
+  'availability',
+  'project-history',
+]
+
+const isSharedProfileSection = (value: string): value is SharedProfileSection =>
+  validSharedProfileSections.includes(value as SharedProfileSection)
+
+const parseProfileFromToken = (token: string): SharedProfile | null => {
+  if (token.includes('~')) {
+    const [prefix, personId, sectionsString] = token.split('~')
+
+    if (!prefix || !personId || !sectionsString) {
+      return null
+    }
+
+    const sections = sectionsString.split('.').filter(isSharedProfileSection)
+    const allowedSections = sections.length > 0 ? sections : defaultSharedProfileSections
+
+    return {
+      id: prefix,
+      personId,
+      createdById: 'person-um-001',
+      allowedSections,
+      token,
+      isActive: true,
+    }
+  }
+
+  const legacyMatch = /^shared-token-\d{4}-(.+)$/.exec(token)
+  if (!legacyMatch) {
+    return null
+  }
+
+  const personId = legacyMatch[1]
+  return {
+    id: `legacy-${token}`,
+    personId,
+    createdById: 'person-um-001',
+    allowedSections: defaultSharedProfileSections,
+    token,
+    isActive: true,
+  }
+}
+
 const buildSharedProfileView = (profile: SharedProfile): SharedProfileView | null => {
   const person = people.find((item) => item.id === profile.personId)
 
@@ -324,7 +383,8 @@ export const resourcingHandlers = [
   http.post('/api/shared-profiles', async ({ request }) => {
     const body = (await request.json()) as CreateSharedProfileBody
     const nextIndex = sharedProfiles.length + 1
-    const token = `shared-token-${String(nextIndex).padStart(4, '0')}-${body.personId}`
+    const tokenPrefix = `shared-token-${String(nextIndex).padStart(4, '0')}`
+    const token = `${tokenPrefix}~${body.personId}~${body.allowedSections.join('.')}`
 
     const profile: SharedProfile = {
       id: `shared-profile-${String(nextIndex).padStart(4, '0')}`,
@@ -340,7 +400,10 @@ export const resourcingHandlers = [
     return HttpResponse.json(profile, { status: 201 })
   }),
   http.get('/api/shared-profiles/:token', ({ params }) => {
-    const profile = sharedProfiles.find((item) => item.token === params.token && item.isActive)
+    const token = params.token as string
+    const profile =
+      sharedProfiles.find((item) => item.token === token && item.isActive) ??
+      parseProfileFromToken(token)
 
     if (!profile) {
       return HttpResponse.json({ message: 'Shared profile not found' }, { status: 404 })

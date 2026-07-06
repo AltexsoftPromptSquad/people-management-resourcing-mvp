@@ -19,7 +19,10 @@ export const ResourcingRequestsPage: FC<ResourcingRequestsPageProps> = () => {
   return (
     <main className="px-6 py-10">
       <section className="mx-auto max-w-7xl">
-        <ResourcingRequestsWorkspace createdById={activePersona.personId} />
+        <ResourcingRequestsWorkspace
+          createdById={activePersona.personId}
+          personaDisplayName={activePersona.displayName}
+        />
       </section>
     </main>
   )

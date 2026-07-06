@@ -21,6 +21,7 @@ export const ResourcingIncomingPage: FC = () => {
         <ResourcingIncomingWorkspace
           managerId={activePersona.personId}
           unitId={activePersona.unitId ?? 'unit-platform'}
+          personaDisplayName={activePersona.displayName}
         />
       </section>
     </main>
