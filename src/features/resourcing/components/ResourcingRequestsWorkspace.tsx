@@ -262,28 +262,36 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                   Request title *
                   <Input className="mt-1" {...register('title')} />
                   {formErrors.title?.message ? (
-                    <p className="mt-1 text-xs text-red-600">{formErrors.title.message}</p>
+                    <p role="alert" className="mt-1 text-xs text-red-600">
+                      {formErrors.title.message}
+                    </p>
                   ) : null}
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Project name *
                   <Input className="mt-1" {...register('projectName')} />
                   {formErrors.projectName?.message ? (
-                    <p className="mt-1 text-xs text-red-600">{formErrors.projectName.message}</p>
+                    <p role="alert" className="mt-1 text-xs text-red-600">
+                      {formErrors.projectName.message}
+                    </p>
                   ) : null}
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Required role *
                   <Input className="mt-1" {...register('requiredRole')} />
                   {formErrors.requiredRole?.message ? (
-                    <p className="mt-1 text-xs text-red-600">{formErrors.requiredRole.message}</p>
+                    <p role="alert" className="mt-1 text-xs text-red-600">
+                      {formErrors.requiredRole.message}
+                    </p>
                   ) : null}
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Grade level *
                   <Input className="mt-1" {...register('gradeLevel')} />
                   {formErrors.gradeLevel?.message ? (
-                    <p className="mt-1 text-xs text-red-600">{formErrors.gradeLevel.message}</p>
+                    <p role="alert" className="mt-1 text-xs text-red-600">
+                      {formErrors.gradeLevel.message}
+                    </p>
                   ) : null}
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
@@ -296,7 +304,9 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                     ))}
                   </Select>
                   {formErrors.englishLevel?.message ? (
-                    <p className="mt-1 text-xs text-red-600">{formErrors.englishLevel.message}</p>
+                    <p role="alert" className="mt-1 text-xs text-red-600">
+                      {formErrors.englishLevel.message}
+                    </p>
                   ) : null}
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
@@ -309,7 +319,7 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                     ))}
                   </Select>
                   {formErrors.expectedCompensationLevel?.message ? (
-                    <p className="mt-1 text-xs text-red-600">
+                    <p role="alert" className="mt-1 text-xs text-red-600">
                       {formErrors.expectedCompensationLevel.message}
                     </p>
                   ) : null}
@@ -325,7 +335,7 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                     ))}
                   </Select>
                   {formErrors.assignedUnitManagerId?.message ? (
-                    <p className="mt-1 text-xs text-red-600">
+                    <p role="alert" className="mt-1 text-xs text-red-600">
                       {formErrors.assignedUnitManagerId.message}
                     </p>
                   ) : null}
@@ -340,7 +350,9 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                     ))}
                   </Select>
                   {formErrors.priority?.message ? (
-                    <p className="mt-1 text-xs text-red-600">{formErrors.priority.message}</p>
+                    <p role="alert" className="mt-1 text-xs text-red-600">
+                      {formErrors.priority.message}
+                    </p>
                   ) : null}
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
@@ -353,7 +365,7 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                     {...register('workloadPercent')}
                   />
                   {formErrors.workloadPercent?.message ? (
-                    <p className="mt-1 text-xs text-red-600">
+                    <p role="alert" className="mt-1 text-xs text-red-600">
                       {formErrors.workloadPercent.message}
                     </p>
                   ) : null}
@@ -362,14 +374,18 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                   Required skills (comma-separated) *
                   <Input className="mt-1" {...register('requiredSkills')} />
                   {formErrors.requiredSkills?.message ? (
-                    <p className="mt-1 text-xs text-red-600">{formErrors.requiredSkills.message}</p>
+                    <p role="alert" className="mt-1 text-xs text-red-600">
+                      {formErrors.requiredSkills.message}
+                    </p>
                   ) : null}
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Start date *
                   <Input className="mt-1" type="date" {...register('startDate')} />
                   {formErrors.startDate?.message ? (
-                    <p className="mt-1 text-xs text-red-600">{formErrors.startDate.message}</p>
+                    <p role="alert" className="mt-1 text-xs text-red-600">
+                      {formErrors.startDate.message}
+                    </p>
                   ) : null}
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
@@ -380,7 +396,9 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                   Duration *
                   <Input className="mt-1" {...register('durationText')} />
                   {formErrors.durationText?.message ? (
-                    <p className="mt-1 text-xs text-red-600">{formErrors.durationText.message}</p>
+                    <p role="alert" className="mt-1 text-xs text-red-600">
+                      {formErrors.durationText.message}
+                    </p>
                   ) : null}
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
@@ -569,7 +587,11 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
             value={rejectReason}
             onChange={(event) => setRejectReason(event.target.value)}
           />
-          {rejectError ? <p className="mt-1 text-xs text-red-600">{rejectError}</p> : null}
+          {rejectError ? (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {rejectError}
+            </p>
+          ) : null}
           <SheetFooter>
             <Button type="button" variant="outline" onClick={() => setRejectProposalId(null)}>
               Cancel

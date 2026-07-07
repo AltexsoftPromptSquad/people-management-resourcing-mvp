@@ -100,7 +100,7 @@ const personaPeople: Person[] = [
     workLocation: 'Lviv',
     currentProjectStatus: 'Partially Allocated',
     availabilityPercent: 40,
-    riskLevel: 'Medium',
+    riskLevel: 'High',
     customFieldValues: {
       benchReadiness: true,
     },

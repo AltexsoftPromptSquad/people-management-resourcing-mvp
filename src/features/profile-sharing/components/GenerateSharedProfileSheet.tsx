@@ -87,7 +87,11 @@ export const GenerateSharedProfileSheet: FC<GenerateSharedProfileSheetProps> = (
       return
     }
 
-    await navigator.clipboard.writeText(generatedLink)
+    try {
+      await navigator.clipboard.writeText(generatedLink)
+    } catch {
+      // Clipboard API may be unavailable (permissions denied, non-secure context, etc.)
+    }
     toast.info(RESOURCING_COPY.linkCopied)
   }
 
