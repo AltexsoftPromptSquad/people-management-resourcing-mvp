@@ -10,18 +10,20 @@ All data is seeded or mocked. No real backend, authentication, or external integ
 
 ## Current Repo State
 
-| Area                     | Status                                                                             |
-| ------------------------ | ---------------------------------------------------------------------------------- |
-| Tooling                  | Vite, React, TypeScript, Tailwind, ESLint, Prettier, Husky, Playwright — in place  |
-| BRD                      | v1.1 — Remediated 2026-06-27. See `docs/requirements/DECISION-LOG.md`              |
-| App shell                | Phase 1 complete — `AppLayout`, role-aware nav, role switcher, route guards        |
-| Dashboard & Subordinates | Phase 2 complete — widgets, table, 500+ seed, expanded types                       |
-| Employee Profile         | Phase 3 complete — managerial + personal profiles, 78/78 E2E pass                  |
-| Resourcing E2E           | Phase 4 planned — placeholder pages at `/resourcing/*`; implementation not started |
-| Feature modules          | `roles`, `dashboard`, `people`, `employee-profile`, `resourcing` (stub)            |
-| Mock data layer          | MSW, 540 people, 10 resourcing requests (read-only), full profile entities         |
+| Area                       | Status                                                                                                                                                      |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tooling                    | Vite, React, TypeScript, Tailwind, ESLint, Prettier, Husky, Playwright — in place                                                                           |
+| BRD                        | v1.1 — Remediated 2026-06-27. See `docs/requirements/DECISION-LOG.md`                                                                                       |
+| App shell                  | Phase 1 complete — `AppLayout`, role-aware nav, role switcher, route guards                                                                                 |
+| Dashboard & Subordinates   | Phase 2 complete — widgets, table, 500+ seed, expanded types                                                                                                |
+| Employee Profile           | Phase 3 complete — managerial + personal profiles, 78/78 E2E pass                                                                                           |
+| Resourcing E2E             | Phase 4 complete — DM requests, UM incoming, shared profiles, approve/reject, assignment-history write; 78/78 Phase 4 E2E; merged to `main` (PR #27, #28)   |
+| Custom Lists               | Phase 5 planned — `/custom-lists` is a placeholder `EmptyState`                                                                                             |
+| UM Assignments (FR-AH-004) | Phase 5 planned — not implemented                                                                                                                           |
+| Feature modules            | `roles`, `dashboard`, `people`, `employee-profile`, `resourcing`, `profile-sharing`; `custom-lists` not yet created                                         |
+| Mock data layer            | MSW, 540 people, 10 resourcing requests (read/write), 20 risks, ~33 action items, in-memory candidate-proposals, shared-profiles, assignment-history writes |
 
-**Next:** Carlos approves Phase 4 SRS, then implementation. See `.planning/phases/phase-4-resourcing/PLAN.md`.
+**Next:** Author the Phase 5 planning pack in `.planning/phases/phase-5-custom-lists/`, Carlos approves the Phase 5 SRS, then implementation. Phase 5 closes the MVP (all 7 demo scenarios). See `.planning/phases/phase-5-custom-lists/PLAN.md`.
 
 ## Key Roles (Product)
 
