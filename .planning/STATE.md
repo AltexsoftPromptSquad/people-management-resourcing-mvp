@@ -1,6 +1,6 @@
 # Current State
 
-**Last updated:** 2026-07-06 (Phase 4 stepwise implementation updates)
+**Last updated:** 2026-07-07 (Phase 4 closed; Phase 5 planning pack authored)
 
 ## Completed
 
@@ -39,16 +39,19 @@
 - [x] Phase 4 implemented (resourcing E2E, profile sharing, assignment history write) — 2026-07-06
 - [x] **Carlos Nunes product sign-off — Phase 4** (SRS scope + Demo Scenarios 4, 5, 6) — 2026-07-06
 - [x] Phase 4 stepwise implementation hardening on `cursor/phase4-stepwise-implementation` (shared profile cross-tab token fallback, RHF+Zod schema adoption for DM request form, incoming flow component split, assignment history detail rendering) — 2026-07-06
+- [x] Phase 4 hardening merged (PR #27, `cursor/phase4-stepwise-implementation` → `test`) and Phase 4 Playwright suite + sign-off merged (PR #28, `test` → `main`) — 2026-07-06
+- [x] Phase 4 QA validation signed off (Ivan — `phase-4-resourcing/VALIDATION.md`, 78/78 Phase 4 E2E, build/lint/format gates) — 2026-07-06
+- [x] Phase 5 planning pack created (`.planning/phases/phase-5-custom-lists/`: PLAN, SRS, UX-FLOW, IMPLEMENTATION_PLAN, phase-5-test-plan, PRE-BUILD-FINAL, VALIDATION, STATUS) — 2026-07-07
 
 ## In Progress
 
-- [ ] Phase 3 QA sign-off by Ivan (automated validation complete; pending formal sign-off)
-- [ ] Phase 4 QA validation per `VALIDATION.md` (implementation complete; pending Ivan)
-- [ ] PR review and merge (`cursor/phase4-stepwise-implementation` → `main`)
+- [ ] Carlos Phase 5 SRS scope approval (planning pack authored; pending formal approval)
+- [ ] Phase 5 implementation (custom lists, FR-AH-004 Assignments, profile-sharing polish) per `phase-5-custom-lists/IMPLEMENTATION_PLAN.md`
+- [ ] Phase 5 QA validation + MVP close per `phase-5-custom-lists/VALIDATION.md`
 
 ## Not Started
 
-- Phase 5 (custom lists, profile sharing polish, full QA regression)
+- Nothing after Phase 5 — Phase 5 closes the MVP scope.
 
 ## Next Owner Actions
 
@@ -56,17 +59,17 @@
 
 1. Phase 3 PLAN + SRS scope approved 2026-07-02.
 2. Phase 3 implementation product sign-off complete 2026-07-06 (PR #22).
-3. Phase 4 SRS scope approved 2026-07-06.
-4. Phase 4 product sign-off complete 2026-07-06 (Demo Scenarios 4, 5, 6).
+3. Phase 4 SRS scope approved 2026-07-06; product sign-off complete 2026-07-06 (Demo Scenarios 4, 5, 6).
+4. Review and approve Phase 5 SRS scope (`.planning/phases/phase-5-custom-lists/SRS.md`) to unblock implementation.
 
 ### Volodymyr (Development / JS implementation)
 
-1. Support Ivan's Phase 3/4 QA validation if fixes are needed.
+1. After Carlos approves the Phase 5 SRS, implement Steps 1–12 in `phase-5-custom-lists/IMPLEMENTATION_PLAN.md`.
 
 ### Ivan (QA / validation)
 
-1. Publish formal Phase 3 QA sign-off in `VALIDATION.md` and update `STATE.md`.
-2. Run Phase 4 validation per `.planning/phases/phase-4-resourcing/VALIDATION.md` (include Phase 3 regression).
+1. Phase 4 validation signed off (`phase-4-resourcing/VALIDATION.md`, 2026-07-06).
+2. Execute Phase 5 validation per `.planning/phases/phase-5-custom-lists/VALIDATION.md` (include Phases 1–4 regression) for MVP close.
 
 ## Phase 1 Implementation Reference
 
