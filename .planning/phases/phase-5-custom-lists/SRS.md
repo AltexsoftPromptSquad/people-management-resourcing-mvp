@@ -9,7 +9,7 @@
 | Product              | People Management & Resourcing MVP                             |
 | Phase                | Phase 5 - Custom Lists, Assignments & MVP Hardening            |
 | Document type        | Software Requirements Specification                            |
-| Status               | Draft — pending Carlos Nunes approval                          |
+| Status               | Approved for implementation — Carlos Nunes, 2026-07-07         |
 | Implementation owner | Volodymyr                                                      |
 | QA owner             | Ivan                                                           |
 | Product / BA owner   | Carlos                                                         |
