@@ -11,6 +11,7 @@ import {
   type PatchResourcingRequestPayload,
   type SubmitCandidateProposalsPayload,
 } from '../api/resourcing-api'
+import { getResourcingAssignments } from '../api/get-resourcing-assignments'
 import { getResourcingRequests } from '../api/get-resourcing-requests'
 import { queryKeys } from '@/lib/query/query-keys'
 
@@ -23,6 +24,13 @@ export const useResourcingRequestsQuery = (filter: RequestFilter) =>
   useQuery({
     queryKey: queryKeys.resourcingRequests(filter),
     queryFn: () => getResourcingRequests(filter),
+  })
+
+export const useResourcingAssignmentsQuery = (managerId: string | undefined) =>
+  useQuery({
+    queryKey: queryKeys.assignments(managerId ?? 'unknown'),
+    queryFn: () => getResourcingAssignments(managerId ?? ''),
+    enabled: Boolean(managerId),
   })
 
 export const useResourcingRequestQuery = (id: string | undefined) =>

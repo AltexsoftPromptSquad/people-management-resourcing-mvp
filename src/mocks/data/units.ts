@@ -9,7 +9,7 @@ export const units: Unit[] = [
   {
     id: 'unit-product',
     name: 'Product Engineering',
-    managerId: 'person-manager-002',
+    managerId: 'person-um-002',
   },
   {
     id: 'unit-data',

@@ -84,8 +84,19 @@ export const createPerson = ({ index, unitId, managerId }: CreatePersonParams): 
     availabilityPercent: faker.number.int({ min: 0, max: 100 }),
     riskLevel: faker.helpers.arrayElement(riskLevels),
     customFieldValues: {
-      benchReadiness: faker.datatype.boolean(),
-      lastConversationDate: faker.date.recent({ days: 120 }).toISOString().slice(0, 10),
+      'field-bench-status-001': faker.helpers.arrayElement([
+        'Available',
+        'Interviewing',
+        'On Hold',
+      ]),
+      'field-bench-readiness-002': faker.datatype.boolean(),
+      'field-last-conversation-003': faker.date.recent({ days: 120 }).toISOString().slice(0, 10),
+      'field-booking-notes-004': faker.helpers.arrayElement([
+        'Available for short-term support',
+        'Interview pipeline in progress',
+        'Booked from next sprint',
+        null,
+      ]),
     },
   }
 }

@@ -1,5 +1,7 @@
 export type CustomFieldType = 'Text' | 'Number' | 'Date' | 'Single Select' | 'Boolean'
 
+export type CustomFieldUsage = 'filter' | 'column' | 'both'
+
 export type CustomField = {
   id: string
   name: string

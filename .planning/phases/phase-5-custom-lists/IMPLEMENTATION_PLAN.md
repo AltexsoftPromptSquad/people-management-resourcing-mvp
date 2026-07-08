@@ -45,6 +45,13 @@ Phase 5 must implement custom lists + FR-AH-004 Assignments + profile-sharing po
 | Mutation pattern              | `useMutation` with targeted invalidation (fields, lists, rows, person, assignments).                         |
 | Seed determinism              | Keep `faker.seed(20260625)` unchanged and use stable generated IDs.                                          |
 | Dependencies                  | Do not add npm dependencies.                                                                                 |
+| Validation boundary           | Phase 1-4 e2e regression execution is tracked separately; this plan covers Phase 5 implementation gates.     |
+
+### Nice-to-have Shared UI Primitives
+
+- Priority 1: add `src/shared/ui/radio-group/` if the List Builder usage selector (`filter | column | both`) needs clearer single-choice UX than Select.
+- Priority 2: add `src/shared/ui/filter-bar/` only if filter bar composition is reused beyond `custom-lists` in this phase or immediate follow-up work.
+- Both items are non-blocking for Phase 5 acceptance; implement only when reuse/clarity value is confirmed during staged review.
 
 ## Step-By-Step Implementation Plan
 
@@ -70,11 +77,13 @@ Implementation requirements:
 - Migrate `src/mocks/data/people.ts` and `person-factory.ts` `customFieldValues` keys to field IDs.
 - Set `person-employee-001` Bench Status `Available` and Bench-compatible `currentProjectStatus` for Scenario 3.
 - Seed `person-um-002` as a real `Person` in its own unit (share recipient).
+- Verify BRD seed counts that Phase 5 depends on: 20 risks; document the action-item count decision if current seed data remains different from BRD 30.
 - Keep `faker.seed(20260625)`.
 
 Acceptance checks:
 
 - SRS-F5-003–009.
+- SRS §5.1 item 10; SRS §19 action-item count decision is reflected in status notes.
 - Seeds compile against migrated types.
 
 ### 3. Extend Query Keys And API Client
@@ -101,11 +110,13 @@ Implementation requirements:
   - `GET /api/resourcing/assignments?managerId=`
   - `GET /api/shared-profiles/active?personId=`
 - Rows must compute `editable` per BR-009 (viewer's direct reports only).
+- Sharing must support both adding and removing managers by persisting the submitted `managerIds` set; removing a manager removes the shared list from that recipient's tabs.
 - Do not alter existing handler shapes.
 
 Acceptance checks:
 
 - SRS-F5-010–022.
+- SRS-F5-509.
 
 ### 5. Scaffold `custom-lists` Feature Module
 
@@ -127,10 +138,16 @@ Implementation requirements:
 - Render system columns (read-only) + configured custom columns.
 - Wire URL-driven filter state per state-and-rendering.
 - Loading/empty/error states per SRS-UI5-001–004.
+- Use exact SRS copy for custom-list empty and error states:
+  - `No employees match` / `No employees in this unit match the list's filters.`
+  - `List not configured` / `Add columns to this list to start tracking employees.`
+  - `Could not load list` / `Refresh the page to try again.`
+- Tabs and table rows must be keyboard navigable and expose the shared tab/table accessibility behavior.
 
 Acceptance checks:
 
 - SRS-F5-300–312; FR-CL-003, FR-CL-013.
+- SRS-COPY5-001–003; SRS-A11Y5-003, SRS-A11Y5-007.
 - P5-CL01–CL04.
 
 ### 7. Implement Inline Edit Cell
@@ -139,12 +156,15 @@ Implementation requirements:
 
 - Build `InlineEditCell` supporting Text/Number/Date `Input`, Boolean `Checkbox`, Single Select `Select`.
 - Commit on blur/Enter/Tab; Escape cancels; one cell open at a time.
+- Move focus into the edit control on entry; return focus to the cell after commit/cancel.
+- Reject non-numeric Number input and revert invalid values on blur.
 - Optimistic mutation via `patch-custom-field-value`; rollback + error toast SRS-COPY5-005; no success toast.
 - System columns render read-only.
 
 Acceptance checks:
 
 - SRS-F5-400–415; FR-CL-004–008, BR-007, ux-behavior §3.4.
+- SRS-A11Y5-001, SRS-A11Y5-002, SRS-A11Y5-006; SRS-COPY5-004–005.
 - P5-IE01–IE10; P5-SY01–SY02.
 
 ### 8. Implement List Builder Sheet
@@ -152,12 +172,15 @@ Acceptance checks:
 Implementation requirements:
 
 - Build `ListBuilderSheet` (RHF + Zod): name, employee filter, per-field usage matrix (Filter/Column/Both).
+- Use the exact list-name placeholder `e.g. Bench — Q3 2026`.
+- Associate labels and validation messages with all inputs.
 - POST on create, PATCH on edit (owner only).
 - New/updated list appears as a tab without reload.
 
 Acceptance checks:
 
 - SRS-F5-200–215; FR-CL-002, AC-CL-006.
+- SRS-COPY5-006; SRS-A11Y5-004.
 - P5-LB01–LB06.
 
 ### 9. Implement Custom Field CRUD Sheet
@@ -165,23 +188,29 @@ Acceptance checks:
 Implementation requirements:
 
 - Build `CustomFieldFormSheet` (RHF + Zod): name, type, options (Single Select), sensitive flag.
+- Associate labels and validation messages with all inputs; Single Select options are required before submit.
 - POST create; PATCH edit/deactivate; block type change when values exist.
 
 Acceptance checks:
 
 - SRS-F5-100–110; FR-CL-001.
+- SRS-A11Y5-004.
 
 ### 10. Implement List Sharing
 
 Implementation requirements:
 
 - Build `ShareListSheet`: eligible managers (e.g. `person-um-002`); POST share.
+- Support removing a previously shared manager; removed recipients no longer see the list tab.
+- Share success uses a success toast; share/unshare failure keeps the sheet open and shows an error toast.
+- Associate labels with manager selection controls.
 - Recipient sees list tab; structure read-only (BR-008).
 - Rows editable only for recipient's direct reports (BR-009) via `editable` flag.
 
 Acceptance checks:
 
 - SRS-F5-500–510; FR-CL-010–011, BR-008–009.
+- SRS-A11Y5-004.
 - P5-LS01–LS05.
 
 ### 11. Implement Assignments Section, Nav & Shared-Profile Polish
@@ -189,13 +218,16 @@ Acceptance checks:
 Implementation requirements:
 
 - Add `getResourcingAssignmentsPagePath` in `routes.ts`; register UM-only `/resourcing/assignments` in `router.tsx`.
-- Create `ResourcingAssignmentsPage` composing `AssignmentsTable` (read-only, separate from project history).
+- Create `ResourcingAssignmentsPage` composing `AssignmentsTable` (read-only, separate from project history) with request title, candidate type, decision, decision date, and status columns.
+- Add assignments loading, empty, and error states; empty state uses `No assignments` / `Assignment history for your unit will appear here.`
 - Add Custom Lists + Assignments to `navigationItemsByRole['unit-manager']`.
 - Update `GenerateSharedProfileSheet` to query `activeSharedProfile(personId)` on open and show the existing link if present.
+- Existing-link Copy reuses SRS-COPY4-011; no active link keeps the Phase 4 generate flow.
 
 Acceptance checks:
 
 - SRS-F5-600–606, SRS-F5-700–703; FR-AH-004, BR-006, FR-PS-004.
+- SRS-COPY5-007; SRS-UI5-001, SRS-UI5-007.
 - P5-AH01–AH04; P5-PS01–PS03; P5-R01–R03.
 
 ### 12. Finalize Planning Handoff And Validation Artifacts
@@ -206,11 +238,13 @@ Implementation requirements:
 - Ensure `VALIDATION.md` maps to SRS and test plan checks.
 - Add Playwright specs under `tests/e2e/phase5/`, fixture `phase5-data.ts`, and page objects `CustomListsPage`, `ResourcingAssignmentsPage`.
 - Record execution results under `tests/test_reports/phase5/`.
+- Confirm there are no console errors during custom-lists and assignments flows when Phase 5 validation is executed.
 
 Acceptance checks:
 
 - Ivan can execute validation without extra requirement interpretation.
-- Demo Scenarios 1–7 pass; Phases 1–4 regression green.
+- Phase 5 validation artifacts are ready for the separate e2e/regression execution track.
+- Demo Scenario 3 requirements are covered by the Phase 5 implementation handoff.
 
 ## Data, Model, And API Contracts
 
@@ -253,12 +287,11 @@ npm run lint
 npm run format:check
 ```
 
-Optional e2e validation:
+Phase 5 e2e validation is tracked separately from this implementation plan:
 
 ```bash
 npx playwright install chromium
 npm run test:e2e -- tests/e2e/phase5
-npm run test:e2e -- tests/e2e/phase1 tests/e2e/phase2 tests/e2e/phase3 tests/e2e/phase4
 ```
 
 ## Assumptions And Non-Goals

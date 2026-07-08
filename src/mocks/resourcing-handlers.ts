@@ -13,6 +13,7 @@ import { skills } from './data/skills'
 import type { AssignmentHistoryItem } from '@/types/assignment-history'
 import type { CandidateProposal } from '@/types/candidate-proposal'
 import type { ResourcingRequest, ResourcingRequestStatus } from '@/types/resourcing-request'
+import type { ResourcingAssignmentRecord } from '@/types/resourcing-assignment'
 import type { SharedProfile, SharedProfileSection } from '@/types/shared-profile'
 import type { SharedProfileView } from '@/types/shared-profile-view'
 
@@ -230,6 +231,32 @@ const createAssignmentHistoryRecord = (
   return record
 }
 
+const getResourcingAssignmentsForManager = (managerId: string): ResourcingAssignmentRecord[] => {
+  const manager = people.find((person) => person.id === managerId)
+  if (!manager) {
+    return []
+  }
+
+  return assignmentHistory
+    .filter((item) => {
+      const employee = people.find((person) => person.id === item.employeeId)
+      return employee?.unitId === manager.unitId
+    })
+    .map((item) => {
+      const request = resourcingRequests.find((entry) => entry.id === item.requestId)
+      const proposal = candidateProposals.find((entry) => entry.id === item.proposalId)
+
+      return {
+        id: item.id,
+        requestTitle: item.requestTitle ?? request?.title ?? 'Unknown request',
+        candidateType: proposal?.candidateType ?? 'Internal',
+        decision: item.status,
+        decisionDate: item.decisionAt,
+        status: request?.status ?? item.status,
+      }
+    })
+}
+
 export const resourcingHandlers = [
   http.get('/api/resourcing/requests/:id', ({ params }) => {
     const request = resourcingRequests.find((item) => item.id === params.id)
@@ -380,6 +407,16 @@ export const resourcingHandlers = [
 
     return HttpResponse.json(proposal)
   }),
+  http.get('/api/resourcing/assignments', ({ request }) => {
+    const url = new URL(request.url)
+    const managerId = url.searchParams.get('managerId')
+
+    if (!managerId) {
+      return HttpResponse.json({ message: 'managerId is required' }, { status: 400 })
+    }
+
+    return HttpResponse.json(getResourcingAssignmentsForManager(managerId))
+  }),
   http.post('/api/shared-profiles', async ({ request }) => {
     const body = (await request.json()) as CreateSharedProfileBody
     const nextIndex = sharedProfiles.length + 1
@@ -398,6 +435,21 @@ export const resourcingHandlers = [
     sharedProfiles.push(profile)
 
     return HttpResponse.json(profile, { status: 201 })
+  }),
+  http.get('/api/shared-profiles/active', ({ request }) => {
+    const url = new URL(request.url)
+    const personId = url.searchParams.get('personId')
+
+    if (!personId) {
+      return HttpResponse.json({ message: 'personId is required' }, { status: 400 })
+    }
+
+    const activeProfile =
+      [...sharedProfiles]
+        .reverse()
+        .find((profile) => profile.personId === personId && profile.isActive) ?? null
+
+    return HttpResponse.json(activeProfile)
   }),
   http.get('/api/shared-profiles/:token', ({ params }) => {
     const token = params.token as string

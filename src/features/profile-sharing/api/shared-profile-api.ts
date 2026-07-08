@@ -13,3 +13,6 @@ export const createSharedProfile = (payload: CreateSharedProfilePayload) =>
 
 export const getSharedProfile = (token: string) =>
   apiGet<SharedProfileView>(`/api/shared-profiles/${token}`)
+
+export const getActiveSharedProfile = (personId: string) =>
+  apiGet<SharedProfile | null>('/api/shared-profiles/active', { personId })

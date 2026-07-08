@@ -5,7 +5,10 @@ import {
   DEFAULT_SHARED_SECTIONS,
   SHARED_PROFILE_SECTION_LABELS,
 } from '../constants/sections'
-import { useCreateSharedProfileMutation } from '../hooks/use-shared-profile-hooks'
+import {
+  useActiveSharedProfileQuery,
+  useCreateSharedProfileMutation,
+} from '../hooks/use-shared-profile-hooks'
 import { generateSharedProfileSchema } from '../schemas/shared-profile.schema'
 import { RESOURCING_COPY } from '@/features/resourcing/constants/copy'
 import { Button } from '@/shared/ui/button'
@@ -40,7 +43,14 @@ export const GenerateSharedProfileSheet: FC<GenerateSharedProfileSheetProps> = (
   const [selectedSections, setSelectedSections] =
     useState<SharedProfileSection[]>(DEFAULT_SHARED_SECTIONS)
   const [generatedLink, setGeneratedLink] = useState<string | null>(null)
+  const activeSharedProfileQuery = useActiveSharedProfileQuery(open ? personId : undefined)
   const createMutation = useCreateSharedProfileMutation()
+
+  const activeLink = activeSharedProfileQuery.data
+    ? `${window.location.origin}/shared/${activeSharedProfileQuery.data.token}`
+    : null
+  const visibleLink = generatedLink ?? activeLink
+  const hasExistingActiveLink = Boolean(activeLink) && !generatedLink
 
   const toggleSection = (section: SharedProfileSection, checked: boolean) => {
     if (section === 'basic-info') {
@@ -83,12 +93,12 @@ export const GenerateSharedProfileSheet: FC<GenerateSharedProfileSheetProps> = (
   }
 
   const handleCopy = async () => {
-    if (!generatedLink) {
+    if (!visibleLink) {
       return
     }
 
     try {
-      await navigator.clipboard.writeText(generatedLink)
+      await navigator.clipboard.writeText(visibleLink)
     } catch {
       // Clipboard API may be unavailable (permissions denied, non-secure context, etc.)
     }
@@ -104,21 +114,27 @@ export const GenerateSharedProfileSheet: FC<GenerateSharedProfileSheetProps> = (
             Select sections to include in the shared profile link.
           </SheetDescription>
         </SheetHeader>
-        <div className="mt-4 space-y-3">
-          {ALL_SHARED_SECTIONS.map((section) => (
-            <Checkbox
-              key={section}
-              label={SHARED_PROFILE_SECTION_LABELS[section]}
-              checked={selectedSections.includes(section)}
-              disabled={section === 'basic-info'}
-              onChange={(event) => toggleSection(section, event.target.checked)}
-            />
-          ))}
-        </div>
-        {generatedLink ? (
+        {activeSharedProfileQuery.isPending ? (
+          <p className="mt-4 text-sm text-slate-600">Checking active shared link...</p>
+        ) : !hasExistingActiveLink ? (
+          <div className="mt-4 space-y-3">
+            {ALL_SHARED_SECTIONS.map((section) => (
+              <Checkbox
+                key={section}
+                label={SHARED_PROFILE_SECTION_LABELS[section]}
+                checked={selectedSections.includes(section)}
+                disabled={section === 'basic-info'}
+                onChange={(event) => toggleSection(section, event.target.checked)}
+              />
+            ))}
+          </div>
+        ) : null}
+        {visibleLink ? (
           <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm">
-            <p className="font-medium text-slate-900">Shared profile link</p>
-            <p className="mt-1 break-all text-slate-600">{generatedLink}</p>
+            <p className="font-medium text-slate-900">
+              {hasExistingActiveLink ? 'Existing shared link' : 'Shared profile link'}
+            </p>
+            <p className="mt-1 break-all text-slate-600">{visibleLink}</p>
             <Button
               type="button"
               className="mt-3"
@@ -135,7 +151,7 @@ export const GenerateSharedProfileSheet: FC<GenerateSharedProfileSheetProps> = (
               Done
             </Button>
           </SheetClose>
-          {!generatedLink ? (
+          {!visibleLink && !activeSharedProfileQuery.isPending ? (
             <Button
               type="button"
               aria-busy={createMutation.isPending}
