@@ -7,3 +7,4 @@ test-results/
 tests/e2e/.report/
 playwright/.cache/
 .playwright-mcp/
+.cursor/
