@@ -1,4 +1,9 @@
-import { endpointRecordCounts, phase1Roles, phase1Routes } from '../fixtures/mock-baselines'
+import {
+  endpointRecordCounts,
+  phase1Roles,
+  phase1Routes,
+  stablePersonaIds,
+} from '../fixtures/mock-baselines'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 1', () => {
@@ -28,9 +33,7 @@ test.describe('Phase 1', () => {
       expect(consoleMonitor.pageErrors).toEqual([])
     })
 
-    test('check #12: /api/personas returns exactly three stable persona records', async ({
-      page,
-    }) => {
+    test('check #12: /api/personas returns stable persona records', async ({ page }) => {
       await page.reload()
       await expect
         .poll(async () => {
@@ -52,11 +55,7 @@ test.describe('Phase 1', () => {
 
       expect(personasResponse.ok).toBeTruthy()
       expect(personasResponse.status).toBe(200)
-      expect(personasResponse.ids).toEqual([
-        phase1Roles.deliveryManager.personaId,
-        phase1Roles.employee.personaId,
-        phase1Roles.unitManager.personaId,
-      ])
+      expect(personasResponse.ids).toEqual(stablePersonaIds)
     })
 
     test('check #14: seeded endpoints return expected record counts from mocks', async ({

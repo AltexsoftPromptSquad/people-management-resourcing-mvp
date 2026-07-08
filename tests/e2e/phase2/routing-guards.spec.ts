@@ -19,10 +19,12 @@ test.describe('Phase 2 - routing and role guards', () => {
     await page.goto(phase2Routes.dashboard)
     await appShell.expectRoleView(phase2Roles.unitManager)
 
-    await expect(appShell.primaryNavigation().getByRole('link')).toHaveCount(3)
+    await expect(appShell.primaryNavigation().getByRole('link')).toHaveCount(5)
     await expect(appShell.navLink('Dashboard')).toBeVisible()
     await expect(appShell.navLink('Subordinates')).toBeVisible()
+    await expect(appShell.navLink('Custom Lists')).toBeVisible()
     await expect(appShell.navLink('Incoming Requests')).toBeVisible()
+    await expect(appShell.navLink('Assignments')).toBeVisible()
 
     await appShell.navLink('Subordinates').click()
     await expect(page).toHaveURL(new RegExp(`${phase2Routes.subordinates}$`))

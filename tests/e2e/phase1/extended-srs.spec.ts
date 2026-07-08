@@ -1,4 +1,4 @@
-import { phase1Roles, phase1Routes } from '../fixtures/mock-baselines'
+import { phase1Roles, phase1Routes, stablePersonaIds } from '../fixtures/mock-baselines'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 1', () => {
@@ -115,11 +115,7 @@ test.describe('Phase 1', () => {
       const first = await getPersonaIds()
       const second = await getPersonaIds()
       expect(first).toEqual(second)
-      expect(first).toEqual([
-        phase1Roles.deliveryManager.personaId,
-        phase1Roles.employee.personaId,
-        phase1Roles.unitManager.personaId,
-      ])
+      expect(first).toEqual(stablePersonaIds)
     })
 
     test('check #27: delivery manager nav exposes no employee-browsing links', async ({

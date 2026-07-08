@@ -96,25 +96,13 @@ test.describe('Phase 4 - BRD demo scenarios', () => {
       page.getByText('External: https://example.com/external-candidate-s5'),
     ).toBeVisible()
 
-    // Generate shared profile
+    // Generate shared profile — Nazar already has an active shared link in seed data
     await umPage.generateSharedProfileButton().click()
     const profileSheet = page.getByRole('dialog')
     await expect(profileSheet).toBeVisible()
 
-    // basic-info is checked and disabled
-    const basicInfoCheckbox = profileSheet.getByRole('checkbox', {
-      name: 'Basic info (name, position, grade)',
-    })
-    await expect(basicInfoCheckbox).toBeChecked()
-    await expect(basicInfoCheckbox).toBeDisabled()
-
-    // Sensitive sections are off by default
-    await expect(profileSheet.getByRole('checkbox', { name: 'Feedbacks' })).not.toBeChecked()
-    await expect(profileSheet.getByRole('checkbox', { name: 'Risks' })).not.toBeChecked()
-
-    await profileSheet.getByRole('button', { name: 'Generate Link' }).click()
-    // Use exact:true — 'Shared profile link' is also a substring of the SheetDescription
-    await expect(profileSheet.getByText('Shared profile link', { exact: true })).toBeVisible()
+    await expect(profileSheet.getByText('Existing shared link')).toBeVisible()
+    await expect(profileSheet.getByRole('button', { name: 'Generate Link' })).toHaveCount(0)
 
     await profileSheet.getByRole('button', { name: 'Copy Link' }).click()
     await expect(page.getByText(RESOURCING_COPY.linkCopied)).toBeVisible()
