@@ -7,7 +7,7 @@
 | Product          | People Management & Resourcing MVP                                                                                                                          |
 | Phase            | Phase 5 — Custom Lists, Assignments & MVP Hardening                                                                                                         |
 | Document type    | Test plan (QA design, pre-execution)                                                                                                                        |
-| Status           | Draft — pending SRS approval (Carlos Nunes)                                                                                                                 |
+| Status           | Ready for execution (SRS approved — Carlos Nunes, 2026-07-07)                                                                                               |
 | QA owner         | Ivan                                                                                                                                                        |
 | Dev owner        | Volodymyr                                                                                                                                                   |
 | Product / BA     | Carlos                                                                                                                                                      |

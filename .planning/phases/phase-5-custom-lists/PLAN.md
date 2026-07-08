@@ -9,7 +9,7 @@
 **SRS:** `.planning/phases/phase-5-custom-lists/SRS.md`
 **UX flow:** `.planning/phases/phase-5-custom-lists/UX-FLOW.md`
 **Pre-build package:** `.planning/phases/phase-5-custom-lists/PRE-BUILD-FINAL.md`
-**Product approval:** [pending — Carlos Nunes]
+**Product approval:** Carlos Nunes, 2026-07-07 (SRS scope)
 
 ---
 
