@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   createSharedProfile,
+  getActiveSharedProfile,
   getSharedProfile,
   type CreateSharedProfilePayload,
 } from '../api/shared-profile-api'
@@ -14,6 +15,13 @@ export const useSharedProfileQuery = (token: string | undefined) =>
     retry: false,
   })
 
+export const useActiveSharedProfileQuery = (personId: string | undefined) =>
+  useQuery({
+    queryKey: queryKeys.activeSharedProfile(personId ?? 'unknown'),
+    queryFn: () => getActiveSharedProfile(personId ?? ''),
+    enabled: Boolean(personId),
+  })
+
 export const useCreateSharedProfileMutation = () => {
   const queryClient = useQueryClient()
 
@@ -21,6 +29,10 @@ export const useCreateSharedProfileMutation = () => {
     mutationFn: (payload: CreateSharedProfilePayload) => createSharedProfile(payload),
     onSuccess: (data) => {
       void queryClient.invalidateQueries({ queryKey: queryKeys.sharedProfile(data.token) })
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.activeSharedProfile(data.personId),
+      })
+      void queryClient.invalidateQueries({ queryKey: queryKeys.activeSharedProfileRoot() })
     },
   })
 }

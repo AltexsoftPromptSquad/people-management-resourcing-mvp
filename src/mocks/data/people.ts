@@ -35,7 +35,46 @@ const personaPeople: Person[] = [
     availabilityPercent: 20,
     riskLevel: 'Low',
     customFieldValues: {
-      benchReadiness: false,
+      'field-bench-status-001': 'On Hold',
+      'field-bench-readiness-002': false,
+      'field-last-conversation-003': '2026-06-20',
+      'field-booking-notes-004': 'Tracks platform staffing for Q3',
+    },
+  },
+  {
+    id: 'person-um-002',
+    firstName: 'Ihor',
+    lastName: 'Melnyk',
+    workEmail: 'ihor.melnyk@pmr.example',
+    personalEmail: 'ihor.melnyk@mail.example',
+    workPhone: '+380440000002',
+    personalPhone: '+380670000002',
+    dateOfBirth: '1989-09-03',
+    address: {
+      addressLine: '5 Volodymyrska St',
+      city: 'Kyiv',
+      country: 'Ukraine',
+    },
+    emergencyContact: {
+      name: 'Tetiana Melnyk',
+      phone: '+380670000102',
+    },
+    position: 'Unit Manager',
+    grade: 'L2',
+    unitId: 'unit-product',
+    employmentType: 'FTE',
+    employmentStatus: 'Active',
+    englishLevel: 'C1',
+    hireDate: '2018-01-10',
+    workLocation: 'Kyiv',
+    currentProjectStatus: 'Allocated',
+    availabilityPercent: 10,
+    riskLevel: 'Low',
+    customFieldValues: {
+      'field-bench-status-001': 'Interviewing',
+      'field-bench-readiness-002': false,
+      'field-last-conversation-003': '2026-06-18',
+      'field-booking-notes-004': 'Coordinates product unit staffing pipeline',
     },
   },
   {
@@ -68,7 +107,10 @@ const personaPeople: Person[] = [
     availabilityPercent: 15,
     riskLevel: 'None',
     customFieldValues: {
-      benchReadiness: false,
+      'field-bench-status-001': 'On Hold',
+      'field-bench-readiness-002': false,
+      'field-last-conversation-003': '2026-06-14',
+      'field-booking-notes-004': 'Delivery approvals and pipeline alignment',
     },
   },
   {
@@ -98,18 +140,21 @@ const personaPeople: Person[] = [
     englishLevel: 'B2',
     hireDate: '2022-02-14',
     workLocation: 'Lviv',
-    currentProjectStatus: 'Partially Allocated',
+    currentProjectStatus: 'Bench',
     availabilityPercent: 40,
     riskLevel: 'High',
     customFieldValues: {
-      benchReadiness: true,
+      'field-bench-status-001': 'Available',
+      'field-bench-readiness-002': true,
+      'field-last-conversation-003': '2026-05-16',
+      'field-booking-notes-004': 'Open to backend-heavy opportunities',
     },
   },
 ]
 
 const unitAssignments = [
   { unitId: 'unit-platform', managerId: 'person-um-001' },
-  { unitId: 'unit-product', managerId: 'person-manager-002' },
+  { unitId: 'unit-product', managerId: 'person-um-002' },
   { unitId: 'unit-data', managerId: 'person-manager-003' },
 ]
 

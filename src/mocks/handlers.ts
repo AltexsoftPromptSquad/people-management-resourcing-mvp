@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { customListsHandlers } from './custom-lists-handlers'
 import { actionItems } from './data/action-items'
 import { assignmentHistory } from './data/assignment-history'
 import { documents } from './data/documents'
@@ -323,5 +324,6 @@ export const handlers = [
       getFilteredSubordinates(managerId, parseSubordinatesFilter(url), parseSubordinatesSort(url)),
     )
   }),
+  ...customListsHandlers,
   ...resourcingHandlers,
 ]

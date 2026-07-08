@@ -11,6 +11,15 @@ export const personas: Persona[] = [
     isDefault: true,
   },
   {
+    id: 'persona-um-002',
+    role: 'unit-manager',
+    personId: 'person-um-002',
+    displayName: 'Ihor Melnyk',
+    title: 'Unit Manager',
+    unitId: 'unit-product',
+    isDefault: false,
+  },
+  {
     id: 'persona-dm-001',
     role: 'delivery-manager',
     personId: 'person-dm-001',

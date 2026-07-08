@@ -85,6 +85,8 @@ export const phase1Roles = {
   },
 } as const
 
+export const stablePersonaIds = personas.map((persona) => persona.id).sort()
+
 export const endpointRecordCounts = {
   personas: personas.length,
   people: people.length,

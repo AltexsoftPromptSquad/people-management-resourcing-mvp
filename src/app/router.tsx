@@ -8,6 +8,7 @@ import {
   getHomePagePath,
   getMyProfilePagePath,
   getEmployeeProfilePagePath,
+  getResourcingAssignmentsPagePath,
   getResourcingIncomingPagePath,
   getResourcingRequestsPagePath,
   getRisksPagePath,
@@ -19,6 +20,7 @@ import { DashboardPage } from '@/pages/dashboard-page'
 import { EmployeeProfilePage } from '@/pages/employee-profile-page'
 import { MyProfilePage } from '@/pages/my-profile-page'
 import { ResourcingIncomingPage } from '@/pages/resourcing-incoming-page'
+import { ResourcingAssignmentsPage } from '@/pages/resourcing-assignments-page'
 import { ResourcingRequestsPage } from '@/pages/resourcing-requests-page'
 import { SharedProfilePage } from '@/pages/shared-profile-page'
 import { RisksPage } from '@/pages/risks-page'
@@ -74,6 +76,14 @@ export const router = createBrowserRouter([
         element: (
           <RoleRoute allowedRole="unit-manager">
             <ResourcingIncomingPage />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: getResourcingAssignmentsPagePath(),
+        element: (
+          <RoleRoute allowedRole="unit-manager">
+            <ResourcingAssignmentsPage />
           </RoleRoute>
         ),
       },

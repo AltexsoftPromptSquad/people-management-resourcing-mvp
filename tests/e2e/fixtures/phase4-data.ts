@@ -44,6 +44,20 @@ const employeePerson = ensure(
 
 const seededSharedProfile = ensure(sharedProfiles[0], 'Missing shared profile seed')
 
+const activeSharedProfilePersonIds = new Set(
+  sharedProfiles.filter((profile) => profile.isActive).map((profile) => profile.personId),
+)
+
+const employeeWithoutActiveSharedProfile = ensure(
+  people.find(
+    (person) =>
+      person.unitId === unitManagerPersona.unitId &&
+      person.managerId === unitManagerPersona.personId &&
+      !activeSharedProfilePersonIds.has(person.id),
+  ),
+  'Missing unit employee without an active shared profile',
+)
+
 export const phase4Routes = {
   dmRequests: getResourcingRequestsPagePath(),
   umIncoming: getResourcingIncomingPagePath(),
@@ -56,6 +70,7 @@ export const phase4Baselines = {
   umPersona: unitManagerPersona,
   employeePersona,
   employeePerson,
+  employeeWithoutActiveSharedProfile,
   seededSharedProfile,
   submittedRequest: ensure(
     resourcingRequests.find((request) => request.id === 'request-001'),

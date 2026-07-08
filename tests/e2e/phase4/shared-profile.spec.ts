@@ -20,14 +20,14 @@ test.describe('Phase 4 - shared profile', () => {
 
     await ui.generateSharedProfileButton().click()
 
-    await expect(page.getByRole('dialog')).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Generate Shared Profile' })).toBeVisible()
+    const sheet = page.getByRole('dialog')
+    await expect(sheet).toBeVisible()
+    await expect(sheet.getByRole('heading', { name: 'Generate Shared Profile' })).toBeVisible()
 
-    await page.getByRole('button', { name: 'Generate Link' }).click()
-    // Use exact:true — 'Shared profile link' is also a substring of the SheetDescription
-    await expect(page.getByText('Shared profile link', { exact: true })).toBeVisible()
+    await expect(sheet.getByText('Existing shared link')).toBeVisible()
+    await expect(sheet.getByRole('button', { name: 'Generate Link' })).toHaveCount(0)
 
-    await page.getByRole('button', { name: 'Copy Link' }).click()
+    await sheet.getByRole('button', { name: 'Copy Link' }).click()
     await expect(page.getByText('Link copied to clipboard.')).toBeVisible()
   })
 
@@ -42,7 +42,7 @@ test.describe('Phase 4 - shared profile', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.employeeWithoutActiveSharedProfile
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
     await ui.generateSharedProfileButton().click()
 
@@ -67,7 +67,7 @@ test.describe('Phase 4 - shared profile', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.employeeWithoutActiveSharedProfile
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
     await ui.generateSharedProfileButton().click()
 
@@ -97,7 +97,7 @@ test.describe('Phase 4 - shared profile', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.employeeWithoutActiveSharedProfile
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
     await ui.generateSharedProfileButton().click()
 

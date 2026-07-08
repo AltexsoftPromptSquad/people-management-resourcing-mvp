@@ -1,6 +1,13 @@
+import type { CustomFieldUsage } from './custom-field'
+
 export type CustomListSort = {
   field: string
   direction: 'asc' | 'desc'
+}
+
+export type CustomListFieldConfig = {
+  customFieldId: string
+  usage: CustomFieldUsage
 }
 
 export type CustomList = {
@@ -9,8 +16,7 @@ export type CustomList = {
   description?: string
   ownerManagerId: string
   sharedWithManagerIds: string[]
-  employeeFilter: Record<string, unknown>
-  visibleColumns: string[]
-  filterableFields: string[]
-  defaultSort: CustomListSort
+  employeeFilter: Record<string, string | string[]>
+  fieldConfigs: CustomListFieldConfig[]
+  defaultSort?: CustomListSort
 }

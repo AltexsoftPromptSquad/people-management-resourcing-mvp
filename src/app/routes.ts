@@ -16,6 +16,8 @@ export const getCustomListsPagePath = () => '/custom-lists'
 
 export const getResourcingIncomingPagePath = () => '/resourcing/incoming'
 
+export const getResourcingAssignmentsPagePath = () => '/resourcing/assignments'
+
 export const getRisksPagePath = () => '/risks'
 
 export const getSharedProfilePagePath = (token: string) => `/shared/${token}`
