@@ -164,3 +164,35 @@ All decisions in this log have been reviewed and approved by Carlos Nunes (Produ
 | D-3 | No auto project history — Confirmed   | BR-006 stays, §15 confirmed                | No change    | Approved — Carlos Nunes, 2026-06-27 |
 | A-2 | Skills — Confirmed in scope           | §8.3 confirmed, remove uncertain status    | No change    | Approved — Carlos Nunes, 2026-06-27 |
 | A-3 | Candidate warnings — Confirmed        | BR-012–014 confirmed, FR-CP-007 wired      | Phase 4      | Approved — Carlos Nunes, 2026-06-27 |
+| H-1 | Employee action item completion       | New FR-PV-008, resolve BRD §4 vs FR-PV-003 | Post-Phase 5 | Approved — Carlos Nunes, 2026-07-09 |
+
+---
+
+# Post-Phase-5 Hardening Decisions
+
+**Date:** 2026-07-09
+**Author:** BA / Product remediation — post-Phase-5 hardening pass
+**Status:** Approved — Carlos Nunes, 2026-07-09
+
+---
+
+## H-1 — Employee Marks Own Action Items Complete
+
+**Decision:** Resolve the conflict in favor of BRD §4. Employees may mark their own assigned action items as complete.
+
+**Conflict:** BRD §4 (Employee "Can Do") states "Mark own action items as complete where allowed." FR-PV-003 only grants view access, and the Phase 3 SRS and validation treated action items as read-only on the personal profile. The prose and the functional requirements disagree.
+
+**Recommendation:** Keep FR-PV-003 (view) and add FR-PV-008 (complete). Scope the completion narrowly: only the assignee may complete their own item, only the status may change (to Done), and no other fields or other people's items may be edited. This closes the only BRD prose vs FR conflict and makes Demo Scenario 7 (Employee Self-Service) feel finished, consistent with the "mark as complete where allowed" prose.
+
+**Rationale:** BRD §4 is the higher-level statement of intent and matches the self-service goal. The Phase 3 read-only treatment was an implementation simplification, not a product decision. The change is small, frontend-only, and reuses the existing personal-profile save + toast pattern.
+
+**Impact:**
+
+- New FR: FR-PV-008 (employee marks own assigned action items complete)
+- FR-PV-003 unchanged (view remains valid)
+- Superseded: Phase 3 read-only treatment of personal action items (validation row P3-PV06 to be updated by the implementing PR)
+- Rules: assignee-only, status-to-Done-only, no edit of other fields or other people's items
+- Implementation (separate dev PR, owned by Volodymyr): `PATCH /api/action-items/:id` MSW handler, `patchActionItem` API, mutation hook, "Mark complete" control on `/my-profile`, updated + new e2e tests
+- Phase: post-Phase-5 hardening
+
+**Status:** Approved — Carlos Nunes, 2026-07-09
