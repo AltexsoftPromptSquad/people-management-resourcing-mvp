@@ -789,15 +789,16 @@ The following items are reasonable next steps after the MVP is delivered but are
 
 ### 10.5 Employee Profile — Personal View
 
-| ID        | Requirement                                                                                      |
-| --------- | ------------------------------------------------------------------------------------------------ |
-| FR-PV-001 | The employee personal view must show only the employee's own profile.                            |
-| FR-PV-002 | The employee must be able to edit: personal phone, personal email, and address.                  |
-| FR-PV-003 | The employee must be able to view their own action items.                                        |
-| FR-PV-004 | The employee must be able to update their IDP status.                                            |
-| FR-PV-005 | The employee must be able to add a certificate document record with a name and a mock file name. |
-| FR-PV-006 | The employee must not see manager-only notes, risk records, or assignment history.               |
-| FR-PV-007 | Changes saved by the employee must be confirmed with a visible success message.                  |
+| ID        | Requirement                                                                                                                                                                                                             |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-PV-001 | The employee personal view must show only the employee's own profile.                                                                                                                                                   |
+| FR-PV-002 | The employee must be able to edit: personal phone, personal email, and address.                                                                                                                                         |
+| FR-PV-003 | The employee must be able to view their own action items.                                                                                                                                                               |
+| FR-PV-004 | The employee must be able to update their IDP status.                                                                                                                                                                   |
+| FR-PV-005 | The employee must be able to add a certificate document record with a name and a mock file name.                                                                                                                        |
+| FR-PV-006 | The employee must not see manager-only notes, risk records, or assignment history.                                                                                                                                      |
+| FR-PV-007 | Changes saved by the employee must be confirmed with a visible success message.                                                                                                                                         |
+| FR-PV-008 | The employee must be able to mark their own assigned action items as complete. Only the assignee may complete an item, only the status may change (to Done), and no other fields or other people's items may be edited. |
 
 ---
 
