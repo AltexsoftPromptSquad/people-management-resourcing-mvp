@@ -164,6 +164,7 @@ All decisions in this log have been reviewed and approved by Carlos Nunes (Produ
 | D-3 | No auto project history — Confirmed   | BR-006 stays, §15 confirmed                | No change    | Approved — Carlos Nunes, 2026-06-27 |
 | A-2 | Skills — Confirmed in scope           | §8.3 confirmed, remove uncertain status    | No change    | Approved — Carlos Nunes, 2026-06-27 |
 | A-3 | Candidate warnings — Confirmed        | BR-012–014 confirmed, FR-CP-007 wired      | Phase 4      | Approved — Carlos Nunes, 2026-06-27 |
+| H-1 | Employee action item completion       | New FR-PV-008, resolve BRD §4 vs FR-PV-003 | Post-Phase 5 | Approved — Carlos Nunes, 2026-07-09 |
 
 ---
 
@@ -171,7 +172,7 @@ All decisions in this log have been reviewed and approved by Carlos Nunes (Produ
 
 **Date:** 2026-07-09
 **Author:** BA / Product remediation — post-Phase-5 hardening pass
-**Status:** Proposed — pending Carlos Nunes approval
+**Status:** Approved — Carlos Nunes, 2026-07-09
 
 ---
 
@@ -194,4 +195,4 @@ All decisions in this log have been reviewed and approved by Carlos Nunes (Produ
 - Implementation (separate dev PR, owned by Volodymyr): `PATCH /api/action-items/:id` MSW handler, `patchActionItem` API, mutation hook, "Mark complete" control on `/my-profile`, updated + new e2e tests
 - Phase: post-Phase-5 hardening
 
-**Status:** Proposed — pending Carlos Nunes approval
+**Status:** Approved — Carlos Nunes, 2026-07-09
