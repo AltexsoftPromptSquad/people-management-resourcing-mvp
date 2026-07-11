@@ -1,5 +1,6 @@
 import { phase3Baselines, phase3Routes } from '../fixtures/phase3-data'
 import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
+import { selectCustomOption } from '../support/select'
 import { expect, test } from '../support/test'
 
 const formatCustomFieldLabel = (fieldKey: string) =>
@@ -58,7 +59,7 @@ test.describe('Phase 3 - custom fields and managerial editing', () => {
 
     const englishSection = profile.section('English Level')
     await englishSection.getByRole('button', { name: 'Edit' }).click()
-    await englishSection.getByRole('combobox').selectOption('C1')
+    await selectCustomOption(englishSection.getByRole('combobox'), 'C1')
     await englishSection.getByRole('button', { name: 'Save' }).click()
 
     await expect(page.getByText('Changes saved.')).toBeVisible()
@@ -78,7 +79,7 @@ test.describe('Phase 3 - custom fields and managerial editing', () => {
 
     const skillsSection = profile.section('Skills')
     await skillsSection.getByRole('button', { name: 'Edit' }).click()
-    await skillsSection.getByRole('combobox').first().selectOption('Expert')
+    await selectCustomOption(skillsSection.getByRole('combobox').first(), 'Expert')
     await skillsSection.getByRole('button', { name: 'Save' }).click()
 
     await expect(page.getByText('Changes saved.')).toBeVisible()

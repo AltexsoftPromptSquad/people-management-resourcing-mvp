@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import { useMemo, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router'
 import { RESOURCING_COPY } from '../constants/copy'
 import {
   useCandidateProposalsQuery,
@@ -13,13 +14,14 @@ import {
 import { rejectCandidateSchema } from '../schemas/candidate-decision.schema'
 import { requestFormSchema, type RequestFormValues } from '../schemas/request-form.schema'
 import { useUnitsQuery } from '@/features/employee-profile/hooks'
-import { getSharedProfilePagePath } from '@/app/routes'
+import { getEmployeeProfilePagePath, getSharedProfilePagePath } from '@/app/routes'
 import { Badge } from '@/shared/ui/badge'
 import { Button } from '@/shared/ui/button'
 import { ConfirmDialog } from '@/shared/ui/dialog'
 import { DataTable } from '@/shared/ui/data-table'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { ErrorState } from '@/shared/ui/error-state'
+import { DatePicker } from '@/shared/ui/date-picker'
 import { Input } from '@/shared/ui/input'
 import { LoadingState } from '@/shared/ui/loading-state'
 import { PageHeader } from '@/shared/ui/page-header'
@@ -55,6 +57,25 @@ const formatDate = (isoDate: string) =>
     year: 'numeric',
   })
 
+const getDurationText = (startDate: string, endDate: string) => {
+  if (!startDate || !endDate) {
+    return 'TBD'
+  }
+
+  const start = new Date(`${startDate}T00:00:00`)
+  const end = new Date(`${endDate}T00:00:00`)
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime()) || end <= start) {
+    return 'TBD'
+  }
+
+  const monthDelta =
+    (end.getFullYear() - start.getFullYear()) * 12 + end.getMonth() - start.getMonth()
+  const adjustedMonths = end.getDate() < start.getDate() ? monthDelta - 1 : monthDelta
+  const months = Math.max(1, adjustedMonths)
+
+  return `${months} ${months === 1 ? 'month' : 'months'}`
+}
+
 const priorityTone: Record<(typeof priorityOptions)[number], 'neutral' | 'warning' | 'danger'> = {
   Low: 'neutral',
   Medium: 'neutral',
@@ -74,7 +95,6 @@ const emptyForm: RequestFormValues = {
   workloadPercent: '100',
   startDate: '',
   endDate: '',
-  durationText: '',
   assignedUnitManagerId: '',
   priority: 'Medium',
   businessReason: '',
@@ -120,6 +140,9 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
   )
 
   const handleSubmitRequest = async (form: RequestFormValues) => {
+    const startDate = form.startDate || '2026-08-01'
+    const endDate = form.endDate || '2026-12-31'
+
     try {
       const submittedRequest = await createMutation.mutateAsync({
         title: form.title.trim(),
@@ -134,9 +157,9 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
         englishLevel: form.englishLevel,
         expectedCompensationLevel: form.expectedCompensationLevel,
         workloadPercent: Number(form.workloadPercent),
-        startDate: form.startDate || '2026-08-01',
-        endDate: form.endDate || '2026-12-31',
-        durationText: form.durationText || '4 months',
+        startDate,
+        endDate,
+        durationText: getDurationText(startDate, endDate),
         assignedUnitManagerId: form.assignedUnitManagerId,
         priority: form.priority,
         businessReason: form.businessReason.trim() || undefined,
@@ -381,7 +404,7 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Start date *
-                  <Input className="mt-1" type="date" {...register('startDate')} />
+                  <DatePicker className="mt-1" {...register('startDate')} />
                   {formErrors.startDate?.message ? (
                     <p role="alert" className="mt-1 text-xs text-red-600">
                       {formErrors.startDate.message}
@@ -390,16 +413,7 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   End date
-                  <Input className="mt-1" type="date" {...register('endDate')} />
-                </label>
-                <label className="block text-sm font-medium text-slate-700">
-                  Duration *
-                  <Input className="mt-1" {...register('durationText')} />
-                  {formErrors.durationText?.message ? (
-                    <p role="alert" className="mt-1 text-xs text-red-600">
-                      {formErrors.durationText.message}
-                    </p>
-                  ) : null}
+                  <DatePicker className="mt-1" {...register('endDate')} />
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Client name
@@ -667,7 +681,16 @@ const RequestDetailPanel: FC<RequestDetailPanelProps> = ({
           {proposals.map((proposal) => (
             <div key={proposal.id} className="rounded-md border border-slate-200 p-3 text-sm">
               <p className="font-medium">
-                {proposal.candidateType === 'External' ? 'External candidate' : proposal.employeeId}
+                {proposal.candidateType === 'External' || !proposal.employeeId ? (
+                  'External candidate'
+                ) : (
+                  <Link
+                    className="text-teal-700 underline"
+                    to={getEmployeeProfilePagePath(proposal.employeeId)}
+                  >
+                    {proposal.employeeId}
+                  </Link>
+                )}
               </p>
               <div className="mt-2 flex items-center gap-2">
                 <Badge tone={proposal.candidateType === 'External' ? 'info' : 'neutral'}>

@@ -16,19 +16,19 @@ export class SubordinatesPage {
   }
 
   positionSelect(): Locator {
-    return this.page.getByLabel('Position')
+    return this.filtersRegion().getByRole('combobox', { name: 'Position' })
   }
 
   gradeSelect(): Locator {
-    return this.page.getByLabel('Grade')
+    return this.filtersRegion().getByRole('combobox', { name: 'Grade' })
   }
 
   statusSelect(): Locator {
-    return this.page.getByLabel('Status')
+    return this.filtersRegion().getByRole('combobox', { name: 'Status' })
   }
 
   riskSelect(): Locator {
-    return this.page.getByLabel('Risk')
+    return this.filtersRegion().getByRole('combobox', { name: 'Risk' })
   }
 
   table(): Locator {

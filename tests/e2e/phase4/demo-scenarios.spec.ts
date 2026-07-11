@@ -4,6 +4,7 @@ import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
 import { ResourcingIncomingPage } from '../page-objects/ResourcingIncomingPage'
 import { ResourcingRequestsPage } from '../page-objects/ResourcingRequestsPage'
 import { SharedProfilePublicPage } from '../page-objects/SharedProfilePublicPage'
+import { selectCustomOptionByIndex } from '../support/select'
 import { expect, test } from '../support/test'
 
 const futureDate = '2027-03-01'
@@ -34,7 +35,7 @@ test.describe('Phase 4 - BRD demo scenarios', () => {
     await page.getByLabel('Required skills (comma-separated) *').fill('React, TypeScript')
     await page.getByLabel('Start date *').fill('2020-01-01')
     await page.getByLabel('Duration *').fill('4 months')
-    await page.getByLabel('Assigned Unit Manager *').selectOption({ index: 1 })
+    await selectCustomOptionByIndex(page.getByLabel('Assigned Unit Manager *'), 1)
 
     await page.getByRole('button', { name: 'Submit' }).click()
     await expect(page.getByText('Start date cannot be in the past.')).toBeVisible()

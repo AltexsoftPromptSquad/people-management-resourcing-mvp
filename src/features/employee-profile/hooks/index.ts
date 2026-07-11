@@ -1,4 +1,5 @@
 export {
+  useCreateActionItemMutation,
   useAddDocumentMutation,
   useAddFeedbackMutation,
   useEmployeeAssigneeActionItemsQuery,
@@ -14,6 +15,7 @@ export {
   useEmployeeProfileSkillsQuery,
   useEmployeeVisibleDocumentsQuery,
   useUnitsQuery,
+  useUpdateActionItemMutation,
   useUpdateIdpMutation,
   useUpdatePersonMutation,
 } from './use-employee-profile-hooks'

@@ -4,6 +4,7 @@ type RoleExpectation = {
   route: string
   heading: string
   personaName: string
+  personaId: string
   navLabel: string
 }
 
@@ -36,6 +37,10 @@ export class AppShellPage {
     return this.page.getByText(name, { exact: true })
   }
 
+  activePersonaSelect(): Locator {
+    return this.page.getByLabel('Active persona')
+  }
+
   async switchRole(label: string): Promise<void> {
     await this.roleButton(label).click()
   }
@@ -43,7 +48,11 @@ export class AppShellPage {
   async expectRoleView(expected: RoleExpectation): Promise<void> {
     await expect(this.page).toHaveURL(new RegExp(`${this.escape(expected.route)}$`))
     await expect(this.heading(expected.heading)).toBeVisible()
-    await expect(this.personaText(expected.personaName)).toBeVisible()
+    if ((await this.activePersonaSelect().count()) > 0) {
+      await expect(this.activePersonaSelect()).toHaveValue(expected.personaId)
+    } else {
+      await expect(this.personaText(expected.personaName)).toBeVisible()
+    }
     await expect(this.navLink(expected.navLabel)).toHaveAttribute('aria-current', 'page')
   }
 

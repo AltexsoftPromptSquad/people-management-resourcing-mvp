@@ -1,6 +1,8 @@
 import type { FC } from 'react'
+import { Link } from 'react-router'
 import { CandidateRow } from './CandidateRow'
 import type { ExternalCandidate, SelectedCandidate } from './ResourcingIncomingWorkspace.types'
+import { getEmployeeProfilePagePath } from '@/app/routes'
 import { Button } from '@/shared/ui/button'
 import { Checkbox } from '@/shared/ui/checkbox'
 import { Input } from '@/shared/ui/input'
@@ -20,6 +22,7 @@ type CandidateProposalPanelProps = {
   candidateError: string
   isProposalMode: boolean
   isReadOnlyProposed: boolean
+  isDecisionMode: boolean
   proposals: import('@/types/candidate-proposal').CandidateProposal[]
   proposalsLoading: boolean
   onToggleEmployee: (person: Person, checked: boolean) => void
@@ -43,6 +46,7 @@ export const CandidateProposalPanel: FC<CandidateProposalPanelProps> = ({
   candidateError,
   isProposalMode,
   isReadOnlyProposed,
+  isDecisionMode,
   proposals,
   proposalsLoading,
   onToggleEmployee,
@@ -69,9 +73,16 @@ export const CandidateProposalPanel: FC<CandidateProposalPanelProps> = ({
         {proposals.map((proposal) => (
           <div key={proposal.id} className="rounded-md border border-slate-200 p-3 text-sm">
             <p className="font-medium">
-              {proposal.candidateType === 'External'
-                ? proposal.externalProfileUrl
-                : proposal.employeeId}
+              {proposal.candidateType === 'External' || !proposal.employeeId ? (
+                (proposal.externalProfileUrl ?? 'External candidate')
+              ) : (
+                <Link
+                  className="text-teal-700 underline"
+                  to={getEmployeeProfilePagePath(proposal.employeeId)}
+                >
+                  {proposal.employeeId}
+                </Link>
+              )}
             </p>
             <p className="mt-1 text-slate-600">{proposal.fitSummary}</p>
             {proposal.status === 'Proposed' ? (
@@ -91,12 +102,49 @@ export const CandidateProposalPanel: FC<CandidateProposalPanelProps> = ({
       </div>
     ) : null}
 
+    {isDecisionMode ? (
+      <div className="space-y-3">
+        <h3 className="font-medium text-slate-900">Decision details</h3>
+        {proposalsLoading ? <LoadingState label="Loading candidates…" /> : null}
+        {proposals.map((proposal) => (
+          <div key={proposal.id} className="rounded-md border border-slate-200 p-3 text-sm">
+            <p className="font-medium">
+              {proposal.candidateType === 'External' || !proposal.employeeId ? (
+                (proposal.externalProfileUrl ?? 'External candidate')
+              ) : (
+                <Link
+                  className="text-teal-700 underline"
+                  to={getEmployeeProfilePagePath(proposal.employeeId)}
+                >
+                  {proposal.employeeId}
+                </Link>
+              )}
+            </p>
+            <p className="mt-1 text-slate-600">{proposal.fitSummary}</p>
+            <p className="mt-2 text-xs text-slate-500">Status: {proposal.status}</p>
+            {proposal.rejectionReason ? (
+              <p className="mt-1 text-xs text-slate-700">
+                Rejection reason: {proposal.rejectionReason}
+              </p>
+            ) : null}
+            {proposal.feedback ? (
+              <p className="mt-1 text-xs text-slate-700">Decision note: {proposal.feedback}</p>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    ) : null}
+
     {isProposalMode ? (
       <>
         <div>
           <h3 className="font-medium text-slate-900">Unit employees</h3>
           {unitPeopleLoading ? (
             <LoadingState label="Loading employees…" className="mt-2" />
+          ) : unitPeople.length === 0 ? (
+            <p className="mt-2 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+              No unit employees match the requested role.
+            </p>
           ) : (
             <ul className="mt-2 max-h-48 space-y-2 overflow-y-auto">
               {unitPeople.map((person) => (

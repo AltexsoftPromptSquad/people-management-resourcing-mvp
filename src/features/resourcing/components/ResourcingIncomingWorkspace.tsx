@@ -57,6 +57,21 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
   const [candidateError, setCandidateError] = useState('')
   const [sharedProfilePersonId, setSharedProfilePersonId] = useState<string | null>(null)
   const [withdrawProposalId, setWithdrawProposalId] = useState<string | null>(null)
+  const filteredUnitPeople = useMemo(() => {
+    if (!selectedRequest) {
+      return unitPeopleQuery.data ?? []
+    }
+
+    const requiredRole = selectedRequest.requiredRole.trim().toLowerCase()
+    if (!requiredRole) {
+      return unitPeopleQuery.data ?? []
+    }
+
+    const matched = (unitPeopleQuery.data ?? []).filter((person) =>
+      person.position.toLowerCase().includes(requiredRole),
+    )
+    return matched
+  }, [selectedRequest, unitPeopleQuery.data])
 
   const toggleEmployee = async (person: Person, checked: boolean) => {
     if (!selectedRequest) return
@@ -175,6 +190,8 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
   const isProposalMode =
     selectedRequest?.status === 'Submitted' || selectedRequest?.status === 'In Review'
   const isReadOnlyProposed = selectedRequest?.status === 'Candidates Proposed'
+  const isDecisionMode =
+    selectedRequest?.status === 'Approved' || selectedRequest?.status === 'Rejected'
 
   return (
     <div className="flex flex-col gap-6">
@@ -202,7 +219,7 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
           ) : (
             <CandidateProposalPanel
               request={selectedRequest}
-              unitPeople={unitPeopleQuery.data ?? []}
+              unitPeople={filteredUnitPeople}
               unitPeopleLoading={unitPeopleQuery.isPending}
               selectedCandidates={selectedCandidates}
               externalCandidate={externalCandidate}
@@ -211,6 +228,7 @@ export const ResourcingIncomingWorkspace: FC<ResourcingIncomingWorkspaceProps> =
               candidateError={candidateError}
               isProposalMode={isProposalMode}
               isReadOnlyProposed={isReadOnlyProposed}
+              isDecisionMode={isDecisionMode}
               proposals={proposalsQuery.data ?? []}
               proposalsLoading={proposalsQuery.isPending}
               onToggleEmployee={(person, checked) => void toggleEmployee(person, checked)}

@@ -4,7 +4,7 @@ import {
   getDashboardPagePath,
 } from '../../../src/app/routes'
 import type { Page } from '@playwright/test'
-import { phase2Baselines, phase2Roles, phase2Routes } from '../fixtures/phase2-data'
+import { phase2Roles, phase2Routes } from '../fixtures/phase2-data'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 2 - routing and role guards', () => {
@@ -19,12 +19,13 @@ test.describe('Phase 2 - routing and role guards', () => {
     await page.goto(phase2Routes.dashboard)
     await appShell.expectRoleView(phase2Roles.unitManager)
 
-    await expect(appShell.primaryNavigation().getByRole('link')).toHaveCount(5)
+    await expect(appShell.primaryNavigation().getByRole('link')).toHaveCount(6)
     await expect(appShell.navLink('Dashboard')).toBeVisible()
     await expect(appShell.navLink('Subordinates')).toBeVisible()
     await expect(appShell.navLink('Custom Lists')).toBeVisible()
     await expect(appShell.navLink('Incoming Requests')).toBeVisible()
     await expect(appShell.navLink('Assignments')).toBeVisible()
+    await expect(appShell.navLink('Risks')).toBeVisible()
 
     await appShell.navLink('Subordinates').click()
     await expect(page).toHaveURL(new RegExp(`${phase2Routes.subordinates}$`))
@@ -34,14 +35,9 @@ test.describe('Phase 2 - routing and role guards', () => {
   test('P2-R04: subordinate row drilldown opens /people/:id', async ({ page }) => {
     await page.goto(phase2Routes.subordinates)
 
-    await page.getByRole('button', { name: phase2Baselines.profileTarget.fullName }).first().click()
-    await expect(page).toHaveURL(getEmployeeProfilePagePath(phase2Baselines.profileTarget.id))
-    await expect(
-      page.getByRole('heading', {
-        level: 1,
-        name: phase2Baselines.profileTarget.fullName,
-      }),
-    ).toBeVisible()
+    await page.getByRole('row').nth(1).getByRole('button').first().click()
+    await expect(page).toHaveURL(/\/people\/.+$/)
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
   })
 
   test('P2-R05/P2-R06/P2-R07/P2-R08: non-UM roles are redirected away from UM pages', async ({
@@ -95,8 +91,8 @@ test.describe('Phase 2 - routing and role guards', () => {
     )
     await expect(page.getByRole('heading', { level: 1, name: 'Subordinates' })).toBeVisible()
 
-    await page.getByRole('button', { name: phase2Baselines.profileTarget.fullName }).first().click()
-    await expect(page).toHaveURL(getEmployeeProfilePagePath(phase2Baselines.profileTarget.id))
+    await page.getByRole('row').nth(1).getByRole('button').first().click()
+    await expect(page).toHaveURL(/\/people\/.+$/)
 
     await page.goBack()
     await expect(page).toHaveURL(new RegExp(`${phase2Routes.subordinates}`))

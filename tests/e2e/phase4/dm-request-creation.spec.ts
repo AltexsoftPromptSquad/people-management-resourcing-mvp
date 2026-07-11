@@ -1,5 +1,6 @@
 import { phase4Baselines, phase4Routes } from '../fixtures/phase4-data'
 import { ResourcingRequestsPage } from '../page-objects/ResourcingRequestsPage'
+import { selectCustomOptionByIndex } from '../support/select'
 import { expect, test } from '../support/test'
 
 const futureDate = '2027-06-01'
@@ -29,7 +30,6 @@ test.describe('Phase 4 - DM request creation', () => {
     await expect(page.getByLabel('Workload % *')).toBeVisible()
     await expect(page.getByLabel('Required skills (comma-separated) *')).toBeVisible()
     await expect(page.getByLabel('Start date *')).toBeVisible()
-    await expect(page.getByLabel('Duration *')).toBeVisible()
 
     await expect(page.getByLabel('Request title *')).toBeFocused()
   })
@@ -57,8 +57,7 @@ test.describe('Phase 4 - DM request creation', () => {
     await page.getByLabel('Grade level *').fill('M2')
     await page.getByLabel('Required skills (comma-separated) *').fill('React, TypeScript')
     await page.getByLabel('Start date *').fill(futureDate)
-    await page.getByLabel('Duration *').fill('3 months')
-    await page.getByLabel('Assigned Unit Manager *').selectOption({ index: 1 })
+    await selectCustomOptionByIndex(page.getByLabel('Assigned Unit Manager *'), 1)
 
     await page.getByRole('button', { name: 'Submit' }).click()
 
@@ -76,8 +75,7 @@ test.describe('Phase 4 - DM request creation', () => {
     await page.getByLabel('Grade level *').fill('M1')
     await page.getByLabel('Required skills (comma-separated) *').fill('Testing')
     await page.getByLabel('Start date *').fill(futureDate)
-    await page.getByLabel('Duration *').fill('2 months')
-    await page.getByLabel('Assigned Unit Manager *').selectOption({ index: 1 })
+    await selectCustomOptionByIndex(page.getByLabel('Assigned Unit Manager *'), 1)
 
     await page.getByRole('button', { name: 'Submit' }).click()
     await expect(page.getByText('Request submitted.')).toBeVisible()
@@ -129,8 +127,7 @@ test.describe('Phase 4 - DM request creation', () => {
     await page.getByLabel('Grade level *').fill('M1')
     await page.getByLabel('Required skills (comma-separated) *').fill('TypeScript')
     await page.getByLabel('Start date *').fill(pastDate)
-    await page.getByLabel('Duration *').fill('1 month')
-    await page.getByLabel('Assigned Unit Manager *').selectOption({ index: 1 })
+    await selectCustomOptionByIndex(page.getByLabel('Assigned Unit Manager *'), 1)
 
     await page.getByRole('button', { name: 'Submit' }).click()
 

@@ -2,6 +2,7 @@ import { phase3Baselines, phase3Routes } from '../fixtures/phase3-data'
 import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
 import { MyProfilePage } from '../page-objects/MyProfilePage'
 import { SubordinatesPage } from '../page-objects/SubordinatesPage'
+import { selectCustomOption } from '../support/select'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 3 - BRD demo scenarios', () => {
@@ -50,7 +51,7 @@ test.describe('Phase 3 - BRD demo scenarios', () => {
     await myProfile.saveContactButton().click()
     await expect(page.getByText('Contact information saved.')).toBeVisible()
 
-    await myProfile.idpStatusSelect().selectOption('Completed')
+    await selectCustomOption(myProfile.idpStatusSelect(), 'Completed')
     await expect(page.getByText('IDP status updated.')).toBeVisible()
 
     await myProfile.addCertificateButton().click()

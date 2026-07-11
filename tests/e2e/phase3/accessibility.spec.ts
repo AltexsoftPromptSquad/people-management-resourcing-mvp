@@ -5,6 +5,7 @@ import {
   type FetchOverrideRule,
 } from '../fixtures/phase3-data'
 import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
+import { selectCustomOption } from '../support/select'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 3 - accessibility', () => {
@@ -65,7 +66,7 @@ test.describe('Phase 3 - accessibility', () => {
     await expect(typeError).toHaveAttribute('role', 'alert')
     await expect(typeError).toHaveAttribute('aria-live', 'assertive')
 
-    await page.getByLabel('Type *').selectOption('General')
+    await selectCustomOption(page.getByLabel('Type *'), 'General')
     await page.getByLabel('Content *').fill('Accessibility coverage feedback entry text.')
     const saveButton = page.getByRole('button', { name: 'Save Feedback' })
     await saveButton.click()

@@ -7,6 +7,7 @@ import {
 import { ResourcingIncomingPage } from '../page-objects/ResourcingIncomingPage'
 import { ResourcingRequestsPage } from '../page-objects/ResourcingRequestsPage'
 import { SharedProfilePublicPage } from '../page-objects/SharedProfilePublicPage'
+import { selectCustomOptionByIndex } from '../support/select'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 4 - accessibility', () => {
@@ -185,7 +186,7 @@ test.describe('Phase 4 - accessibility', () => {
     await page.getByLabel('Required skills (comma-separated) *').fill('React')
     await page.getByLabel('Start date *').fill('2027-01-01')
     await page.getByLabel('Duration *').fill('3 months')
-    await page.getByLabel('Assigned Unit Manager *').selectOption({ index: 1 })
+    await selectCustomOptionByIndex(page.getByLabel('Assigned Unit Manager *'), 1)
 
     const submitButton = page.getByRole('button', { name: 'Submit' })
     await submitButton.click()

@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { customListsHandlers } from './custom-lists-handlers'
 import { actionItems } from './data/action-items'
 import { assignmentHistory } from './data/assignment-history'
+import { customFields } from './data/custom-fields'
 import { documents } from './data/documents'
 import { feedbacks } from './data/feedbacks'
 import { idpRecords } from './data/idp'
@@ -19,6 +20,7 @@ import {
   getFilteredSubordinates,
 } from './services/manager-data-service'
 import { resourcingHandlers } from './resourcing-handlers'
+import { normalizeCustomFieldValueForField } from '@/lib/custom-fields/boolean-field-value'
 import type { DocumentRecord } from '@/types/document'
 import type { Feedback } from '@/types/feedback'
 import type { IdpRecord } from '@/types/idp'
@@ -60,6 +62,26 @@ type PatchIdpPayload = {
   documentReference?: string
 }
 
+type CreateActionItemPayload = {
+  personId: string
+  title: string
+  description: string
+  assigneeId: string
+  ownerId: string
+  dueDate: string
+  priority: 'Low' | 'Medium' | 'High' | 'Urgent'
+  status: 'Open' | 'In Progress' | 'Done' | 'Blocked'
+}
+
+type PatchActionItemPayload = Partial<{
+  title: string
+  description: string
+  assigneeId: string
+  dueDate: string
+  priority: 'Low' | 'Medium' | 'High' | 'Urgent'
+  status: 'Open' | 'In Progress' | 'Done' | 'Blocked'
+}>
+
 export const handlers = [
   http.get('/api/personas', () => HttpResponse.json(personas)),
   http.get('/api/units', () => HttpResponse.json(units)),
@@ -100,7 +122,7 @@ export const handlers = [
       type: body.type,
       content: body.content,
       visibility: body.visibility,
-      createdAt: new Date(Date.UTC(2026, 6, 1, 10, 0, feedbacks.length)).toISOString(),
+      createdAt: new Date().toISOString(),
     }
 
     feedbacks.push(newFeedback)
@@ -158,9 +180,16 @@ export const handlers = [
     }
 
     if (body.customFieldValues !== undefined) {
+      const normalizedCustomFieldValues = Object.fromEntries(
+        Object.entries(body.customFieldValues).map(([fieldId, value]) => {
+          const field = customFields.find((item) => item.id === fieldId)
+          return [fieldId, normalizeCustomFieldValueForField(field, value)]
+        }),
+      )
+
       person.customFieldValues = {
         ...person.customFieldValues,
-        ...body.customFieldValues,
+        ...normalizedCustomFieldValues,
       }
     }
 
@@ -217,7 +246,13 @@ export const handlers = [
     const idpRecord = idpRecords.find((item) => item.personId === params.id)
 
     if (!idpRecord) {
-      return HttpResponse.json({ message: 'IDP not found' }, { status: 404 })
+      return HttpResponse.json({
+        id: `idp-fallback-${params.id}`,
+        personId: params.id as string,
+        documentReference: '',
+        status: 'Not Started',
+        lastUpdatedAt: new Date().toISOString(),
+      } satisfies IdpRecord)
     }
 
     return HttpResponse.json(idpRecord)
@@ -291,6 +326,25 @@ export const handlers = [
     }
 
     return HttpResponse.json(actionItems.filter((item) => item.assigneeId === assigneeId))
+  }),
+  http.post('/api/action-items', async ({ request }) => {
+    const body = (await request.json()) as CreateActionItemPayload
+    const newItem = {
+      id: `action-item-${String(actionItems.length + 1).padStart(4, '0')}`,
+      ...body,
+    }
+    actionItems.push(newItem)
+    return HttpResponse.json(newItem, { status: 201 })
+  }),
+  http.patch('/api/action-items/:id', async ({ params, request }) => {
+    const item = actionItems.find((entry) => entry.id === params.id)
+    if (!item) {
+      return HttpResponse.json({ message: 'Action item not found' }, { status: 404 })
+    }
+
+    const body = (await request.json()) as PatchActionItemPayload
+    Object.assign(item, body)
+    return HttpResponse.json(item)
   }),
   http.get('/api/dashboard/summary', ({ request }) => {
     const url = new URL(request.url)

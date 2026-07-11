@@ -5,6 +5,7 @@ import {
   type FetchOverrideRule,
 } from '../fixtures/phase3-data'
 import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
+import { selectCustomOption } from '../support/select'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 3 - Add Feedback flow', () => {
@@ -57,7 +58,7 @@ test.describe('Phase 3 - Add Feedback flow', () => {
     })
 
     await profile.addFeedbackButton().click()
-    await page.getByLabel('Type *').selectOption('General')
+    await selectCustomOption(page.getByLabel('Type *'), 'General')
     await page.getByLabel('Content *').fill('Phase 3 feedback entry for e2e coverage validation.')
     await page.getByRole('button', { name: 'Save Feedback' }).click()
 
@@ -87,7 +88,7 @@ test.describe('Phase 3 - Add Feedback flow', () => {
     await profile.openTab('Feedbacks')
     await profile.addFeedbackButton().click()
 
-    await page.getByLabel('Type *').selectOption('HR Note')
+    await selectCustomOption(page.getByLabel('Type *'), 'HR Note')
     await page.getByLabel('Content *').fill('This save attempt is expected to fail in this test.')
     await page.getByRole('button', { name: 'Save Feedback' }).click()
 

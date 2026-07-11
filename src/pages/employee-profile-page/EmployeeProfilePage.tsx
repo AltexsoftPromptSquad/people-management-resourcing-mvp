@@ -1,11 +1,15 @@
 import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router'
+import { CustomFieldManagerSheet } from '@/features/custom-lists/components/custom-field-manager-sheet'
+import { useCustomFieldsQuery } from '@/features/custom-lists/hooks/use-custom-lists-query'
 import { useActivePersona } from '@/features/roles/hooks/use-active-persona'
 import {
   EditableSection,
   ProfileHeader,
   ProfileTabs,
+  useCreateActionItemMutation,
   useAddFeedbackMutation,
   useEmployeeProfileActionItemsQuery,
   useEmployeeProfileAssignmentHistoryQuery,
@@ -19,10 +23,18 @@ import {
   useEmployeeProfileSkillsQuery,
   useUnitsQuery,
   useUpdateIdpMutation,
+  useUpdateActionItemMutation,
   useUpdatePersonMutation,
 } from '@/features/employee-profile'
 import { GenerateSharedProfileSheet } from '@/features/profile-sharing/components/GenerateSharedProfileSheet'
+import {
+  getNextBooleanFieldValue,
+  normalizeBooleanFieldValue,
+} from '@/lib/custom-fields/boolean-field-value'
+import { apiGet } from '@/lib/api/api-client'
 import { Button } from '@/shared/ui/button'
+import { Checkbox } from '@/shared/ui/checkbox'
+import { DatePicker } from '@/shared/ui/date-picker'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { ErrorState } from '@/shared/ui/error-state'
 import { Input } from '@/shared/ui/input'
@@ -53,12 +65,6 @@ const formatDate = (isoDate: string) =>
   })
 
 const formatPhone = (phone: string) => phone.replace(/\s*x\d+$/i, '').trim()
-
-const formatCustomFieldLabel = (fieldKey: string) =>
-  fieldKey
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/[_-]+/g, ' ')
-    .replace(/\b\w/g, (char) => char.toUpperCase())
 
 const getLeaveTone = (status: string) => (status === 'Confirmed' ? 'success' : 'warning')
 const getIdpTone = (status: string) =>
@@ -92,6 +98,9 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
   const [idpReferenceDraft, setIdpReferenceDraft] = useState('')
   const [editingCustomFieldKey, setEditingCustomFieldKey] = useState<string | null>(null)
   const [customFieldDraft, setCustomFieldDraft] = useState('')
+  const [newActionItemTitle, setNewActionItemTitle] = useState('')
+  const [newActionItemDueDate, setNewActionItemDueDate] = useState('')
+  const [isFieldManagerOpen, setFieldManagerOpen] = useState(false)
 
   const personQuery = useEmployeeProfilePersonQuery(personId)
   const managerQuery = useEmployeeProfilePersonQuery(personQuery.data?.managerId)
@@ -121,10 +130,25 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
   const skillsQuery = useEmployeeProfileSkillsQuery(
     activeTab === 'job-skills' ? personId : undefined,
   )
+  const customFieldsQuery = useCustomFieldsQuery(
+    activePersona?.role === 'unit-manager' ? activePersona.personId : undefined,
+  )
+  const peopleLookupQuery = useQuery({
+    queryKey: ['people-lookup'],
+    queryFn: () => apiGet<Person[]>('/api/people'),
+  })
 
   const updatePersonMutation = useUpdatePersonMutation(personId ?? '')
   const addFeedbackMutation = useAddFeedbackMutation(personId ?? '')
   const updateIdpMutation = useUpdateIdpMutation(personId ?? '')
+  const createActionItemMutation = useCreateActionItemMutation(
+    personId ?? '',
+    activePersona?.personId,
+  )
+  const updateActionItemMutation = useUpdateActionItemMutation(
+    personId ?? '',
+    activePersona?.personId,
+  )
   const idp = idpQuery.data ?? null
 
   const feedbackList = useMemo(() => {
@@ -134,6 +158,18 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
       (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
   }, [feedbacksQuery.data])
+  const peopleNameById = useMemo(
+    () =>
+      (peopleLookupQuery.data ?? []).reduce<Record<string, string>>((acc, person) => {
+        acc[person.id] = `${person.firstName} ${person.lastName}`
+        return acc
+      }, {}),
+    [peopleLookupQuery.data],
+  )
+  const customFieldDefinitions = useMemo(
+    () => (customFieldsQuery.data ?? []).filter((field) => field.isActive),
+    [customFieldsQuery.data],
+  )
 
   useEffect(() => {
     if (!personQuery.data || isEditingEnglish) {
@@ -242,6 +278,81 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
     }
   }
 
+  const handleBooleanCustomFieldToggle = async (fieldId: string, fieldName: string) => {
+    if (!person) {
+      return
+    }
+
+    const currentValue = normalizeBooleanFieldValue(person.customFieldValues[fieldId])
+    const nextValue = getNextBooleanFieldValue(currentValue)
+
+    try {
+      await updatePersonMutation.mutateAsync({
+        customFieldValues: {
+          [fieldId]: nextValue,
+        },
+      })
+    } catch {
+      toast.error(`Could not save "${fieldName}". Change was not applied.`)
+    }
+  }
+
+  const handleCreateActionItem = async () => {
+    if (!personId || !activePersona?.personId) {
+      return
+    }
+
+    if (!newActionItemTitle.trim() || !newActionItemDueDate) {
+      toast.error('Title and due date are required.')
+      return
+    }
+
+    try {
+      await createActionItemMutation.mutateAsync({
+        personId,
+        title: newActionItemTitle.trim(),
+        description: '',
+        assigneeId: activePersona.personId,
+        ownerId: activePersona.personId,
+        dueDate: newActionItemDueDate,
+        priority: 'Medium',
+        status: 'Open',
+      })
+      toast.success('Action item created.')
+      setNewActionItemTitle('')
+      setNewActionItemDueDate('')
+    } catch {
+      toast.error('Could not create action item.')
+    }
+  }
+
+  const handleResolveActionItem = async (actionItemId: string) => {
+    try {
+      await updateActionItemMutation.mutateAsync({
+        id: actionItemId,
+        payload: { status: 'Done' },
+      })
+      toast.success('Action item resolved.')
+    } catch {
+      toast.error('Could not update action item.')
+    }
+  }
+
+  const handleActionItemStatusChange = async (
+    actionItemId: string,
+    nextStatus: 'Open' | 'In Progress' | 'Done' | 'Blocked',
+  ) => {
+    try {
+      await updateActionItemMutation.mutateAsync({
+        id: actionItemId,
+        payload: { status: nextStatus },
+      })
+      toast.success('Action item updated.')
+    } catch {
+      toast.error('Could not update action item.')
+    }
+  }
+
   return (
     <main className="px-6 py-10">
       <section className="mx-auto flex max-w-7xl flex-col gap-6">
@@ -346,6 +457,14 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
             onOpenChange={setSharedProfileSheetOpen}
           />
         ) : null}
+        {activePersona?.role === 'unit-manager' ? (
+          <CustomFieldManagerSheet
+            open={isFieldManagerOpen}
+            onOpenChange={setFieldManagerOpen}
+            managerId={activePersona.personId}
+            fields={customFieldsQuery.data ?? []}
+          />
+        ) : null}
 
         <ProfileTabs
           value={activeTab}
@@ -359,8 +478,13 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                   <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
                     <h2 className="text-lg font-semibold text-slate-950">Basic Information</h2>
                     <div className="mt-3 grid gap-2 text-sm text-slate-700 md:grid-cols-2">
+                      <p>Date of birth: {formatDate(person.dateOfBirth)}</p>
                       <p>Personal email: {person.personalEmail}</p>
                       <p>Personal phone: {formatPhone(person.personalPhone)}</p>
+                      <p>
+                        Emergency contact: {person.emergencyContact.name} (
+                        {formatPhone(person.emergencyContact.phone)})
+                      </p>
                       <p>
                         Address: {person.address.addressLine}, {person.address.city},{' '}
                         {person.address.country}
@@ -412,61 +536,131 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                     )}
                   </section>
                   <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
-                    <h2 className="text-lg font-semibold text-slate-950">Custom Fields</h2>
+                    <div className="flex items-center justify-between gap-2">
+                      <h2 className="text-lg font-semibold text-slate-950">Custom Fields</h2>
+                      {activePersona?.role === 'unit-manager' ? (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setFieldManagerOpen(true)}
+                        >
+                          Manage Fields
+                        </Button>
+                      ) : null}
+                    </div>
                     <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                      {Object.entries(person.customFieldValues).map(([fieldKey, value]) => (
-                        <li key={fieldKey} className="rounded-md border border-slate-200 p-2">
-                          <div className="flex items-center justify-between gap-2">
-                            <strong className="font-medium">
-                              {formatCustomFieldLabel(fieldKey)}
-                            </strong>
-                            {editingCustomFieldKey === fieldKey ? (
-                              <Button
-                                type="button"
-                                size="sm"
-                                onClick={() => void handleCustomFieldSave(fieldKey)}
-                                disabled={updatePersonMutation.isPending}
-                              >
-                                Save
-                              </Button>
-                            ) : (
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="outline"
-                                onClick={() => {
-                                  setEditingCustomFieldKey(fieldKey)
-                                  setCustomFieldDraft(String(value ?? ''))
-                                }}
-                              >
-                                Edit
-                              </Button>
-                            )}
-                          </div>
-                          {editingCustomFieldKey === fieldKey ? (
-                            <Input
-                              className="mt-2"
-                              autoFocus
-                              value={customFieldDraft}
-                              onChange={(event) => setCustomFieldDraft(event.target.value)}
-                              onKeyDown={(event) => {
-                                if (event.key === 'Enter') {
-                                  void handleCustomFieldSave(fieldKey)
-                                }
-
-                                if (event.key === 'Escape') {
-                                  setEditingCustomFieldKey(null)
-                                }
-                              }}
-                              onBlur={() => {
-                                void handleCustomFieldSave(fieldKey)
-                              }}
-                            />
-                          ) : (
-                            <p className="mt-1">{String(value)}</p>
-                          )}
+                      {customFieldDefinitions.length === 0 ? (
+                        <li className="rounded-md border border-slate-200 p-2 text-slate-600">
+                          No active custom fields.
                         </li>
-                      ))}
+                      ) : null}
+                      {customFieldDefinitions.map((field) => {
+                        const fieldKey = field.id
+                        const value = person.customFieldValues[field.id]
+                        const isBooleanField = field.type === 'Boolean'
+                        const isDateField = field.type === 'Date'
+                        const normalizedBooleanValue = isBooleanField
+                          ? normalizeBooleanFieldValue(value)
+                          : null
+
+                        return (
+                          <li key={fieldKey} className="rounded-md border border-slate-200 p-2">
+                            <div className="flex items-center justify-between gap-2">
+                              <strong className="font-medium">{field.name}</strong>
+                              {!isBooleanField &&
+                              !isDateField &&
+                              editingCustomFieldKey === fieldKey ? (
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  onClick={() => void handleCustomFieldSave(fieldKey)}
+                                  disabled={updatePersonMutation.isPending}
+                                >
+                                  Save
+                                </Button>
+                              ) : !isBooleanField && !isDateField ? (
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => {
+                                    setEditingCustomFieldKey(fieldKey)
+                                    setCustomFieldDraft(String(value ?? ''))
+                                  }}
+                                >
+                                  Edit
+                                </Button>
+                              ) : null}
+                            </div>
+                            {isBooleanField ? (
+                              <div className="mt-2">
+                                <Checkbox
+                                  id={`profile-boolean-${fieldKey}`}
+                                  checked={normalizedBooleanValue === true}
+                                  aria-label={
+                                    normalizedBooleanValue === null
+                                      ? `${field.name}: not set`
+                                      : `${field.name}: ${normalizedBooleanValue ? 'yes' : 'no'}`
+                                  }
+                                  className={
+                                    normalizedBooleanValue === null ? 'text-slate-500' : undefined
+                                  }
+                                  disabled={updatePersonMutation.isPending}
+                                  onChange={() => {
+                                    void handleBooleanCustomFieldToggle(fieldKey, field.name)
+                                  }}
+                                />
+                              </div>
+                            ) : isDateField ? (
+                              <div className="mt-2">
+                                <DatePicker
+                                  value={String(value ?? '')}
+                                  disabled={updatePersonMutation.isPending}
+                                  onChange={(event) => {
+                                    void (async () => {
+                                      try {
+                                        await updatePersonMutation.mutateAsync({
+                                          customFieldValues: {
+                                            [fieldKey]: event.target.value || null,
+                                          },
+                                        })
+                                      } catch {
+                                        toast.error(
+                                          `Could not save "${field.name}". Change was not applied.`,
+                                        )
+                                      }
+                                    })()
+                                  }}
+                                />
+                              </div>
+                            ) : editingCustomFieldKey === fieldKey ? (
+                              <Input
+                                className="mt-2"
+                                autoFocus
+                                value={customFieldDraft}
+                                onChange={(event) => setCustomFieldDraft(event.target.value)}
+                                onKeyDown={(event) => {
+                                  if (event.key === 'Enter') {
+                                    void handleCustomFieldSave(fieldKey)
+                                  }
+
+                                  if (event.key === 'Escape') {
+                                    setEditingCustomFieldKey(null)
+                                  }
+                                }}
+                                onBlur={() => {
+                                  void handleCustomFieldSave(fieldKey)
+                                }}
+                              />
+                            ) : (
+                              <p className="mt-1">
+                                {value === undefined || value === null ? '—' : String(value)}
+                              </p>
+                            )}
+                          </li>
+                        )
+                      })}
                     </ul>
                   </section>
                 </div>
@@ -681,6 +875,26 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                   </section>
                   <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
                     <h2 className="text-lg font-semibold text-slate-950">Action Items</h2>
+                    <div className="mt-3 grid gap-2 md:grid-cols-[1fr_auto_auto]">
+                      <Input
+                        placeholder="New action item title"
+                        value={newActionItemTitle}
+                        onChange={(event) => setNewActionItemTitle(event.target.value)}
+                      />
+                      <DatePicker
+                        value={newActionItemDueDate}
+                        onChange={(event) => setNewActionItemDueDate(event.target.value)}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => void handleCreateActionItem()}
+                        disabled={createActionItemMutation.isPending}
+                        aria-busy={createActionItemMutation.isPending}
+                      >
+                        Add
+                      </Button>
+                    </div>
                     {actionItemsQuery.isPending ? (
                       <LoadingState label="Loading action items…" className="mt-3" />
                     ) : actionItemsQuery.isError ? (
@@ -702,10 +916,44 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                             key={item.id}
                             className="rounded-md border border-slate-200 p-3 text-sm text-slate-700"
                           >
-                            <p className="font-medium">{item.title}</p>
-                            <p className="mt-1 text-xs text-slate-600">
-                              Due {formatDate(item.dueDate)} - {item.status}
-                            </p>
+                            <div className="flex items-start justify-between gap-2">
+                              <div>
+                                <p className="font-medium">{item.title}</p>
+                                <p className="mt-1 text-xs text-slate-600">
+                                  Due {formatDate(item.dueDate)} - {item.status}
+                                </p>
+                                <Select
+                                  className="mt-2 h-8 text-xs"
+                                  value={item.status}
+                                  onChange={(event) =>
+                                    void handleActionItemStatusChange(
+                                      item.id,
+                                      event.target.value as
+                                        | 'Open'
+                                        | 'In Progress'
+                                        | 'Done'
+                                        | 'Blocked',
+                                    )
+                                  }
+                                >
+                                  <option value="Open">Open</option>
+                                  <option value="In Progress">In Progress</option>
+                                  <option value="Blocked">Blocked</option>
+                                  <option value="Done">Done</option>
+                                </Select>
+                              </div>
+                              {item.status !== 'Done' ? (
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => void handleResolveActionItem(item.id)}
+                                  disabled={updateActionItemMutation.isPending}
+                                >
+                                  Resolve
+                                </Button>
+                              ) : null}
+                            </div>
                           </li>
                         ))}
                       </ul>
@@ -743,7 +991,9 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                         <span>{formatDate(feedback.createdAt)}</span>
                       </div>
                       <p className="mt-1 text-sm text-slate-800">{feedback.content}</p>
-                      <p className="mt-1 text-xs text-slate-500">Author: {feedback.authorId}</p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        Author: {peopleNameById[feedback.authorId] ?? feedback.authorId}
+                      </p>
                     </li>
                   ))}
                 </ul>

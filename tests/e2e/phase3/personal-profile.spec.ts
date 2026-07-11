@@ -5,6 +5,7 @@ import {
   type FetchOverrideRule,
 } from '../fixtures/phase3-data'
 import { MyProfilePage } from '../page-objects/MyProfilePage'
+import { selectCustomOption } from '../support/select'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 3 - personal profile self-service', () => {
@@ -164,7 +165,7 @@ test.describe('Phase 3 - personal profile self-service', () => {
       'In Progress',
       'Completed',
     ])
-    await myProfile.idpStatusSelect().selectOption('Completed')
+    await selectCustomOption(myProfile.idpStatusSelect(), 'Completed')
 
     await expect(page.getByText('IDP status updated.')).toBeVisible()
     await expect(
@@ -265,7 +266,7 @@ test.describe('Phase 3 - personal profile self-service', () => {
     await myProfile.saveContactButton().click()
     await expect(page.getByText('Contact information saved.')).toBeVisible()
 
-    await myProfile.idpStatusSelect().selectOption('In Progress')
+    await selectCustomOption(myProfile.idpStatusSelect(), 'In Progress')
     await expect(page.getByText('IDP status updated.')).toBeVisible()
 
     await myProfile.addCertificateButton().click()
