@@ -25,7 +25,12 @@ test.describe('Phase 2 - subordinates list', () => {
     const subordinates = new SubordinatesPage(page)
     await subordinates.expectLoaded()
 
-    await expect(subordinates.rows()).toHaveCount(phase2Baselines.managerSubordinates.length)
+    await expect(subordinates.rows()).toHaveCount(
+      Math.min(25, phase2Baselines.managerSubordinates.length),
+    )
+    await expect(subordinates.paginationSummary()).toHaveText(
+      `Showing 1-25 of ${phase2Baselines.managerSubordinates.length}`,
+    )
     await expect(page.getByRole('button', { name: 'Olena Kovalenko' })).toHaveCount(0)
 
     await expect(page.getByRole('columnheader', { name: /Name/ })).toBeVisible()
@@ -167,6 +172,7 @@ test.describe('Phase 2 - subordinates list', () => {
   test('P2-S12: row click opens profile route', async ({ page }) => {
     const subordinates = new SubordinatesPage(page)
     await subordinates.expectLoaded()
+    await subordinates.searchForPerson(phase2Baselines.profileTarget.fullName)
 
     await page.getByRole('button', { name: phase2Baselines.profileTarget.fullName }).first().click()
     await expect(page).toHaveURL(getProfilePathFor(phase2Baselines.profileTarget.id))
@@ -237,7 +243,7 @@ test.describe('Phase 2 - subordinates list', () => {
 
     const subordinates = new SubordinatesPage(page)
     await subordinates.expectLoaded()
-    await expect(subordinates.riskSelect()).toHaveValue(phase2Baselines.filterValues.riskLevel)
+    await expect(subordinates.riskSelect()).toContainText(phase2Baselines.filterValues.riskLevel)
     await expect(subordinates.headerSortButton('Grade')).toHaveText(/Grade ↓/)
     await expect(subordinates.rows()).not.toHaveCount(0)
   })

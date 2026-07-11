@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useActivePersona } from '@/features/roles/hooks/use-active-persona'
 import { DashboardActionItemsList } from '@/features/dashboard/components/dashboard-action-items-list'
+import { DashboardQuickLinks } from '@/features/dashboard/components/dashboard-quick-links'
 import { DashboardSummaryCards } from '@/features/dashboard/components/dashboard-summary-cards'
 import { useDashboardActionItemsQuery } from '@/features/dashboard/hooks/use-dashboard-action-items-query'
 import { useDashboardStatsQuery } from '@/features/dashboard/hooks/use-dashboard-stats-query'
@@ -62,6 +63,7 @@ export const DashboardPage: FC<DashboardPageProps> = () => {
         />
 
         <DashboardSummaryCards summary={summaryQuery.data} />
+        <DashboardQuickLinks />
         <DashboardActionItemsList
           actionItems={actionItemsQuery.data}
           onResolve={(actionItemId) => {
