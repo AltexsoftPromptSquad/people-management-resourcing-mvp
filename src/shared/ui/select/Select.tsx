@@ -10,10 +10,12 @@ import {
   useRef,
   useState,
   type ChangeEvent,
+  type CSSProperties,
   type FocusEvent,
   type KeyboardEvent,
   type ReactNode,
 } from 'react'
+import { createPortal } from 'react-dom'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { SelectProps } from './Select.types'
@@ -90,9 +92,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const listboxId = useId()
     const containerRef = useRef<HTMLDivElement>(null)
     const triggerRef = useRef<HTMLButtonElement>(null)
+    const listboxRef = useRef<HTMLUListElement>(null)
     const hiddenSelectRef = useRef<HTMLSelectElement>(null)
     const [isOpen, setIsOpen] = useState(false)
     const [highlightedIndex, setHighlightedIndex] = useState(-1)
+    const [listboxStyle, setListboxStyle] = useState<CSSProperties>({})
     const isControlled = value !== undefined
     const [internalValue, setInternalValue] = useState(() =>
       String(isControlled ? (value ?? '') : (defaultValue ?? '')),
@@ -155,15 +159,48 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       [name, onBlur, selectedValue],
     )
 
+    const updateListboxPosition = useCallback(() => {
+      const trigger = triggerRef.current
+      if (!trigger) {
+        return
+      }
+
+      const rect = trigger.getBoundingClientRect()
+      const menuMaxHeight = 240
+      const viewportPadding = 8
+      const menuGap = 4
+      const spaceBelow = window.innerHeight - rect.bottom - viewportPadding
+      const spaceAbove = rect.top - viewportPadding
+      const shouldOpenAbove = spaceBelow < 160 && spaceAbove > spaceBelow
+      const availableHeight = Math.max(
+        96,
+        Math.min(menuMaxHeight, shouldOpenAbove ? spaceAbove : spaceBelow),
+      )
+      const actualListboxHeight = listboxRef.current
+        ? Math.min(listboxRef.current.offsetHeight, availableHeight)
+        : availableHeight
+
+      setListboxStyle({
+        position: 'fixed',
+        top: shouldOpenAbove
+          ? Math.max(viewportPadding, rect.top - actualListboxHeight - menuGap)
+          : rect.bottom + menuGap,
+        left: rect.left,
+        width: rect.width,
+        maxHeight: availableHeight,
+      })
+    }, [])
+
     const openMenu = useCallback(() => {
       if (disabled) {
         return
       }
 
+      updateListboxPosition()
       const selectedIndex = options.findIndex((option) => option.value === selectedValue)
       setHighlightedIndex(selectedIndex >= 0 ? selectedIndex : 0)
       setIsOpen(true)
-    }, [disabled, options, selectedValue])
+    }, [disabled, options, selectedValue, updateListboxPosition])
 
     const selectOptionAtIndex = useCallback(
       (index: number) => {
@@ -195,7 +232,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       }
 
       const handlePointerDown = (event: MouseEvent) => {
-        if (!containerRef.current?.contains(event.target as Node)) {
+        const target = event.target as Node
+        if (!containerRef.current?.contains(target) && !listboxRef.current?.contains(target)) {
           closeMenu(true)
         }
       }
@@ -205,6 +243,22 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         document.removeEventListener('mousedown', handlePointerDown)
       }
     }, [closeMenu, isOpen])
+
+    useLayoutEffect(() => {
+      if (!isOpen) {
+        return
+      }
+
+      updateListboxPosition()
+
+      window.addEventListener('resize', updateListboxPosition)
+      window.addEventListener('scroll', updateListboxPosition, true)
+
+      return () => {
+        window.removeEventListener('resize', updateListboxPosition)
+        window.removeEventListener('scroll', updateListboxPosition, true)
+      }
+    }, [isOpen, updateListboxPosition])
 
     const handleTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
       onKeyDown?.(event as unknown as KeyboardEvent<HTMLSelectElement>)
@@ -334,48 +388,53 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           />
         </button>
 
-        {isOpen ? (
-          <ul
-            id={listboxId}
-            role="listbox"
-            className="absolute z-50 mt-1 max-h-60 w-full origin-top animate-select-open overflow-auto rounded-md border border-slate-200 bg-white py-1 shadow-lg"
-          >
-            {options.map((option, index) => {
-              const isSelected = option.value === selectedValue
-              const isHighlighted = index === highlightedIndex
+        {isOpen && typeof document !== 'undefined'
+          ? createPortal(
+              <ul
+                ref={listboxRef}
+                id={listboxId}
+                role="listbox"
+                style={listboxStyle}
+                className="z-50 max-h-60 origin-top animate-select-open overflow-auto rounded-md border border-slate-200 bg-white py-1 shadow-lg"
+              >
+                {options.map((option, index) => {
+                  const isSelected = option.value === selectedValue
+                  const isHighlighted = index === highlightedIndex
 
-              return (
-                <li
-                  key={`${option.value}-${index}`}
-                  role="option"
-                  aria-selected={isSelected}
-                  aria-disabled={option.disabled}
-                  className={cn(
-                    'cursor-pointer px-3 py-2 text-sm transition-colors',
-                    option.disabled && 'cursor-not-allowed opacity-50',
-                    isSelected && 'bg-slate-100 font-medium text-slate-950',
-                    !isSelected && 'text-slate-700',
-                    isHighlighted && !option.disabled && 'bg-slate-50',
-                    !isHighlighted && !isSelected && 'hover:bg-slate-50',
-                  )}
-                  onMouseEnter={() => {
-                    if (!option.disabled) {
-                      setHighlightedIndex(index)
-                    }
-                  }}
-                  onMouseDown={(event) => {
-                    event.preventDefault()
-                  }}
-                  onClick={() => {
-                    selectOptionAtIndex(index)
-                  }}
-                >
-                  {option.label}
-                </li>
-              )
-            })}
-          </ul>
-        ) : null}
+                  return (
+                    <li
+                      key={`${option.value}-${index}`}
+                      role="option"
+                      aria-selected={isSelected}
+                      aria-disabled={option.disabled}
+                      className={cn(
+                        'cursor-pointer px-3 py-2 text-sm transition-colors',
+                        option.disabled && 'cursor-not-allowed opacity-50',
+                        isSelected && 'bg-slate-100 font-medium text-slate-950',
+                        !isSelected && 'text-slate-700',
+                        isHighlighted && !option.disabled && 'bg-slate-50',
+                        !isHighlighted && !isSelected && 'hover:bg-slate-50',
+                      )}
+                      onMouseEnter={() => {
+                        if (!option.disabled) {
+                          setHighlightedIndex(index)
+                        }
+                      }}
+                      onMouseDown={(event) => {
+                        event.preventDefault()
+                      }}
+                      onClick={() => {
+                        selectOptionAtIndex(index)
+                      }}
+                    >
+                      {option.label}
+                    </li>
+                  )
+                })}
+              </ul>,
+              document.body,
+            )
+          : null}
       </div>
     )
   },

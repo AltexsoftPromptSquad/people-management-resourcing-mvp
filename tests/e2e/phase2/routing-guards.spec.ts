@@ -62,7 +62,7 @@ test.describe('Phase 2 - routing and role guards', () => {
     await appShell.expectRoleView(phase2Roles.employee)
   })
 
-  test('P2-R09/P2-R10: UM quick-nav target routes and fallback route resolve', async ({ page }) => {
+  test('P2-R09/P2-R10: UM secondary target routes and fallback route resolve', async ({ page }) => {
     await page.goto(phase2Routes.customLists)
     await expect(page.getByRole('heading', { level: 1, name: 'Custom Lists' })).toBeVisible()
 

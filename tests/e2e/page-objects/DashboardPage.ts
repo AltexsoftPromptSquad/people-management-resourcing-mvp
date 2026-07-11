@@ -19,14 +19,6 @@ export class DashboardPage {
     return this.summaryCard(label).locator('p').last()
   }
 
-  quickNavigationRegion(): Locator {
-    return this.page.getByRole('region', { name: 'Quick navigation' })
-  }
-
-  quickLink(label: string): Locator {
-    return this.quickNavigationRegion().getByRole('link', { name: label })
-  }
-
   actionItemsRegion(): Locator {
     return this.page.getByRole('region', { name: 'Manager action items' })
   }
