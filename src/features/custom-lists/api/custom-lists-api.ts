@@ -29,6 +29,8 @@ export type PatchCustomFieldValuePayload = {
 export const getCustomFields = (ownerManagerId: string) =>
   apiGet<CustomField[]>('/api/custom-fields', { ownerManagerId })
 
+export const getAllCustomFields = () => apiGet<CustomField[]>('/api/custom-fields')
+
 export const createCustomField = (payload: CreateCustomFieldPayload) =>
   apiPost<CustomField, CreateCustomFieldPayload>('/api/custom-fields', payload)
 

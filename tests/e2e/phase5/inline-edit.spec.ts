@@ -1,4 +1,5 @@
 import { phase5Baselines, phase5Routes } from '../fixtures/phase5-data'
+import { selectCustomOption } from '../support/select'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 5 - inline edit', () => {
@@ -17,8 +18,9 @@ test.describe('Phase 5 - inline edit', () => {
     await expect(targetRow).toBeVisible()
 
     await targetRow.getByText('Available').first().click()
-    await targetRow.getByRole('combobox').selectOption('Interviewing')
+    await selectCustomOption(targetRow.getByRole('combobox'), 'Interviewing')
 
-    await expect(targetRow.getByText('Interviewing').first()).toBeVisible()
+    await expect(targetRow.getByRole('combobox')).toHaveCount(0)
+    await expect(targetRow.locator('td', { hasText: 'Interviewing' })).toBeVisible()
   })
 })

@@ -42,7 +42,6 @@ export class DashboardPage {
   async expectLoaded(): Promise<void> {
     await expect(this.heading()).toBeVisible()
     await expect(this.summaryRegion()).toBeVisible()
-    await expect(this.quickNavigationRegion()).toBeVisible()
     await expect(this.actionItemsRegion()).toBeVisible()
   }
 }

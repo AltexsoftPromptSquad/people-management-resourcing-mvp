@@ -19,6 +19,7 @@ test.describe('Phase 3 - routing and role guards', () => {
     await page.goto(phase3Routes.subordinates)
     const subordinates = new SubordinatesPage(page)
     await subordinates.expectLoaded()
+    await subordinates.searchForPerson(phase3Baselines.employeeFullName)
 
     await page.getByRole('button', { name: phase3Baselines.employeeFullName }).first().click()
 
@@ -43,7 +44,7 @@ test.describe('Phase 3 - routing and role guards', () => {
     const backButton = page.getByRole('button', { name: 'Back to Subordinates' })
     await expect(backButton).toBeVisible()
     await backButton.click()
-    await expect(page).toHaveURL(new RegExp(`${phase3Routes.subordinates}$`))
+    await expect(page).toHaveURL(new RegExp(`${phase3Routes.subordinates}(?:\\?.*)?$`))
   })
 
   test('P3-R03: Delivery Manager direct URL to /people/:id is redirected to their landing', async ({
@@ -98,11 +99,15 @@ test.describe('Phase 3 - routing and role guards', () => {
 
   test('P3-R07: Back button on profile returns to the prior page', async ({ page }) => {
     await page.goto(phase3Routes.subordinates)
+    const subordinates = new SubordinatesPage(page)
+    await subordinates.expectLoaded()
+    await subordinates.searchForPerson(phase3Baselines.employeeFullName)
+
     await page.getByRole('button', { name: phase3Baselines.employeeFullName }).first().click()
     await expect(page).toHaveURL(getEmployeeProfilePagePath(phase3Baselines.employeePerson.id))
 
     await page.getByRole('button', { name: 'Back', exact: true }).click()
-    await expect(page).toHaveURL(new RegExp(`${phase3Routes.subordinates}$`))
+    await expect(page).toHaveURL(new RegExp(`${phase3Routes.subordinates}(?:\\?.*)?$`))
   })
 
   test('P3-R08: reload on /people/:id resets role to Unit Manager and profile still resolves', async ({

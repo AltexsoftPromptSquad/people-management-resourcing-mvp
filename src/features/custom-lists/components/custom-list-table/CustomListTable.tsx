@@ -1,7 +1,13 @@
 import type { FC } from 'react'
 import { useMemo, useRef, useState } from 'react'
 import { usePatchCustomFieldValueMutation } from '../../hooks/use-custom-lists-query'
+import {
+  getNextBooleanFieldValue,
+  normalizeBooleanFieldValue,
+} from '@/lib/custom-fields/boolean-field-value'
 import { DataTable } from '@/shared/ui/data-table'
+import { Checkbox } from '@/shared/ui/checkbox'
+import { DatePicker, formatDisplayDate } from '@/shared/ui/date-picker'
 import { Input } from '@/shared/ui/input'
 import { Select } from '@/shared/ui/select'
 import { toast } from '@/shared/ui/toast'
@@ -17,13 +23,13 @@ export type CustomListTableProps = {
   fields: CustomField[]
 }
 
-const formatValue = (value: unknown): string => {
+const formatFieldValue = (field: CustomField, value: unknown): string => {
   if (value === null || value === undefined || value === '') {
     return '—'
   }
 
-  if (typeof value === 'boolean') {
-    return value ? 'Yes' : 'No'
+  if (field.type === 'Date' && typeof value === 'string') {
+    return formatDisplayDate(value)
   }
 
   return String(value)
@@ -164,7 +170,67 @@ export const CustomListTable: FC<CustomListTableProps> = ({ list, managerId, row
     }
   }
 
-  const renderEditableCell = (row: CustomListRow, field: CustomField) => {
+  const handleBooleanToggle = async (row: CustomListRow, field: CustomField) => {
+    if (!row.editable) {
+      return
+    }
+
+    const currentValue = normalizeBooleanFieldValue(row.values[field.id])
+    const nextValue = getNextBooleanFieldValue(currentValue)
+
+    try {
+      await mutation.mutateAsync({
+        personId: row.person.id,
+        payload: {
+          fieldId: field.id,
+          value: nextValue,
+        },
+      })
+    } catch {
+      toast.error(`Could not save "${field.name}". Change was not applied.`)
+    }
+  }
+
+  const renderBooleanCell = (
+    row: CustomListRow,
+    field: CustomField,
+    isFirstCustomColumn: boolean,
+  ) => {
+    const normalizedValue = normalizeBooleanFieldValue(row.values[field.id])
+    const isChecked = normalizedValue === true
+    const isUnset = normalizedValue === null
+    const checkboxId = `custom-list-boolean-${row.person.id}-${field.id}`
+
+    return (
+      <td
+        key={field.id}
+        className={`px-4 py-3 text-slate-700 ${isFirstCustomColumn ? 'border-l border-slate-200 bg-slate-50/40' : ''}`}
+      >
+        <Checkbox
+          id={checkboxId}
+          checked={isChecked}
+          disabled={!row.editable}
+          aria-label={
+            isUnset ? `${field.name}: not set` : `${field.name}: ${isChecked ? 'yes' : 'no'}`
+          }
+          className={isUnset ? 'text-slate-500' : undefined}
+          onChange={() => {
+            void handleBooleanToggle(row, field)
+          }}
+        />
+      </td>
+    )
+  }
+
+  const renderEditableCell = (
+    row: CustomListRow,
+    field: CustomField,
+    isFirstCustomColumn: boolean,
+  ) => {
+    if (field.type === 'Boolean') {
+      return renderBooleanCell(row, field, isFirstCustomColumn)
+    }
+
     const cellKey = buildCellKey(row.person.id, field.id)
     const isEditing = editingCell?.key === cellKey
 
@@ -177,8 +243,8 @@ export const CustomListTable: FC<CustomListTableProps> = ({ list, managerId, row
           }}
           className={
             row.editable
-              ? 'cursor-pointer px-4 py-3 text-slate-700'
-              : 'cursor-default px-4 py-3 text-slate-700'
+              ? `cursor-pointer px-4 py-3 text-slate-700 ${isFirstCustomColumn ? 'border-l border-slate-200 bg-slate-50/40' : ''}`
+              : `cursor-default px-4 py-3 text-slate-700 ${isFirstCustomColumn ? 'border-l border-slate-200 bg-slate-50/40' : ''}`
           }
           tabIndex={row.editable ? 0 : -1}
           onClick={() => void handleStartEdit(row, field)}
@@ -193,49 +259,17 @@ export const CustomListTable: FC<CustomListTableProps> = ({ list, managerId, row
             }
           }}
         >
-          {formatValue(row.values[field.id])}
-        </td>
-      )
-    }
-
-    if (field.type === 'Boolean') {
-      return (
-        <td key={field.id} className="px-4 py-3 text-slate-700">
-          <input
-            autoFocus
-            type="checkbox"
-            checked={Boolean(row.values[field.id])}
-            onChange={(event) => {
-              setDraftValue(event.target.checked ? 'true' : 'false')
-              void mutation
-                .mutateAsync({
-                  personId: row.person.id,
-                  payload: {
-                    fieldId: field.id,
-                    value: event.target.checked,
-                  },
-                })
-                .catch(() => {
-                  toast.error(`Could not save "${field.name}". Change was not applied.`)
-                })
-                .finally(() => {
-                  closeEditor(cellKey)
-                })
-            }}
-            onKeyDown={(event) => {
-              if (event.key === 'Escape') {
-                event.preventDefault()
-                handleCancel()
-              }
-            }}
-          />
+          {formatFieldValue(field, row.values[field.id])}
         </td>
       )
     }
 
     if (field.type === 'Single Select') {
       return (
-        <td key={field.id} className="px-4 py-3 text-slate-700">
+        <td
+          key={field.id}
+          className={`px-4 py-1 text-slate-700 ${isFirstCustomColumn ? 'border-l border-slate-200 bg-slate-50/40' : ''}`}
+        >
           <Select
             autoFocus
             value={draftValue}
@@ -257,9 +291,6 @@ export const CustomListTable: FC<CustomListTableProps> = ({ list, managerId, row
                   closeEditor(cellKey)
                 })
             }}
-            onBlur={() => {
-              void handleCommit()
-            }}
             onKeyDown={(event) => {
               if (event.key === 'Escape') {
                 event.preventDefault()
@@ -278,11 +309,52 @@ export const CustomListTable: FC<CustomListTableProps> = ({ list, managerId, row
       )
     }
 
+    if (field.type === 'Date') {
+      return (
+        <td
+          key={field.id}
+          className={`px-4 py-1 text-slate-700 ${isFirstCustomColumn ? 'border-l border-slate-200 bg-slate-50/40' : ''}`}
+        >
+          <DatePicker
+            autoFocus
+            value={draftValue}
+            onChange={(event) => {
+              const nextValue = event.target.value
+              setDraftValue(nextValue)
+              void mutation
+                .mutateAsync({
+                  personId: row.person.id,
+                  payload: {
+                    fieldId: field.id,
+                    value: nextValue || null,
+                  },
+                })
+                .catch(() => {
+                  toast.error(`Could not save "${field.name}". Change was not applied.`)
+                })
+                .finally(() => {
+                  closeEditor(cellKey)
+                })
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape') {
+                event.preventDefault()
+                handleCancel()
+              }
+            }}
+          />
+        </td>
+      )
+    }
+
     return (
-      <td key={field.id} className="px-4 py-3 text-slate-700">
+      <td
+        key={field.id}
+        className={`px-4 py-1 text-slate-700 ${isFirstCustomColumn ? 'border-l border-slate-200 bg-slate-50/40' : ''}`}
+      >
         <Input
           autoFocus
-          type={field.type === 'Number' ? 'text' : field.type === 'Date' ? 'date' : 'text'}
+          type={field.type === 'Number' ? 'text' : 'text'}
           value={draftValue}
           onChange={(event) => {
             setDraftValue(event.target.value)
@@ -315,8 +387,12 @@ export const CustomListTable: FC<CustomListTableProps> = ({ list, managerId, row
           <th className="px-4 py-3">Position</th>
           <th className="px-4 py-3">Grade</th>
           <th className="px-4 py-3">Status</th>
-          {customColumns.map((field) => (
-            <th key={field.id} className="px-4 py-3">
+          <th className="px-4 py-3">Risk</th>
+          {customColumns.map((field, index) => (
+            <th
+              key={field.id}
+              className={`px-4 py-3 ${index === 0 ? 'border-l border-slate-200 bg-slate-100/70' : ''}`}
+            >
               {field.name}
             </th>
           ))}
@@ -331,7 +407,8 @@ export const CustomListTable: FC<CustomListTableProps> = ({ list, managerId, row
             <td className="px-4 py-3 text-slate-700">{row.person.position}</td>
             <td className="px-4 py-3 text-slate-700">{row.person.grade}</td>
             <td className="px-4 py-3 text-slate-700">{row.person.currentProjectStatus}</td>
-            {customColumns.map((field) => renderEditableCell(row, field))}
+            <td className="px-4 py-3 text-slate-700">{row.person.riskLevel}</td>
+            {customColumns.map((field, index) => renderEditableCell(row, field, index === 0))}
           </tr>
         ))}
       </tbody>

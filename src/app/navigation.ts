@@ -1,4 +1,11 @@
-import { BriefcaseBusiness, LayoutDashboard, ListChecks, UserRound, Users } from 'lucide-react'
+import {
+  AlertTriangle,
+  BriefcaseBusiness,
+  LayoutDashboard,
+  ListChecks,
+  UserRound,
+  Users,
+} from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import {
   getDashboardPagePath,
@@ -7,6 +14,7 @@ import {
   getResourcingAssignmentsPagePath,
   getResourcingIncomingPagePath,
   getResourcingRequestsPagePath,
+  getRisksPagePath,
   getSubordinatesPagePath,
 } from './routes'
 import type { Role } from '@/types/role'
@@ -24,6 +32,7 @@ export const navigationItemsByRole: Record<Role, NavigationItem[]> = {
     { label: 'Custom Lists', to: getCustomListsPagePath(), Icon: ListChecks },
     { label: 'Incoming Requests', to: getResourcingIncomingPagePath(), Icon: BriefcaseBusiness },
     { label: 'Assignments', to: getResourcingAssignmentsPagePath(), Icon: BriefcaseBusiness },
+    { label: 'Risks', to: getRisksPagePath(), Icon: AlertTriangle },
   ],
   'delivery-manager': [
     { label: 'Resourcing Requests', to: getResourcingRequestsPagePath(), Icon: BriefcaseBusiness },

@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   ALL_SHARED_SECTIONS,
   DEFAULT_SHARED_SECTIONS,
@@ -50,7 +50,34 @@ export const GenerateSharedProfileSheet: FC<GenerateSharedProfileSheetProps> = (
     ? `${window.location.origin}/shared/${activeSharedProfileQuery.data.token}`
     : null
   const visibleLink = generatedLink ?? activeLink
-  const hasExistingActiveLink = Boolean(activeLink) && !generatedLink
+  const hasExistingActiveLink = Boolean(activeLink)
+  const activeAllowedSections = activeSharedProfileQuery.data?.allowedSections ?? null
+
+  useEffect(() => {
+    if (!open) {
+      return
+    }
+
+    setGeneratedLink(null)
+    if (activeAllowedSections && activeAllowedSections.length > 0) {
+      setSelectedSections(
+        Array.from(new Set(['basic-info', ...activeAllowedSections]) as Set<SharedProfileSection>),
+      )
+      return
+    }
+
+    setSelectedSections(DEFAULT_SHARED_SECTIONS)
+  }, [activeAllowedSections, open])
+
+  const hasSectionChanges = useMemo(() => {
+    if (!activeAllowedSections) {
+      return false
+    }
+
+    const normalizedCurrent = [...selectedSections].sort().join('|')
+    const normalizedActive = [...new Set(activeAllowedSections)].sort().join('|')
+    return normalizedCurrent !== normalizedActive
+  }, [activeAllowedSections, selectedSections])
 
   const toggleSection = (section: SharedProfileSection, checked: boolean) => {
     if (section === 'basic-info') {
@@ -116,7 +143,7 @@ export const GenerateSharedProfileSheet: FC<GenerateSharedProfileSheetProps> = (
         </SheetHeader>
         {activeSharedProfileQuery.isPending ? (
           <p className="mt-4 text-sm text-slate-600">Checking active shared link...</p>
-        ) : !hasExistingActiveLink ? (
+        ) : (
           <div className="mt-4 space-y-3">
             {ALL_SHARED_SECTIONS.map((section) => (
               <Checkbox
@@ -128,11 +155,13 @@ export const GenerateSharedProfileSheet: FC<GenerateSharedProfileSheetProps> = (
               />
             ))}
           </div>
-        ) : null}
+        )}
         {visibleLink ? (
           <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm">
             <p className="font-medium text-slate-900">
-              {hasExistingActiveLink ? 'Existing shared link' : 'Shared profile link'}
+              {hasExistingActiveLink && !generatedLink
+                ? 'Existing shared link'
+                : 'Shared profile link'}
             </p>
             <p className="mt-1 break-all text-slate-600">{visibleLink}</p>
             <Button
@@ -151,14 +180,14 @@ export const GenerateSharedProfileSheet: FC<GenerateSharedProfileSheetProps> = (
               Done
             </Button>
           </SheetClose>
-          {!visibleLink && !activeSharedProfileQuery.isPending ? (
+          {(!visibleLink || hasSectionChanges) && !activeSharedProfileQuery.isPending ? (
             <Button
               type="button"
               aria-busy={createMutation.isPending}
               disabled={createMutation.isPending}
               onClick={() => void handleGenerate()}
             >
-              Generate Link
+              {visibleLink ? 'Generate New Link' : 'Generate Link'}
             </Button>
           ) : null}
         </SheetFooter>

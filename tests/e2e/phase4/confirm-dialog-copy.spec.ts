@@ -75,7 +75,7 @@ test.describe('Phase 4 - confirm dialog copy', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.candidateWithoutActiveSharedProfile
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
 
     await ui.submitCandidatesButton().click()

@@ -45,6 +45,7 @@ export const SubordinatesFilters: FC<SubordinatesFiltersProps> = ({
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-medium text-slate-700">Position</span>
         <Select
+          aria-label="Position"
           value={filter.position ?? ''}
           onChange={(event) =>
             onFilterChange({ ...filter, position: event.target.value || undefined })
@@ -62,6 +63,7 @@ export const SubordinatesFilters: FC<SubordinatesFiltersProps> = ({
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-medium text-slate-700">Grade</span>
         <Select
+          aria-label="Grade"
           value={filter.grade ?? ''}
           onChange={(event) =>
             onFilterChange({ ...filter, grade: event.target.value || undefined })
@@ -79,6 +81,7 @@ export const SubordinatesFilters: FC<SubordinatesFiltersProps> = ({
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-medium text-slate-700">Status</span>
         <Select
+          aria-label="Status"
           value={filter.currentStatus ?? ''}
           onChange={(event) =>
             onFilterChange({
@@ -99,6 +102,7 @@ export const SubordinatesFilters: FC<SubordinatesFiltersProps> = ({
       <label className="flex flex-col gap-1.5 text-sm">
         <span className="font-medium text-slate-700">Risk</span>
         <Select
+          aria-label="Risk"
           value={filter.riskLevel ?? ''}
           onChange={(event) =>
             onFilterChange({

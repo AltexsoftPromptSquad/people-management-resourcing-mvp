@@ -1,12 +1,15 @@
 import { phase3Baselines, phase3Routes } from '../fixtures/phase3-data'
 import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
+import { selectCustomOption } from '../support/select'
 import { expect, test } from '../support/test'
+import { customFields as customFieldDefinitions } from '../../../src/mocks/data/custom-fields'
 
-const formatCustomFieldLabel = (fieldKey: string) =>
-  fieldKey
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/[_-]+/g, ' ')
-    .replace(/\b\w/g, (char) => char.toUpperCase())
+const formatDate = (isoDate: string) =>
+  new Date(isoDate).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  })
 
 test.describe('Phase 3 - custom fields and managerial editing', () => {
   test('P3-C01: all custom field values display on the profile', async ({ page }) => {
@@ -14,23 +17,40 @@ test.describe('Phase 3 - custom fields and managerial editing', () => {
 
     const customFields = new EmployeeProfilePage(page).section('Custom Fields')
     for (const [key, value] of Object.entries(phase3Baselines.employeePerson.customFieldValues)) {
-      await expect(
-        customFields.getByText(formatCustomFieldLabel(key), { exact: true }),
-      ).toBeVisible()
-      await expect(customFields.getByText(String(value), { exact: true })).toBeVisible()
+      const field = customFieldDefinitions.find((definition) => definition.id === key)
+      test.skip(!field, `Missing custom field definition for ${key}`)
+      if (!field) {
+        return
+      }
+      const fieldRow = customFields.locator('li').filter({ hasText: field.name })
+      await expect(fieldRow).toBeVisible()
+
+      if (field.type === 'Boolean') {
+        await expect(fieldRow.getByRole('checkbox')).toBeVisible()
+      } else if (field.type === 'Date') {
+        await expect(fieldRow.getByRole('combobox')).toContainText(formatDate(String(value)))
+      } else {
+        await expect(fieldRow.getByText(String(value), { exact: true })).toBeVisible()
+      }
     }
   })
 
   test('P3-C02: custom field click-to-edit commits on Enter and reverts on Escape in-session', async ({
     page,
   }) => {
-    const [fieldKey] = Object.keys(phase3Baselines.employeePerson.customFieldValues)
-    test.skip(!fieldKey, 'Requires at least one seeded custom field')
-    const label = formatCustomFieldLabel(fieldKey)
+    const textField = customFieldDefinitions.find(
+      (field) =>
+        field.type === 'Text' &&
+        phase3Baselines.employeePerson.customFieldValues[field.id] !== undefined,
+    )
+    test.skip(!textField, 'Requires at least one seeded text custom field')
+    if (!textField) {
+      return
+    }
 
     await page.goto(phase3Routes.profile)
     const customFields = new EmployeeProfilePage(page).section('Custom Fields')
-    const fieldRow = customFields.locator('li').filter({ hasText: label })
+    const fieldRow = customFields.locator('li').filter({ hasText: textField.name })
 
     // Escape reverts without persisting the draft.
     await fieldRow.getByRole('button', { name: 'Edit' }).click()
@@ -58,7 +78,7 @@ test.describe('Phase 3 - custom fields and managerial editing', () => {
 
     const englishSection = profile.section('English Level')
     await englishSection.getByRole('button', { name: 'Edit' }).click()
-    await englishSection.getByRole('combobox').selectOption('C1')
+    await selectCustomOption(englishSection.getByRole('combobox'), 'C1')
     await englishSection.getByRole('button', { name: 'Save' }).click()
 
     await expect(page.getByText('Changes saved.')).toBeVisible()
@@ -78,7 +98,7 @@ test.describe('Phase 3 - custom fields and managerial editing', () => {
 
     const skillsSection = profile.section('Skills')
     await skillsSection.getByRole('button', { name: 'Edit' }).click()
-    await skillsSection.getByRole('combobox').first().selectOption('Expert')
+    await selectCustomOption(skillsSection.getByRole('combobox').first(), 'Expert')
     await skillsSection.getByRole('button', { name: 'Save' }).click()
 
     await expect(page.getByText('Changes saved.')).toBeVisible()

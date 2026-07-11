@@ -7,6 +7,8 @@ import {
 import { ResourcingIncomingPage } from '../page-objects/ResourcingIncomingPage'
 import { ResourcingRequestsPage } from '../page-objects/ResourcingRequestsPage'
 import { SharedProfilePublicPage } from '../page-objects/SharedProfilePublicPage'
+import { setDatePickerValue } from '../support/date-picker'
+import { selectCustomOptionByIndex } from '../support/select'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 4 - accessibility', () => {
@@ -77,7 +79,7 @@ test.describe('Phase 4 - accessibility', () => {
     const ui = new ResourcingIncomingPage(page)
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.candidateWithoutActiveSharedProfile
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
 
     // Warning must show readable text, not rely on color alone
@@ -105,17 +107,22 @@ test.describe('Phase 4 - accessibility', () => {
       'Project name *',
       'Required role *',
       'Grade level *',
+      'Workload % *',
+      'Required skills (comma-separated) *',
+    ]
+    for (const labelText of labeledFields) {
+      await expect(page.getByLabel(labelText)).toBeVisible()
+    }
+
+    const comboboxFields = [
       'English level *',
       'Expected compensation level *',
       'Assigned Unit Manager *',
       'Priority *',
-      'Workload % *',
-      'Required skills (comma-separated) *',
       'Start date *',
-      'Duration *',
     ]
-    for (const labelText of labeledFields) {
-      await expect(page.getByLabel(labelText)).toBeVisible()
+    for (const labelText of comboboxFields) {
+      await expect(page.getByRole('combobox', { name: labelText })).toBeVisible()
     }
   })
 
@@ -183,9 +190,11 @@ test.describe('Phase 4 - accessibility', () => {
     await page.getByLabel('Required role *').fill('Engineer')
     await page.getByLabel('Grade level *').fill('M1')
     await page.getByLabel('Required skills (comma-separated) *').fill('React')
-    await page.getByLabel('Start date *').fill('2027-01-01')
-    await page.getByLabel('Duration *').fill('3 months')
-    await page.getByLabel('Assigned Unit Manager *').selectOption({ index: 1 })
+    await selectCustomOptionByIndex(
+      page.getByRole('combobox', { name: 'Assigned Unit Manager *' }),
+      1,
+    )
+    await setDatePickerValue(page, 'startDate', '2027-01-01')
 
     const submitButton = page.getByRole('button', { name: 'Submit' })
     await submitButton.click()
@@ -315,7 +324,7 @@ test.describe('Phase 4 - accessibility', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.candidateWithoutActiveSharedProfile
     const checkbox = ui.candidateCheckbox(`${firstName} ${lastName}`)
     await checkbox.focus()
     await expect(checkbox).toBeFocused()

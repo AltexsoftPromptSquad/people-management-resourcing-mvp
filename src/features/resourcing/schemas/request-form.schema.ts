@@ -32,7 +32,6 @@ export const requestFormSchema = z.object({
       return selectedDate >= today
     }, 'Start date cannot be in the past.'),
   endDate: z.string(),
-  durationText: z.string().trim().min(1, 'Duration is required.'),
   assignedUnitManagerId: z.string().trim().min(1, 'Assigned Unit Manager is required.'),
   priority: z.string().trim().min(1, 'Priority is required.'),
   businessReason: z.string(),

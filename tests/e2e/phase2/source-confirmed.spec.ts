@@ -117,7 +117,7 @@ test.describe('Phase 2 - source-confirmed checks', () => {
     expect(subordinatesPage).toContain("from '@/features/people/components/subordinates-filters'")
     expect(subordinatesPage).toContain("from '@/features/people/components/subordinates-table'")
     expect(subordinatesPage).toContain('useSubordinatesPageState')
-    expect(subordinatesPage).toContain('aria-busy="true"')
+    expect(subordinatesPage).toContain("from '@/shared/ui/loading-state'")
     expect(subordinatesPage).not.toContain("from '@/mocks/")
 
     const subordinatesPageStateHook = await readRepoFile(

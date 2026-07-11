@@ -1,4 +1,5 @@
 import { getProfilePathFor, phase2Baselines, phase2Routes } from '../fixtures/phase2-data'
+import { SubordinatesPage } from '../page-objects/SubordinatesPage'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 2 - employee profile route', () => {
@@ -26,6 +27,10 @@ test.describe('Phase 2 - employee profile route', () => {
 
   test('P2-P02: Back button returns to previous route', async ({ page }) => {
     await page.goto(phase2Routes.subordinates)
+    const subordinates = new SubordinatesPage(page)
+    await subordinates.expectLoaded()
+    await subordinates.searchForPerson(phase2Baselines.profileTarget.fullName)
+
     await page.getByRole('button', { name: phase2Baselines.profileTarget.fullName }).first().click()
     await expect(page).toHaveURL(getProfilePathFor(phase2Baselines.profileTarget.id))
 

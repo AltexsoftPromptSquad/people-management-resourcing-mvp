@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { queryKeys } from '@/lib/query/query-keys'
 import {
   getActionItemsByAssignee,
+  getPeople,
   getPerson,
   getPersonActionItems,
   getPersonAssignmentHistory,
@@ -14,11 +15,15 @@ import {
   getPersonSkills,
   getUnits,
   patchIdp,
+  patchActionItem,
   patchPerson,
   postDocument,
+  postActionItem,
   postFeedback,
+  type PatchActionItemPayload,
   type PatchIdpPayload,
   type PatchPersonPayload,
+  type PostActionItemPayload,
   type PostDocumentPayload,
   type PostFeedbackPayload,
 } from '../api'
@@ -34,6 +39,12 @@ export const useUnitsQuery = () =>
   useQuery({
     queryKey: queryKeys.units(),
     queryFn: getUnits,
+  })
+
+export const usePeopleLookupQuery = () =>
+  useQuery({
+    queryKey: queryKeys.people(),
+    queryFn: getPeople,
   })
 
 export const useEmployeeProfileFeedbacksQuery = (personId: string | undefined) =>
@@ -154,6 +165,39 @@ export const useUpdateIdpMutation = (personId: string) => {
     mutationFn: (payload: PatchIdpPayload) => patchIdp(personId, payload),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: queryKeys.idp(personId) })
+    },
+  })
+}
+
+export const useCreateActionItemMutation = (personId: string, managerId: string | undefined) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (payload: PostActionItemPayload) => postActionItem(payload),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.actionItems(personId) })
+      if (managerId) {
+        void queryClient.invalidateQueries({ queryKey: queryKeys.actionItemsByAssignee(managerId) })
+        void queryClient.invalidateQueries({ queryKey: queryKeys.dashboardActionItems(managerId) })
+        void queryClient.invalidateQueries({ queryKey: queryKeys.dashboardSummary(managerId) })
+      }
+    },
+  })
+}
+
+export const useUpdateActionItemMutation = (personId: string, managerId: string | undefined) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: PatchActionItemPayload }) =>
+      patchActionItem(id, payload),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.actionItems(personId) })
+      if (managerId) {
+        void queryClient.invalidateQueries({ queryKey: queryKeys.actionItemsByAssignee(managerId) })
+        void queryClient.invalidateQueries({ queryKey: queryKeys.dashboardActionItems(managerId) })
+        void queryClient.invalidateQueries({ queryKey: queryKeys.dashboardSummary(managerId) })
+      }
     },
   })
 }

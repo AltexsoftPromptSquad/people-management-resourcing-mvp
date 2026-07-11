@@ -128,6 +128,10 @@ test.describe('Phase 2 - accessibility checks', () => {
   }) => {
     await page.goto(phase2Routes.dashboard)
     await page.goto(phase2Routes.subordinates)
+    const subordinates = new SubordinatesPage(page)
+    await subordinates.expectLoaded()
+    await subordinates.searchForPerson(phase2Baselines.profileTarget.fullName)
+
     await page.getByRole('button', { name: phase2Baselines.profileTarget.fullName }).first().click()
     await page.getByRole('button', { name: 'Back', exact: true }).click()
 

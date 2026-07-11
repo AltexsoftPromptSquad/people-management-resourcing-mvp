@@ -32,7 +32,7 @@ test.describe('Phase 4 - UM candidate proposal', () => {
 
     await expect(ui.unitEmployeesHeading()).toBeVisible()
 
-    const employeePerson = phase4Baselines.employeePerson
+    const employeePerson = phase4Baselines.candidateWithoutActiveSharedProfile
     const checkboxLabel = `${employeePerson.firstName} ${employeePerson.lastName}`
     const employeeCheckbox = ui.candidateCheckbox(checkboxLabel)
     await expect(employeeCheckbox).toBeVisible()
@@ -52,7 +52,7 @@ test.describe('Phase 4 - UM candidate proposal', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.candidateWithoutActiveSharedProfile
     const checkbox = ui.candidateCheckbox(`${firstName} ${lastName}`)
     await checkbox.check()
 
@@ -83,7 +83,7 @@ test.describe('Phase 4 - UM candidate proposal', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.candidateWithoutActiveSharedProfile
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
 
     await ui.submitCandidatesButton().click()
@@ -136,7 +136,7 @@ test.describe('Phase 4 - UM candidate proposal', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.candidateWithoutActiveSharedProfile
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
 
     const textarea = ui.fitSummaryTextarea(firstName)
@@ -165,7 +165,7 @@ test.describe('Phase 4 - UM candidate proposal', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.candidateWithoutActiveSharedProfile
     // person-employee-001 has 40% availability; request-001 requires 100% → projected = 160% > 100%
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
 
@@ -177,7 +177,7 @@ test.describe('Phase 4 - UM candidate proposal', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.candidateWithActiveSharedProfile
     // person-employee-001 has leave-001 overlapping request-001 period (2026-07-10 to 2026-11-10)
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
 
@@ -189,7 +189,7 @@ test.describe('Phase 4 - UM candidate proposal', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.candidateWithRiskWarning
     // person-employee-001 has High risk level (seededRisks[0] from risks.ts)
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
 
@@ -203,7 +203,7 @@ test.describe('Phase 4 - UM candidate proposal', () => {
     await ui.expectLoaded()
     await ui.selectRequest(phase4Baselines.submittedRequest.requestCode)
 
-    const { firstName, lastName } = phase4Baselines.employeePerson
+    const { firstName, lastName } = phase4Baselines.candidateWithoutActiveSharedProfile
     await ui.candidateCheckbox(`${firstName} ${lastName}`).check()
 
     // Warnings should be visible

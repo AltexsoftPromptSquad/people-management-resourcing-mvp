@@ -5,6 +5,7 @@ import {
   type FetchOverrideRule,
 } from '../fixtures/phase3-data'
 import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
+import { selectCustomOption } from '../support/select'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 3 - Add Feedback flow', () => {
@@ -17,14 +18,12 @@ test.describe('Phase 3 - Add Feedback flow', () => {
     await profile.addFeedbackButton().click()
 
     await expect(page.getByRole('heading', { level: 2, name: 'Add Feedback' })).toBeVisible()
-    const typeSelect = page.getByLabel('Type *')
+    const typeSelect = page
+      .getByRole('dialog', { name: 'Add Feedback' })
+      .getByRole('combobox', { name: 'Type *' })
     await expect(typeSelect).toBeFocused()
-    await expect(typeSelect.locator('option')).toHaveText([
-      'Select type',
-      'HR Note',
-      'Performance',
-      'General',
-    ])
+    await selectCustomOption(typeSelect, 'HR Note')
+    await expect(typeSelect).toContainText('HR Note')
 
     const contentField = page.getByLabel('Content *')
     await expect(contentField).toHaveAttribute('placeholder', 'Write your feedback…')
@@ -57,7 +56,10 @@ test.describe('Phase 3 - Add Feedback flow', () => {
     })
 
     await profile.addFeedbackButton().click()
-    await page.getByLabel('Type *').selectOption('General')
+    await selectCustomOption(
+      page.getByRole('dialog', { name: 'Add Feedback' }).getByRole('combobox', { name: 'Type *' }),
+      'General',
+    )
     await page.getByLabel('Content *').fill('Phase 3 feedback entry for e2e coverage validation.')
     await page.getByRole('button', { name: 'Save Feedback' }).click()
 
@@ -87,7 +89,10 @@ test.describe('Phase 3 - Add Feedback flow', () => {
     await profile.openTab('Feedbacks')
     await profile.addFeedbackButton().click()
 
-    await page.getByLabel('Type *').selectOption('HR Note')
+    await selectCustomOption(
+      page.getByRole('dialog', { name: 'Add Feedback' }).getByRole('combobox', { name: 'Type *' }),
+      'HR Note',
+    )
     await page.getByLabel('Content *').fill('This save attempt is expected to fail in this test.')
     await page.getByRole('button', { name: 'Save Feedback' }).click()
 

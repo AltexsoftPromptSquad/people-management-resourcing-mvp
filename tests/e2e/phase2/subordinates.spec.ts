@@ -1,5 +1,6 @@
 import { getProfilePathFor, phase2Baselines, phase2Routes } from '../fixtures/phase2-data'
 import { SubordinatesPage } from '../page-objects/SubordinatesPage'
+import { selectCustomOption } from '../support/select'
 import { expect, test } from '../support/test'
 
 const waitForDebounce = async (pageUrlReader: () => string, delayMs: number) => {
@@ -24,7 +25,12 @@ test.describe('Phase 2 - subordinates list', () => {
     const subordinates = new SubordinatesPage(page)
     await subordinates.expectLoaded()
 
-    await expect(subordinates.rows()).toHaveCount(phase2Baselines.managerSubordinates.length)
+    await expect(subordinates.rows()).toHaveCount(
+      Math.min(25, phase2Baselines.managerSubordinates.length),
+    )
+    await expect(subordinates.paginationSummary()).toHaveText(
+      `Showing 1-25 of ${phase2Baselines.managerSubordinates.length}`,
+    )
     await expect(page.getByRole('button', { name: 'Olena Kovalenko' })).toHaveCount(0)
 
     await expect(page.getByRole('columnheader', { name: /Name/ })).toBeVisible()
@@ -83,7 +89,7 @@ test.describe('Phase 2 - subordinates list', () => {
     const subordinates = new SubordinatesPage(page)
     await subordinates.expectLoaded()
 
-    await subordinates.riskSelect().selectOption(phase2Baselines.filterValues.riskLevel)
+    await selectCustomOption(subordinates.riskSelect(), phase2Baselines.filterValues.riskLevel)
     await expect
       .poll(() => new URL(page.url()).searchParams.get('riskLevel') ?? '')
       .toBe(phase2Baselines.filterValues.riskLevel)
@@ -94,7 +100,10 @@ test.describe('Phase 2 - subordinates list', () => {
       })
       .toEqual([phase2Baselines.filterValues.riskLevel])
 
-    await subordinates.statusSelect().selectOption(phase2Baselines.filterValues.currentStatus)
+    await selectCustomOption(
+      subordinates.statusSelect(),
+      phase2Baselines.filterValues.currentStatus,
+    )
     await expect
       .poll(() => new URL(page.url()).searchParams.get('currentStatus') ?? '')
       .toBe(phase2Baselines.filterValues.currentStatus)
@@ -105,12 +114,12 @@ test.describe('Phase 2 - subordinates list', () => {
       })
       .toEqual([phase2Baselines.filterValues.currentStatus])
 
-    await subordinates.positionSelect().selectOption(phase2Baselines.filterValues.position)
+    await selectCustomOption(subordinates.positionSelect(), phase2Baselines.filterValues.position)
     await expect
       .poll(() => new URL(page.url()).searchParams.get('position') ?? '')
       .toBe(phase2Baselines.filterValues.position)
 
-    await subordinates.gradeSelect().selectOption(phase2Baselines.filterValues.grade)
+    await selectCustomOption(subordinates.gradeSelect(), phase2Baselines.filterValues.grade)
     await expect
       .poll(() => new URL(page.url()).searchParams.get('grade') ?? '')
       .toBe(phase2Baselines.filterValues.grade)
@@ -163,6 +172,7 @@ test.describe('Phase 2 - subordinates list', () => {
   test('P2-S12: row click opens profile route', async ({ page }) => {
     const subordinates = new SubordinatesPage(page)
     await subordinates.expectLoaded()
+    await subordinates.searchForPerson(phase2Baselines.profileTarget.fullName)
 
     await page.getByRole('button', { name: phase2Baselines.profileTarget.fullName }).first().click()
     await expect(page).toHaveURL(getProfilePathFor(phase2Baselines.profileTarget.id))
@@ -233,7 +243,7 @@ test.describe('Phase 2 - subordinates list', () => {
 
     const subordinates = new SubordinatesPage(page)
     await subordinates.expectLoaded()
-    await expect(subordinates.riskSelect()).toHaveValue(phase2Baselines.filterValues.riskLevel)
+    await expect(subordinates.riskSelect()).toContainText(phase2Baselines.filterValues.riskLevel)
     await expect(subordinates.headerSortButton('Grade')).toHaveText(/Grade ↓/)
     await expect(subordinates.rows()).not.toHaveCount(0)
   })

@@ -5,6 +5,8 @@ import {
   type FetchOverrideRule,
 } from '../fixtures/phase3-data'
 import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
+import { SubordinatesPage } from '../page-objects/SubordinatesPage'
+import { selectCustomOption } from '../support/select'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 3 - accessibility', () => {
@@ -55,8 +57,10 @@ test.describe('Phase 3 - accessibility', () => {
     const profile = new EmployeeProfilePage(page)
     await profile.openTab('Feedbacks')
     await profile.addFeedbackButton().click()
+    const feedbackDialog = page.getByRole('dialog', { name: 'Add Feedback' })
+    const typeSelect = feedbackDialog.getByRole('combobox', { name: 'Type *' })
 
-    await expect(page.getByLabel('Type *')).toBeVisible()
+    await expect(typeSelect).toBeVisible()
     await expect(page.getByLabel('Content *')).toBeVisible()
 
     await page.getByRole('button', { name: 'Save Feedback' }).click()
@@ -65,7 +69,7 @@ test.describe('Phase 3 - accessibility', () => {
     await expect(typeError).toHaveAttribute('role', 'alert')
     await expect(typeError).toHaveAttribute('aria-live', 'assertive')
 
-    await page.getByLabel('Type *').selectOption('General')
+    await selectCustomOption(typeSelect, 'General')
     await page.getByLabel('Content *').fill('Accessibility coverage feedback entry text.')
     const saveButton = page.getByRole('button', { name: 'Save Feedback' })
     await saveButton.click()
@@ -114,6 +118,9 @@ test.describe('Phase 3 - accessibility', () => {
     consoleMonitor,
   }) => {
     await page.goto(phase3Routes.subordinates)
+    const subordinates = new SubordinatesPage(page)
+    await subordinates.expectLoaded()
+    await subordinates.searchForPerson(phase3Baselines.employeeFullName)
     await page.getByRole('button', { name: phase3Baselines.employeeFullName }).first().click()
 
     const profile = new EmployeeProfilePage(page)

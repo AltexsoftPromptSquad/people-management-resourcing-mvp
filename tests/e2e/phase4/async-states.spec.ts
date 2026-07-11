@@ -9,7 +9,7 @@ test.describe('Phase 4 - async states and UI rendering', () => {
     appShell,
   }) => {
     await page.addInitScript(overrideFetch, [
-      { urlIncludes: '/resourcing-requests', method: 'GET', delayMs: 800 },
+      { urlIncludes: '/resourcing/requests', method: 'GET', delayMs: 800 },
     ] satisfies FetchOverrideRule[])
 
     const navigation = page.goto(phase4Routes.dmRequests)

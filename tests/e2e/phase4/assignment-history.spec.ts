@@ -3,6 +3,7 @@ import { assignmentHistory } from '../../../src/mocks/data/assignment-history'
 import { phase4Baselines, phase4Routes } from '../fixtures/phase4-data'
 import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
 import { ResourcingRequestsPage } from '../page-objects/ResourcingRequestsPage'
+import { SubordinatesPage } from '../page-objects/SubordinatesPage'
 import { expect, test } from '../support/test'
 
 const employeeProfileRoute = getEmployeeProfilePagePath(phase4Baselines.employeePerson.id)
@@ -33,6 +34,8 @@ test.describe('Phase 4 - assignment history', () => {
     await appShell.switchRole('Unit Manager')
     const employeeFullName = `${phase4Baselines.employeePerson.firstName} ${phase4Baselines.employeePerson.lastName}`
     await appShell.navLink('Subordinates').click()
+    const subordinates = new SubordinatesPage(page)
+    await subordinates.searchForPerson(employeeFullName)
     await page.getByRole('button', { name: employeeFullName }).click()
     const profile = new EmployeeProfilePage(page)
     await profile.expectLoaded(employeeFullName)

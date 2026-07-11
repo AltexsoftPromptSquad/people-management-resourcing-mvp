@@ -1,13 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
+  createCustomField,
   createCustomList,
+  getAllCustomFields,
   getCustomFields,
   getCustomListRows,
   getCustomLists,
+  patchCustomField,
   patchCustomFieldValue,
   patchCustomList,
   shareCustomList,
+  type CreateCustomFieldPayload,
   type CreateCustomListPayload,
+  type PatchCustomFieldPayload,
   type PatchCustomFieldValuePayload,
   type PatchCustomListPayload,
   type ShareCustomListPayload,
@@ -22,6 +27,12 @@ export const useCustomFieldsQuery = (managerId: string | undefined) =>
     queryKey: queryKeys.customFields(managerId ?? 'unknown'),
     queryFn: () => getCustomFields(managerId ?? ''),
     enabled: Boolean(managerId),
+  })
+
+export const useAllCustomFieldsQuery = () =>
+  useQuery({
+    queryKey: queryKeys.customFieldsRoot(),
+    queryFn: getAllCustomFields,
   })
 
 export const useCustomListsQuery = (managerId: string | undefined) =>
@@ -53,6 +64,32 @@ export const useCreateCustomListMutation = (managerId: string) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.customLists(managerId) })
       await queryClient.invalidateQueries({ queryKey: queryKeys.customListsRoot() })
+      await queryClient.invalidateQueries({ queryKey: queryKeys.customListRowsRoot() })
+    },
+  })
+}
+
+export const useCreateCustomFieldMutation = (managerId: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (payload: CreateCustomFieldPayload) => createCustomField(payload),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.customFields(managerId) })
+      await queryClient.invalidateQueries({ queryKey: queryKeys.customFieldsRoot() })
+    },
+  })
+}
+
+export const usePatchCustomFieldMutation = (managerId: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: PatchCustomFieldPayload }) =>
+      patchCustomField(id, payload),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.customFields(managerId) })
+      await queryClient.invalidateQueries({ queryKey: queryKeys.customFieldsRoot() })
       await queryClient.invalidateQueries({ queryKey: queryKeys.customListRowsRoot() })
     },
   })

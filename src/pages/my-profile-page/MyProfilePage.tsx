@@ -315,6 +315,7 @@ export const MyProfilePage: FC<MyProfilePageProps> = () => {
           <h2 className="text-lg font-semibold text-slate-950">IDP Status</h2>
           <div className="mt-3 flex max-w-sm items-center gap-3">
             <Select
+              aria-label="IDP status"
               value={idp?.status ?? 'Not Started'}
               onChange={(event) => {
                 void updateIdpMutation

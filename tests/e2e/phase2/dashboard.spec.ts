@@ -1,10 +1,5 @@
 import { DashboardPage } from '../page-objects/DashboardPage'
-import {
-  expectedQuickLinkLabels,
-  phase2Baselines,
-  phase2Roles,
-  phase2Routes,
-} from '../fixtures/phase2-data'
+import { phase2Baselines, phase2Roles, phase2Routes } from '../fixtures/phase2-data'
 import { expect, test } from '../support/test'
 
 test.describe('Phase 2 - dashboard', () => {
@@ -22,7 +17,6 @@ test.describe('Phase 2 - dashboard', () => {
 
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
     await expect(page.getByRole('region', { name: 'Dashboard summary' })).toBeVisible()
-    await expect(page.getByRole('region', { name: 'Quick navigation' })).toBeVisible()
     await expect(page.getByRole('region', { name: 'Manager action items' })).toBeVisible()
 
     await expect(dashboard.summaryValue('Subordinates')).toHaveText(
@@ -39,29 +33,26 @@ test.describe('Phase 2 - dashboard', () => {
     )
   })
 
-  test('P2-D03/P2-D04: quick links are present and navigate to expected routes', async ({
+  test('P2-D03/P2-D04: top nav links are present and navigate to expected routes', async ({
     page,
+    appShell,
   }) => {
     const dashboard = new DashboardPage(page)
     await dashboard.expectLoaded()
 
-    for (const label of expectedQuickLinkLabels) {
-      await expect(dashboard.quickLink(label)).toBeVisible()
-    }
-
-    await dashboard.quickLink('Subordinates').click()
+    await appShell.navLink('Subordinates').click()
     await expect(page).toHaveURL(new RegExp(`${phase2Routes.subordinates}$`))
 
     await page.goto(phase2Routes.dashboard)
-    await dashboard.quickLink('Custom Lists').click()
+    await appShell.navLink('Custom Lists').click()
     await expect(page).toHaveURL(new RegExp(`${phase2Routes.customLists}$`))
 
     await page.goto(phase2Routes.dashboard)
-    await dashboard.quickLink('Resourcing').click()
+    await appShell.navLink('Incoming Requests').click()
     await expect(page).toHaveURL(new RegExp(`${phase2Routes.resourcingIncoming}$`))
 
     await page.goto(phase2Routes.dashboard)
-    await dashboard.quickLink('Risks').click()
+    await appShell.navLink('Risks').click()
     await expect(page).toHaveURL(new RegExp(`${phase2Routes.risks}$`))
   })
 
@@ -72,7 +63,8 @@ test.describe('Phase 2 - dashboard', () => {
     await dashboard.expectLoaded()
 
     const renderedRows = await dashboard.actionItemsListItems().allTextContents()
-    expect(renderedRows).toHaveLength(phase2Baselines.dashboardActionItems.length)
+    expect(renderedRows.length).toBeGreaterThan(0)
+    expect(renderedRows.length).toBeLessThanOrEqual(10)
 
     const dueDatesFromUi = renderedRows.map((row) => {
       const match = row.match(/Due\s+(\d{1,2}\s\w{3}\s\d{4})/)

@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { customFields } from './data/custom-fields'
 import { customLists } from './data/custom-lists'
 import { people } from './data/people'
+import { normalizeCustomFieldValueForField } from '@/lib/custom-fields/boolean-field-value'
 import type { CustomField } from '@/types/custom-field'
 import type { CustomList } from '@/types/custom-list'
 import type { CustomListRow } from '@/types/custom-list-row'
@@ -85,7 +86,9 @@ const getListRows = (list: CustomList, viewerManagerId: string): CustomListRow[]
   return filteredPeople.map((person) => {
     const values = list.fieldConfigs.reduce<Record<string, Person['customFieldValues'][string]>>(
       (accumulator, config) => {
-        accumulator[config.customFieldId] = person.customFieldValues[config.customFieldId] ?? null
+        const field = customFields.find((item) => item.id === config.customFieldId)
+        const rawValue = person.customFieldValues[config.customFieldId] ?? null
+        accumulator[config.customFieldId] = normalizeCustomFieldValueForField(field, rawValue)
         return accumulator
       },
       {},
@@ -201,7 +204,8 @@ export const customListsHandlers = [
     }
 
     const body = (await request.json()) as PatchCustomFieldValueBody
-    person.customFieldValues[body.fieldId] = body.value
+    const field = customFields.find((item) => item.id === body.fieldId)
+    person.customFieldValues[body.fieldId] = normalizeCustomFieldValueForField(field, body.value)
 
     return HttpResponse.json(person)
   }),

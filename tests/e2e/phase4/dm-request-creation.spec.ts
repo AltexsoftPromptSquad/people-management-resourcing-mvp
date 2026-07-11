@@ -1,9 +1,17 @@
 import { phase4Baselines, phase4Routes } from '../fixtures/phase4-data'
 import { ResourcingRequestsPage } from '../page-objects/ResourcingRequestsPage'
+import { setDatePickerValue } from '../support/date-picker'
+import { selectCustomOptionByIndex } from '../support/select'
 import { expect, test } from '../support/test'
+import type { Page } from '@playwright/test'
 
 const futureDate = '2027-06-01'
 const pastDate = '2020-01-01'
+
+const requestDialog = (page: Page) => page.getByRole('dialog', { name: 'New Resourcing Request' })
+
+const requestCombobox = (page: Page, name: string) =>
+  requestDialog(page).getByRole('combobox', { name })
 
 test.describe('Phase 4 - DM request creation', () => {
   test.beforeEach(async ({ page, appShell }) => {
@@ -22,14 +30,13 @@ test.describe('Phase 4 - DM request creation', () => {
     await expect(page.getByLabel('Project name *')).toBeVisible()
     await expect(page.getByLabel('Required role *')).toBeVisible()
     await expect(page.getByLabel('Grade level *')).toBeVisible()
-    await expect(page.getByLabel('English level *')).toBeVisible()
-    await expect(page.getByLabel('Expected compensation level *')).toBeVisible()
-    await expect(page.getByLabel('Assigned Unit Manager *')).toBeVisible()
-    await expect(page.getByLabel('Priority *')).toBeVisible()
+    await expect(requestCombobox(page, 'English level *')).toBeVisible()
+    await expect(requestCombobox(page, 'Expected compensation level *')).toBeVisible()
+    await expect(requestCombobox(page, 'Assigned Unit Manager *')).toBeVisible()
+    await expect(requestCombobox(page, 'Priority *')).toBeVisible()
     await expect(page.getByLabel('Workload % *')).toBeVisible()
     await expect(page.getByLabel('Required skills (comma-separated) *')).toBeVisible()
-    await expect(page.getByLabel('Start date *')).toBeVisible()
-    await expect(page.getByLabel('Duration *')).toBeVisible()
+    await expect(requestCombobox(page, 'Start date *')).toBeVisible()
 
     await expect(page.getByLabel('Request title *')).toBeFocused()
   })
@@ -56,9 +63,8 @@ test.describe('Phase 4 - DM request creation', () => {
     await page.getByLabel('Required role *').fill('Frontend Engineer')
     await page.getByLabel('Grade level *').fill('M2')
     await page.getByLabel('Required skills (comma-separated) *').fill('React, TypeScript')
-    await page.getByLabel('Start date *').fill(futureDate)
-    await page.getByLabel('Duration *').fill('3 months')
-    await page.getByLabel('Assigned Unit Manager *').selectOption({ index: 1 })
+    await selectCustomOptionByIndex(requestCombobox(page, 'Assigned Unit Manager *'), 1)
+    await setDatePickerValue(page, 'startDate', futureDate)
 
     await page.getByRole('button', { name: 'Submit' }).click()
 
@@ -75,9 +81,8 @@ test.describe('Phase 4 - DM request creation', () => {
     await page.getByLabel('Required role *').fill('QA Engineer')
     await page.getByLabel('Grade level *').fill('M1')
     await page.getByLabel('Required skills (comma-separated) *').fill('Testing')
-    await page.getByLabel('Start date *').fill(futureDate)
-    await page.getByLabel('Duration *').fill('2 months')
-    await page.getByLabel('Assigned Unit Manager *').selectOption({ index: 1 })
+    await selectCustomOptionByIndex(requestCombobox(page, 'Assigned Unit Manager *'), 1)
+    await setDatePickerValue(page, 'startDate', futureDate)
 
     await page.getByRole('button', { name: 'Submit' }).click()
     await expect(page.getByText('Request submitted.')).toBeVisible()
@@ -128,9 +133,8 @@ test.describe('Phase 4 - DM request creation', () => {
     await page.getByLabel('Required role *').fill('Engineer')
     await page.getByLabel('Grade level *').fill('M1')
     await page.getByLabel('Required skills (comma-separated) *').fill('TypeScript')
-    await page.getByLabel('Start date *').fill(pastDate)
-    await page.getByLabel('Duration *').fill('1 month')
-    await page.getByLabel('Assigned Unit Manager *').selectOption({ index: 1 })
+    await selectCustomOptionByIndex(requestCombobox(page, 'Assigned Unit Manager *'), 1)
+    await setDatePickerValue(page, 'startDate', pastDate)
 
     await page.getByRole('button', { name: 'Submit' }).click()
 

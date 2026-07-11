@@ -4,6 +4,9 @@ import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
 import { ResourcingIncomingPage } from '../page-objects/ResourcingIncomingPage'
 import { ResourcingRequestsPage } from '../page-objects/ResourcingRequestsPage'
 import { SharedProfilePublicPage } from '../page-objects/SharedProfilePublicPage'
+import { SubordinatesPage } from '../page-objects/SubordinatesPage'
+import { setDatePickerValue } from '../support/date-picker'
+import { selectCustomOptionByIndex } from '../support/select'
 import { expect, test } from '../support/test'
 
 const futureDate = '2027-03-01'
@@ -32,15 +35,17 @@ test.describe('Phase 4 - BRD demo scenarios', () => {
     await page.getByLabel('Required role *').fill('Frontend Engineer')
     await page.getByLabel('Grade level *').fill('M2')
     await page.getByLabel('Required skills (comma-separated) *').fill('React, TypeScript')
-    await page.getByLabel('Start date *').fill('2020-01-01')
-    await page.getByLabel('Duration *').fill('4 months')
-    await page.getByLabel('Assigned Unit Manager *').selectOption({ index: 1 })
+    await selectCustomOptionByIndex(
+      page.getByRole('combobox', { name: 'Assigned Unit Manager *' }),
+      1,
+    )
+    await setDatePickerValue(page, 'startDate', '2020-01-01')
 
     await page.getByRole('button', { name: 'Submit' }).click()
     await expect(page.getByText('Start date cannot be in the past.')).toBeVisible()
 
     // Correct to future date and submit
-    await page.getByLabel('Start date *').fill(futureDate)
+    await setDatePickerValue(page, 'startDate', futureDate)
     await page.getByRole('button', { name: 'Submit' }).click()
 
     await expect(page.getByText('Request submitted.')).toBeVisible()
@@ -72,16 +77,20 @@ test.describe('Phase 4 - BRD demo scenarios', () => {
     await expect(umPage.unitEmployeesHeading()).toBeVisible()
 
     // Select an employee with low availability — warnings should appear
-    const { firstName, lastName } = phase4Baselines.employeePerson
-    await umPage.candidateCheckbox(`${firstName} ${lastName}`).check()
+    const sharedProfileCandidate = phase4Baselines.candidateWithActiveSharedProfile
+    const riskCandidate = phase4Baselines.candidateWithRiskWarning
+    await umPage
+      .candidateCheckbox(`${sharedProfileCandidate.firstName} ${sharedProfileCandidate.lastName}`)
+      .check()
+    await umPage.candidateCheckbox(`${riskCandidate.firstName} ${riskCandidate.lastName}`).check()
 
     // Allocation + leave overlap + risk warnings
-    await expect(page.getByText(/Allocation would reach.*exceeds 100%/)).toBeVisible()
+    await expect(page.getByText(/Allocation would reach.*exceeds 100%/).first()).toBeVisible()
     await expect(page.getByText(/Has scheduled leave overlapping/)).toBeVisible()
     await expect(page.getByText(/Risk level is (High|Critical)/)).toBeVisible()
 
     // Fill fit summary
-    const fitTextarea = umPage.fitSummaryTextarea(firstName)
+    const fitTextarea = umPage.fitSummaryTextarea(sharedProfileCandidate.firstName)
     await fitTextarea.fill('Strong candidate with relevant experience.')
 
     // Try an invalid external URL first
@@ -170,6 +179,8 @@ test.describe('Phase 4 - BRD demo scenarios', () => {
     await appShell.switchRole('Unit Manager')
     const employeeFullName = `${phase4Baselines.employeePerson.firstName} ${phase4Baselines.employeePerson.lastName}`
     await appShell.navLink('Subordinates').click()
+    const subordinates = new SubordinatesPage(page)
+    await subordinates.searchForPerson(employeeFullName)
     await page.getByRole('button', { name: employeeFullName }).click()
     const profile = new EmployeeProfilePage(page)
     await profile.expectLoaded(employeeFullName)
