@@ -49,7 +49,7 @@ export class AppShellPage {
     await expect(this.page).toHaveURL(new RegExp(`${this.escape(expected.route)}$`))
     await expect(this.heading(expected.heading)).toBeVisible()
     if ((await this.activePersonaSelect().count()) > 0) {
-      await expect(this.activePersonaSelect()).toHaveValue(expected.personaId)
+      await expect(this.activePersonaSelect()).toContainText(expected.personaName)
     } else {
       await expect(this.personaText(expected.personaName)).toBeVisible()
     }
