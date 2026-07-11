@@ -110,7 +110,9 @@ test.describe('Phase 2 - source-confirmed checks', () => {
     expect(dashboardPage).toContain(
       "from '@/features/dashboard/components/dashboard-summary-cards'",
     )
-    expect(dashboardPage).toContain("from '@/features/dashboard/components/dashboard-quick-links'")
+    expect(dashboardPage).not.toContain(
+      "from '@/features/dashboard/components/dashboard-quick-links'",
+    )
     expect(dashboardPage).not.toContain("from '@/mocks/")
 
     const subordinatesPage = await readRepoFile('src/pages/subordinates-page/SubordinatesPage.tsx')

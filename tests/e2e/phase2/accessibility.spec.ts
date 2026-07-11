@@ -11,13 +11,15 @@ test.describe('Phase 2 - accessibility checks', () => {
 
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
     await expect(page.getByRole('region', { name: 'Dashboard summary' })).toBeVisible()
-    await expect(page.getByRole('region', { name: 'Quick navigation' })).toBeVisible()
+    await expect(page.getByRole('region', { name: 'Quick navigation' })).toHaveCount(0)
     await expect(page.getByRole('region', { name: 'Manager action items' })).toBeVisible()
 
-    const quickLink = page.getByRole('link', { name: 'Subordinates' }).first()
-    await quickLink.focus()
-    await expect(quickLink).toBeFocused()
-    const focusShadow = await appShell.computedStyle(quickLink, 'box-shadow')
+    const navLink = page.getByRole('navigation', { name: 'Primary navigation' }).getByRole('link', {
+      name: 'Subordinates',
+    })
+    await navLink.focus()
+    await expect(navLink).toBeFocused()
+    const focusShadow = await appShell.computedStyle(navLink, 'box-shadow')
     expect(focusShadow).not.toBe('none')
   })
 
