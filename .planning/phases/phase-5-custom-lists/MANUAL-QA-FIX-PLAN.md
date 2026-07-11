@@ -237,15 +237,28 @@ This sequence minimizes cross-feature conflicts, keeps each PR reviewable, and p
 
 ## Stage Checklist
 
-Current engineering status: code fixes are complete for Stages 0-6, Stage 7 code is complete except B-01 verification, and all e2e assertion updates are intentionally deferred to a separate commit.
+Current engineering status: code fixes are complete for Stages 0-6, Stage 7 code is complete except B-01 request-count verification, and e2e assertion updates have been completed in a separate commit.
 
-| Stage | Scope                                                                                             | Status  |
-| ----- | ------------------------------------------------------------------------------------------------- | ------- |
-| 0     | Triage: confirm status of all 31 issues (bug/expected/decision/follow-up) and lock decision gates | Pending |
-| 1     | F-CL-01..04: field lifecycle, usage filter/column/both, risk consistency, recipient flow          | Pending |
-| 2     | F-EP-07..09: optional sections + active-link policy                                               | Pending |
-| 3     | F-IR-01, U-IR-01: incoming requests behavior per product decision                                 | Pending |
-| 4     | F-EP-01/02/03/06, U-EP-01, (optional) F-EP-04 per triage                                          | Pending |
-| 5     | F-SR-01, F-SR-02: schema and e2e updates                                                          | Pending |
-| 6     | U-D-01..06: top nav and quick links sync                                                          | Pending |
-| 7     | B-01, U-S-01, U-D-04, F-EP-05 (Action Items CRUD) — separate PRs                                  | Pending |
+| Stage | Scope                                                                                             | Status   |
+| ----- | ------------------------------------------------------------------------------------------------- | -------- |
+| 0     | Triage: confirm status of all 31 issues (bug/expected/decision/follow-up) and lock decision gates | Complete |
+| 1     | F-CL-01..04: field lifecycle, usage filter/column/both, risk consistency, recipient flow          | Complete |
+| 2     | F-EP-07..09: optional sections + active-link policy                                               | Complete |
+| 3     | F-IR-01, U-IR-01: incoming requests behavior per product decision                                 | Complete |
+| 4     | F-EP-01/02/03/06, U-EP-01, (optional) F-EP-04 per triage                                          | Complete |
+| 5     | F-SR-01, F-SR-02: schema and e2e updates                                                          | Complete |
+| 6     | U-D-01..06: top nav and quick links sync                                                          | Complete |
+| 7     | B-01, U-S-01, U-D-04, F-EP-05 (Action Items CRUD) — separate PRs                                  | Partial  |
+
+Stage 7 note: U-S-01, U-D-04, and F-EP-05 are implemented. B-01 remains `Needs Verification` until a targeted network/request-count check confirms that search/filter behavior does not create unnecessary backend load.
+
+Latest verification:
+
+| Check                                                       | Result                                            |
+| ----------------------------------------------------------- | ------------------------------------------------- |
+| `npm.cmd run test:e2e -- tests/e2e/phase1`                  | `28 passed`                                       |
+| `npm.cmd run test:e2e -- tests/e2e/phase2`                  | `40 passed`                                       |
+| `npm.cmd run test:e2e -- tests/e2e/phase3 tests/e2e/phase4` | `156 passed`                                      |
+| `npm.cmd run test:e2e -- tests/e2e/phase5`                  | `6 passed`                                        |
+| `npm.cmd run build`                                         | Passed                                            |
+| `npm.cmd run lint`                                          | Passed with existing warnings in shared controls. |

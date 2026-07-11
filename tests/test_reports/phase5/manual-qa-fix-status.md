@@ -15,14 +15,23 @@ Current status:
 
 | Status                 | Count | Meaning                                                            |
 | ---------------------- | ----: | ------------------------------------------------------------------ |
-| Fixed                  |    25 | Code changes appear to address the reported issue.                 |
-| Partial                |     1 | A fix exists, but coverage or behavior still has a known gap.      |
+| Fixed                  |    29 | Code changes address the reported issue and relevant e2e now pass. |
 | Expected               |     1 | No code change needed based on current product terminology.        |
-| Follow-up              |     2 | Explicitly deferred or needs a product/implementation decision.    |
 | Needs Product Decision |     1 | UX/product direction should be confirmed before further work.      |
 | Needs Verification     |     1 | Code appears relevant, but status cannot be closed without retest. |
 
-E2E note: full automated verification is not recorded here. The most recent attempt was paused by request, and earlier runs exposed e2e/test-infra issues unrelated to this status document.
+E2E note: automated verification has now been completed for Phase 1 through Phase 5. Phase 5 itself passed without additional code changes after the earlier manual QA fixes.
+
+Latest verification:
+
+| Check                                                       | Result                                            |
+| ----------------------------------------------------------- | ------------------------------------------------- |
+| `npm.cmd run test:e2e -- tests/e2e/phase1`                  | `28 passed`                                       |
+| `npm.cmd run test:e2e -- tests/e2e/phase2`                  | `40 passed`                                       |
+| `npm.cmd run test:e2e -- tests/e2e/phase3 tests/e2e/phase4` | `156 passed`                                      |
+| `npm.cmd run test:e2e -- tests/e2e/phase5`                  | `6 passed`                                        |
+| `npm.cmd run build`                                         | Passed                                            |
+| `npm.cmd run lint`                                          | Passed with existing warnings in shared controls. |
 
 ## Issue Status
 
@@ -115,20 +124,18 @@ Recommendation: keep these changes only if the current branch is intended to clo
 
 ## Verification Notes
 
-No fresh e2e pass is claimed in this report.
-
-Known latest validation observations:
-
-- Playwright Chromium had to be installed before browser tests could run.
-- Full e2e later started but did not complete within the available window and exposed multiple failures, including test assumptions broken by the custom `Select` migration.
-- A phase5-only retry inside the sandbox was blocked by Vite `EPERM` writing `node_modules/.vite-temp`.
-
-Recommended next verification after follow-ups:
+Completed validation:
 
 ```bash
 npm.cmd run build
 npm.cmd run lint
-npm.cmd run format:check
 npm.cmd run test:e2e -- tests/e2e/phase5
 npm.cmd run test:e2e -- tests/e2e/phase1 tests/e2e/phase2 tests/e2e/phase3 tests/e2e/phase4
 ```
+
+Additional notes:
+
+- `npm.cmd run format:check` for the whole repository still reports unrelated pre-existing formatting warnings outside the touched files.
+- Prettier was run and checked on the files changed by the Phase 3/4 e2e coverage commit.
+- Browser/Vite commands require running outside the sandbox on this machine because Vite writes temporary files under `node_modules/.vite-temp`.
+- Remaining open item: `B-01` requires a targeted request-count/performance verification before it can be marked fixed.

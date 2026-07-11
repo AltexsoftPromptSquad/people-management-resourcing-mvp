@@ -113,3 +113,43 @@ Issues where the interface is confusing, inconsistent, or hard to use, but under
 | UX                    |     14 |
 | Backend / Performance |      1 |
 | **Total**             | **31** |
+
+---
+
+## Engineering Status Update
+
+| Field                    | Value                                                  |
+| ------------------------ | ------------------------------------------------------ |
+| **Updated**              | 2026-07-11                                             |
+| **Branch**               | `fix/phase5-manual-qa`                                 |
+| **Manual QA fix commit** | `74350cb Fix manual QA findings for phase 5`           |
+| **E2E fix commit**       | `28de759 Fix phase 3 and 4 e2e coverage`               |
+| **Status source**        | [manual-qa-fix-status.md](./manual-qa-fix-status.md)   |
+| **Triage source**        | [manual-testing-triage.md](./manual-testing-triage.md) |
+
+Current engineering status:
+
+| Status                 | Count | Notes                                                                                          |
+| ---------------------- | ----: | ---------------------------------------------------------------------------------------------- |
+| Fixed                  |    29 | Code changes are implemented and relevant regression suites now pass.                          |
+| Expected               |     1 | `F-EP-04`: current product terminology uses "Resourcing History".                              |
+| Needs Product Decision |     1 | `U-CL-01`: broader list-builder UX simplification needs product/design acceptance criteria.    |
+| Needs Verification     |     1 | `B-01`: subordinates request-count/performance behavior needs a targeted network verification. |
+
+Verification completed after fixes:
+
+| Check                                                                 | Result                                            |
+| --------------------------------------------------------------------- | ------------------------------------------------- |
+| `npm.cmd run test:e2e -- tests/e2e/phase1`                            | `28 passed`                                       |
+| `npm.cmd run test:e2e -- tests/e2e/phase2`                            | `40 passed`                                       |
+| `npm.cmd run test:e2e -- tests/e2e/phase3 tests/e2e/phase4`           | `156 passed`                                      |
+| `npm.cmd run test:e2e -- tests/e2e/phase5`                            | `6 passed`                                        |
+| `npm.cmd run build`                                                   | Passed                                            |
+| `npm.cmd run lint`                                                    | Passed with existing warnings in shared controls. |
+| Prettier check for files changed in the Phase 3/4 e2e coverage commit | Passed                                            |
+
+Notes:
+
+- The original QA findings above are kept as the immutable baseline from QA.
+- Detailed issue-by-issue closure evidence is tracked in [manual-qa-fix-status.md](./manual-qa-fix-status.md).
+- The original summary count is retained from the QA report; the engineering status table tracks the individual issue rows, including the `U-D-01a`..`U-D-01d` dashboard sub-items.
