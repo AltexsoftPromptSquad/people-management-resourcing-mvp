@@ -6,6 +6,7 @@ import {
 } from '../fixtures/phase3-data'
 import { EmployeeProfilePage } from '../page-objects/EmployeeProfilePage'
 import { expect, test } from '../support/test'
+import { people } from '../../../src/mocks/data/people'
 
 const formatDate = (isoDate: string) =>
   new Date(isoDate).toLocaleDateString('en-GB', {
@@ -15,6 +16,11 @@ const formatDate = (isoDate: string) =>
   })
 
 const formatPhone = (phone: string) => phone.replace(/\s*x\d+$/i, '').trim()
+
+const getPersonName = (personId: string) => {
+  const person = people.find((item) => item.id === personId)
+  return person ? `${person.firstName} ${person.lastName}` : personId
+}
 
 const noEditOrDeleteControls = async (container: ReturnType<EmployeeProfilePage['tabPanel']>) => {
   await expect(container.getByRole('button', { name: /^Edit$/i })).toHaveCount(0)
@@ -225,7 +231,7 @@ test.describe('Phase 3 - Feedbacks tab content', () => {
       await expect(row).toContainText(feedback.type)
       await expect(row).toContainText(feedback.content)
       await expect(row).toContainText(formatDate(feedback.createdAt))
-      await expect(row).toContainText(feedback.authorId)
+      await expect(row).toContainText(getPersonName(feedback.authorId))
     }
   })
 

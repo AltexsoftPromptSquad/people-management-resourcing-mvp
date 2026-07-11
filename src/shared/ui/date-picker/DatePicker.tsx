@@ -56,6 +56,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       id,
       autoFocus,
       placeholder = 'Select date',
+      'aria-label': ariaLabel,
       ...props
     },
     ref,
@@ -147,6 +148,31 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     })
 
     useEffect(() => {
+      const input = hiddenInputRef.current
+      if (!input) {
+        return
+      }
+
+      const syncInputValue = () => {
+        const nextValue = input.value
+
+        if (!isControlled) {
+          setInternalValue(nextValue)
+        }
+
+        onChange?.(createChangeEvent(name, nextValue))
+      }
+
+      input.addEventListener('input', syncInputValue)
+      input.addEventListener('change', syncInputValue)
+
+      return () => {
+        input.removeEventListener('input', syncInputValue)
+        input.removeEventListener('change', syncInputValue)
+      }
+    }, [isControlled, name, onChange])
+
+    useEffect(() => {
       if (!selectedDate) {
         return
       }
@@ -162,12 +188,6 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
         return
       }
 
-      const anchorDate = selectedDate ?? today
-      setViewMonth({
-        year: anchorDate.getFullYear(),
-        month: anchorDate.getMonth(),
-      })
-      setIsOpen(true)
       triggerRef.current?.focus()
     }, [autoFocus, disabled])
 
@@ -240,6 +260,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
           aria-expanded={isOpen}
           aria-haspopup="dialog"
           aria-controls={calendarId}
+          aria-label={ariaLabel}
           disabled={disabled}
           className={cn(
             'flex h-9 w-full cursor-pointer items-center justify-between rounded-md border border-slate-200 bg-white py-1 pl-3 pr-10 text-left text-sm shadow-xs outline-none transition-colors focus-visible:border-slate-400 focus-visible:ring-2 focus-visible:ring-slate-300 disabled:cursor-not-allowed disabled:opacity-50',

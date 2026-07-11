@@ -35,4 +35,13 @@ export const scheduledLeaves: ScheduledLeave[] = [
     endDate: '2026-07-03',
     status: 'Confirmed',
   },
+  {
+    id: 'leave-005',
+    personId: 'person-generated-034',
+    leaveType: 'Annual',
+    startDate: '2026-07-22',
+    endDate: '2026-07-26',
+    status: 'Confirmed',
+    notes: 'Seeded overlap for request candidate warning coverage',
+  },
 ]

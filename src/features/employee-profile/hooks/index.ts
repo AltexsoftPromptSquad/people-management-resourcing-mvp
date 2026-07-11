@@ -14,6 +14,7 @@ export {
   useEmployeeProfileScheduledLeavesQuery,
   useEmployeeProfileSkillsQuery,
   useEmployeeVisibleDocumentsQuery,
+  usePeopleLookupQuery,
   useUnitsQuery,
   useUpdateActionItemMutation,
   useUpdateIdpMutation,

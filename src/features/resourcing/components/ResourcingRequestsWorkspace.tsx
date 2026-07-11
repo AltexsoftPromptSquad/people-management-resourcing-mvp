@@ -319,7 +319,11 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   English level *
-                  <Select className="mt-1" {...register('englishLevel')}>
+                  <Select
+                    aria-label="English level *"
+                    className="mt-1"
+                    {...register('englishLevel')}
+                  >
                     {englishLevelOptions.map((level) => (
                       <option key={level} value={level}>
                         {level}
@@ -334,7 +338,11 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Expected compensation level *
-                  <Select className="mt-1" {...register('expectedCompensationLevel')}>
+                  <Select
+                    aria-label="Expected compensation level *"
+                    className="mt-1"
+                    {...register('expectedCompensationLevel')}
+                  >
                     {compensationOptions.map((level) => (
                       <option key={level} value={level}>
                         {level}
@@ -349,7 +357,11 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Assigned Unit Manager *
-                  <Select className="mt-1" {...register('assignedUnitManagerId')}>
+                  <Select
+                    aria-label="Assigned Unit Manager *"
+                    className="mt-1"
+                    {...register('assignedUnitManagerId')}
+                  >
                     <option value="">Select manager</option>
                     {unitManagers.map((manager) => (
                       <option key={manager.id} value={manager.id}>
@@ -365,7 +377,7 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Priority *
-                  <Select className="mt-1" {...register('priority')}>
+                  <Select aria-label="Priority *" className="mt-1" {...register('priority')}>
                     {priorityOptions.map((priority) => (
                       <option key={priority} value={priority}>
                         {priority}
@@ -404,7 +416,11 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Start date *
-                  <DatePicker className="mt-1" {...register('startDate')} />
+                  <DatePicker
+                    aria-label="Start date *"
+                    className="mt-1"
+                    {...register('startDate')}
+                  />
                   {formErrors.startDate?.message ? (
                     <p role="alert" className="mt-1 text-xs text-red-600">
                       {formErrors.startDate.message}
@@ -413,7 +429,7 @@ export const ResourcingRequestsWorkspace: FC<ResourcingRequestsWorkspaceProps> =
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   End date
-                  <DatePicker className="mt-1" {...register('endDate')} />
+                  <DatePicker aria-label="End date" className="mt-1" {...register('endDate')} />
                 </label>
                 <label className="block text-sm font-medium text-slate-700">
                   Client name

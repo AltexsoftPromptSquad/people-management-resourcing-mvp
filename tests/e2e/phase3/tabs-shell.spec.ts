@@ -46,6 +46,7 @@ test.describe('Phase 3 - profile tabs shell', () => {
     await page.goto(phase3Routes.subordinates)
     const subordinates = new SubordinatesPage(page)
     await subordinates.expectLoaded()
+    await subordinates.searchForPerson(phase3Baselines.employeeFullName)
 
     await page.getByRole('button', { name: phase3Baselines.employeeFullName }).first().click()
     const profile = new EmployeeProfilePage(page)
@@ -55,7 +56,8 @@ test.describe('Phase 3 - profile tabs shell', () => {
     await expect(profile.tab('Feedbacks')).toHaveAttribute('aria-selected', 'true')
 
     await profile.backButton().click()
-    await expect(page).toHaveURL(new RegExp(`${phase3Routes.subordinates}$`))
+    await expect(page).toHaveURL(new RegExp(`${phase3Routes.subordinates}(?:\\?.*)?$`))
+    await subordinates.searchForPerson(phase3Baselines.employeeFullName)
 
     await page.getByRole('button', { name: phase3Baselines.employeeFullName }).first().click()
     await profile.expectLoaded(phase3Baselines.employeeFullName)

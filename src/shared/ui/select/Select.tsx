@@ -187,8 +187,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       }
 
       triggerRef.current?.focus()
-      openMenu()
-    }, [autoFocus, disabled, openMenu])
+    }, [autoFocus, disabled])
 
     useEffect(() => {
       if (!isOpen) {

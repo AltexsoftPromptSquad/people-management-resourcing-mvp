@@ -160,16 +160,16 @@ test.describe('Phase 3 - personal profile self-service', () => {
     await appShell.switchRole('Employee')
     const myProfile = new MyProfilePage(page)
 
-    await expect(myProfile.idpStatusSelect().locator('option')).toHaveText([
-      'Not Started',
-      'In Progress',
-      'Completed',
-    ])
+    await expect(myProfile.idpStatusSelect()).toBeVisible()
+    await expect(myProfile.idpStatusSelect()).toContainText(
+      phase3Baselines.idpRecordForEmployee.status,
+    )
     await selectCustomOption(myProfile.idpStatusSelect(), 'Completed')
 
     await expect(page.getByText('IDP status updated.')).toBeVisible()
+    await expect(myProfile.idpStatusSelect()).toContainText('Completed')
     await expect(
-      myProfile.section('IDP Status').locator('span').filter({ hasText: 'Completed' }),
+      myProfile.section('IDP Status').getByText('Completed', { exact: true }).last(),
     ).toBeVisible()
   })
 

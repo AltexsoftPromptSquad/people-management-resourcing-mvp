@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router'
 import { CustomFieldManagerSheet } from '@/features/custom-lists/components/custom-field-manager-sheet'
 import { useCustomFieldsQuery } from '@/features/custom-lists/hooks/use-custom-lists-query'
@@ -21,6 +20,7 @@ import {
   useEmployeeProfileRisksQuery,
   useEmployeeProfileScheduledLeavesQuery,
   useEmployeeProfileSkillsQuery,
+  usePeopleLookupQuery,
   useUnitsQuery,
   useUpdateIdpMutation,
   useUpdateActionItemMutation,
@@ -31,7 +31,6 @@ import {
   getNextBooleanFieldValue,
   normalizeBooleanFieldValue,
 } from '@/lib/custom-fields/boolean-field-value'
-import { apiGet } from '@/lib/api/api-client'
 import { Button } from '@/shared/ui/button'
 import { Checkbox } from '@/shared/ui/checkbox'
 import { DatePicker } from '@/shared/ui/date-picker'
@@ -133,10 +132,7 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
   const customFieldsQuery = useCustomFieldsQuery(
     activePersona?.role === 'unit-manager' ? activePersona.personId : undefined,
   )
-  const peopleLookupQuery = useQuery({
-    queryKey: ['people-lookup'],
-    queryFn: () => apiGet<Person[]>('/api/people'),
-  })
+  const peopleLookupQuery = usePeopleLookupQuery()
 
   const updatePersonMutation = useUpdatePersonMutation(personId ?? '')
   const addFeedbackMutation = useAddFeedbackMutation(personId ?? '')
@@ -373,6 +369,8 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                 <label className="block text-sm font-medium text-slate-700">
                   Type *
                   <Select
+                    aria-label="Type *"
+                    autoFocus
                     className="mt-1"
                     value={feedbackType}
                     onChange={(event) => {
@@ -923,6 +921,7 @@ export const EmployeeProfilePage: FC<EmployeeProfilePageProps> = () => {
                                   Due {formatDate(item.dueDate)} - {item.status}
                                 </p>
                                 <Select
+                                  aria-label={`Status for ${item.title}`}
                                   className="mt-2 h-8 text-xs"
                                   value={item.status}
                                   onChange={(event) =>

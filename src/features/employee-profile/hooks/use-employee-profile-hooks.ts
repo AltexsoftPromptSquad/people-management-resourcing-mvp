@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { queryKeys } from '@/lib/query/query-keys'
 import {
   getActionItemsByAssignee,
+  getPeople,
   getPerson,
   getPersonActionItems,
   getPersonAssignmentHistory,
@@ -38,6 +39,12 @@ export const useUnitsQuery = () =>
   useQuery({
     queryKey: queryKeys.units(),
     queryFn: getUnits,
+  })
+
+export const usePeopleLookupQuery = () =>
+  useQuery({
+    queryKey: queryKeys.people(),
+    queryFn: getPeople,
   })
 
 export const useEmployeeProfileFeedbacksQuery = (personId: string | undefined) =>

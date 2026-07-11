@@ -43,9 +43,37 @@ const employeePerson = ensure(
 )
 
 const seededSharedProfile = ensure(sharedProfiles[0], 'Missing shared profile seed')
+const submittedRequest = ensure(
+  resourcingRequests.find((request) => request.id === 'request-001'),
+  'Missing request-001',
+)
 
 const activeSharedProfilePersonIds = new Set(
   sharedProfiles.filter((profile) => profile.isActive).map((profile) => profile.personId),
+)
+
+const submittedRequestCandidates = people.filter(
+  (person) =>
+    person.unitId === unitManagerPersona.unitId &&
+    person.managerId === unitManagerPersona.personId &&
+    person.position.toLowerCase().includes(submittedRequest.requiredRole.toLowerCase()),
+)
+
+const candidateWithActiveSharedProfile = ensure(
+  submittedRequestCandidates.find((person) => activeSharedProfilePersonIds.has(person.id)),
+  'Missing submitted-request candidate with an active shared profile',
+)
+
+const candidateWithoutActiveSharedProfile = ensure(
+  submittedRequestCandidates.find((person) => !activeSharedProfilePersonIds.has(person.id)),
+  'Missing submitted-request candidate without an active shared profile',
+)
+
+const candidateWithRiskWarning = ensure(
+  submittedRequestCandidates.find(
+    (person) => person.riskLevel === 'High' || person.riskLevel === 'Critical',
+  ),
+  'Missing submitted-request candidate with High or Critical risk',
 )
 
 const employeeWithoutActiveSharedProfile = ensure(
@@ -71,11 +99,11 @@ export const phase4Baselines = {
   employeePersona,
   employeePerson,
   employeeWithoutActiveSharedProfile,
+  candidateWithActiveSharedProfile,
+  candidateWithoutActiveSharedProfile,
+  candidateWithRiskWarning,
   seededSharedProfile,
-  submittedRequest: ensure(
-    resourcingRequests.find((request) => request.id === 'request-001'),
-    'Missing request-001',
-  ),
+  submittedRequest,
   inReviewRequest: ensure(
     resourcingRequests.find((request) => request.id === 'request-002'),
     'Missing request-002',
