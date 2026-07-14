@@ -62,9 +62,8 @@ test.describe('Phase 2 - dashboard', () => {
     const dashboard = new DashboardPage(page)
     await dashboard.expectLoaded()
 
-    const renderedRows = await dashboard.actionItemsListItems().allTextContents()
-    expect(renderedRows.length).toBeGreaterThan(0)
-    expect(renderedRows.length).toBeLessThanOrEqual(10)
+    const renderedRows = await dashboard.collectAllActionItemRowTexts()
+    expect(renderedRows.length).toBe(phase2Baselines.dashboardActionItems.length)
 
     const dueDatesFromUi = renderedRows.map((row) => {
       const match = row.match(/Due\s+(\d{1,2}\s\w{3}\s\d{4})/)
